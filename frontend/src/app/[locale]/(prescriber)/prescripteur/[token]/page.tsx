@@ -2,10 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "@/lib/toast";
 import {
   FileText,
   Upload,
@@ -14,6 +15,9 @@ import {
   User,
   Stethoscope,
   Send,
+  Loader2,
+  Clock,
+  X,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -21,6 +25,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { 
+  useValidatePrescriberLink, 
+  useSubmitPrescription,
+  useGetUploadUrl,
+  useConfirmUpload,
+} from "@/lib/api/hooks";
 
 const prescriberSchema = z.object({
   rppsNumber: z.string().min(11, "Numéro RPPS invalide").max(11),
@@ -34,68 +44,189 @@ type PrescriberFormData = z.infer<typeof prescriberSchema>;
 
 type Step = "validate" | "form" | "upload" | "success";
 
+interface UploadedFile {
+  file: File;
+  documentId?: string;
+  status: 'pending' | 'uploading' | 'success' | 'error';
+}
+
 export default function PrescriberPage() {
   const t = useTranslations("prescriber");
   const params = useParams();
   const token = params.token as string;
 
   const [step, setStep] = useState<Step>("validate");
-  const [isValidating, setIsValidating] = useState(false);
   const [tokenData, setTokenData] = useState<{
     patientName: string;
     caseNumber: string;
+    caseId: string;
     expiresAt: string;
   } | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [prescriberData, setPrescriberData] = useState<PrescriberFormData | null>(null);
   const [referenceNumber, setReferenceNumber] = useState("");
+  const [isExpired, setIsExpired] = useState(false);
+
+  // API hooks
+  const { mutate: validateLink, isPending: isValidating } = useValidatePrescriberLink();
+  const { mutate: submitPrescription, isPending: isSubmitting } = useSubmitPrescription();
+  const { mutateAsync: getUploadUrl } = useGetUploadUrl();
+  const { mutateAsync: confirmUpload } = useConfirmUpload();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting: isFormSubmitting },
   } = useForm<PrescriberFormData>({
     resolver: zodResolver(prescriberSchema),
   });
 
-  const validateToken = async () => {
-    setIsValidating(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      if (token === "invalid") {
-        throw new Error("Token invalide");
-      }
-
-      setTokenData({
-        patientName: "Jean D.",
-        caseNumber: "CAP-2024-0001",
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-      });
-      setStep("form");
-    } catch {
-      setTokenData(null);
-    } finally {
-      setIsValidating(false);
+  // Validate token on mount
+  useEffect(() => {
+    if (token && step === "validate") {
+      validateToken();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
+  const validateToken = () => {
+    validateLink(token, {
+      onSuccess: (data) => {
+        const linkData = data as { 
+          patientName: string; 
+          caseNumber: string; 
+          caseId: string;
+          expiresAt: string;
+          isValid: boolean;
+        };
+        if (linkData.isValid) {
+          // Check expiration
+          if (new Date(linkData.expiresAt) < new Date()) {
+            setIsExpired(true);
+          } else {
+            setTokenData({
+              patientName: linkData.patientName,
+              caseNumber: linkData.caseNumber,
+              caseId: linkData.caseId,
+              expiresAt: linkData.expiresAt,
+            });
+            setStep("form");
+          }
+        } else {
+          setTokenData(null);
+        }
+      },
+      onError: () => {
+        setTokenData(null);
+      },
+    });
   };
 
   const onSubmitForm = async (data: PrescriberFormData) => {
-    console.log("Prescriber data:", data);
+    setPrescriberData(data);
     setStep("upload");
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setUploadedFiles(Array.from(e.target.files));
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    
+    const newFiles = Array.from(e.target.files).map(file => ({
+      file,
+      status: 'pending' as const,
+    }));
+    
+    setUploadedFiles(prev => [...prev, ...newFiles]);
+    
+    // Upload each file
+    for (const uploadFile of newFiles) {
+      try {
+        // Update status to uploading
+        setUploadedFiles(prev => 
+          prev.map(f => f.file === uploadFile.file ? { ...f, status: 'uploading' as const } : f)
+        );
+        
+        // Get presigned URL
+        const uploadResponse = await getUploadUrl({
+          filename: uploadFile.file.name,
+          mimeType: uploadFile.file.type,
+          documentType: 'PRESCRIPTION',
+          ownerId: tokenData?.caseId,
+        });
+        
+        const { uploadUrl, documentId, fields } = uploadResponse as { 
+          uploadUrl: string; 
+          documentId: string; 
+          fields: Record<string, string>; 
+        };
+        
+        // Upload to S3
+        const formData = new FormData();
+        Object.entries(fields).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        formData.append('file', uploadFile.file);
+        
+        await fetch(uploadUrl, {
+          method: 'POST',
+          body: formData,
+        });
+        
+        // Confirm upload
+        await confirmUpload(documentId);
+        
+        // Update status to success
+        setUploadedFiles(prev => 
+          prev.map(f => f.file === uploadFile.file 
+            ? { ...f, status: 'success' as const, documentId } 
+            : f
+          )
+        );
+      } catch {
+        // Update status to error
+        setUploadedFiles(prev => 
+          prev.map(f => f.file === uploadFile.file ? { ...f, status: 'error' as const } : f)
+        );
+        toast.error(t("upload.error"));
+      }
     }
   };
 
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
   const submitDocuments = async () => {
-    // Simulate upload
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setReferenceNumber(`REF-${Date.now()}`);
-    setStep("success");
+    if (!prescriberData || !tokenData) return;
+    
+    const documentIds = uploadedFiles
+      .filter(f => f.status === 'success' && f.documentId)
+      .map(f => f.documentId!);
+    
+    if (documentIds.length === 0) {
+      toast.error(t("upload.noFiles"));
+      return;
+    }
+    
+    submitPrescription({
+      token,
+      prescriber: {
+        rppsNumber: prescriberData.rppsNumber,
+        firstName: prescriberData.firstName,
+        lastName: prescriberData.lastName,
+        specialty: prescriberData.specialty,
+      },
+      clinicalNotes: prescriberData.clinicalNotes,
+      documentIds,
+    }, {
+      onSuccess: (data) => {
+        const result = data as { referenceNumber: string };
+        setReferenceNumber(result.referenceNumber);
+        setStep("success");
+      },
+      onError: () => {
+        toast.error(t("submit.error"));
+      },
+    });
   };
 
   const getProgress = () => {
@@ -111,6 +242,27 @@ export default function PrescriberPage() {
     }
   };
 
+  const allFilesUploaded = uploadedFiles.length > 0 && 
+    uploadedFiles.every(f => f.status === 'success');
+
+  // Expired link
+  if (isExpired) {
+    return (
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardContent className="py-12 text-center">
+            <div className="w-16 h-16 bg-warning/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock className="w-8 h-8 text-warning" />
+            </div>
+            <h2 className="text-xl font-semibold">{t("expired.title")}</h2>
+            <p className="text-neutral-500 mt-2">{t("expired.description")}</p>
+            <p className="text-sm text-neutral-400 mt-4">{t("expired.contact")}</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   // Validate step
   if (step === "validate") {
     return (
@@ -124,7 +276,12 @@ export default function PrescriberPage() {
             <CardDescription>{t("validate.description")}</CardDescription>
           </CardHeader>
           <CardContent>
-            {tokenData === null && !isValidating ? (
+            {isValidating ? (
+              <div className="flex flex-col items-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-primary mb-3" />
+                <p className="text-neutral-500">{t("validate.validating")}</p>
+              </div>
+            ) : tokenData === null ? (
               <div className="text-center py-4">
                 <AlertTriangle className="w-12 h-12 text-error mx-auto mb-3" />
                 <p className="text-error font-medium">{t("validate.invalid")}</p>
@@ -235,7 +392,7 @@ export default function PrescriberPage() {
                   {...register("clinicalNotes")}
                 />
 
-                <Button type="submit" className="w-full" loading={isSubmitting}>
+                <Button type="submit" className="w-full" loading={isFormSubmitting}>
                   {t("form.continue")}
                 </Button>
               </form>
@@ -272,19 +429,35 @@ export default function PrescriberPage() {
 
               {uploadedFiles.length > 0 && (
                 <div className="space-y-2">
-                  {uploadedFiles.map((file, index) => (
+                  {uploadedFiles.map((uploadedFile, index) => (
                     <div
                       key={index}
                       className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg"
                     >
                       <FileText className="w-5 h-5 text-primary-600" />
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{file.name}</p>
+                        <p className="font-medium truncate">{uploadedFile.file.name}</p>
                         <p className="text-sm text-neutral-500">
-                          {(file.size / 1024).toFixed(0)} KB
+                          {(uploadedFile.file.size / 1024).toFixed(0)} KB
                         </p>
                       </div>
-                      <CheckCircle className="w-5 h-5 text-success" />
+                      {uploadedFile.status === 'uploading' && (
+                        <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                      )}
+                      {uploadedFile.status === 'success' && (
+                        <CheckCircle className="w-5 h-5 text-success" />
+                      )}
+                      {uploadedFile.status === 'error' && (
+                        <AlertTriangle className="w-5 h-5 text-error" />
+                      )}
+                      {uploadedFile.status !== 'uploading' && (
+                        <button
+                          onClick={() => removeFile(index)}
+                          className="p-1 hover:bg-neutral-200 rounded"
+                        >
+                          <X className="w-4 h-4 text-neutral-500" />
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -292,10 +465,14 @@ export default function PrescriberPage() {
 
               <Button
                 className="w-full"
-                disabled={uploadedFiles.length === 0}
+                disabled={!allFilesUploaded || isSubmitting}
                 onClick={submitDocuments}
               >
-                <Send className="w-4 h-4 mr-2" />
+                {isSubmitting ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 mr-2" />
+                )}
                 {t("upload.submit")}
               </Button>
             </CardContent>

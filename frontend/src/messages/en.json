@@ -432,7 +432,26 @@
       "infoTitle": "Important Information",
       "infoItem1": "Accepted formats: PDF, JPG, PNG (max 10 MB)",
       "infoItem2": "Your documents are automatically analyzed for verification",
-      "infoItem3": "Documents are stored securely"
+      "infoItem3": "Documents are stored securely",
+      "types": {
+        "prescription": "Prescription",
+        "identity": "Identity",
+        "insurance": "Insurance",
+        "quote": "Quote",
+        "cpam": "CPAM",
+        "other": "Other"
+      },
+      "status": {
+        "uploaded": "Uploaded",
+        "processing": "Processing",
+        "verified": "Verified",
+        "rejected": "Rejected"
+      },
+      "uploadError": "Error uploading file",
+      "removeConfirm": "Are you sure you want to remove this document?",
+      "preview": "Preview",
+      "download": "Download",
+      "remove": "Remove"
     },
     "profile": {
       "title": "My Profile",
@@ -451,7 +470,9 @@
         "lastName": "Last name",
         "email": "Email",
         "phone": "Phone",
-        "dateOfBirth": "Date of birth"
+        "dateOfBirth": "Date of birth",
+        "nir": "Social Security Number",
+        "nirHelp": "To modify this number, contact support"
       },
       "contact": {
         "title": "Contact Details",
@@ -494,7 +515,31 @@
         "title": "Proxy",
         "description": "Authorize someone to act on your behalf",
         "noProxy": "No proxy configured",
-        "addProxy": "Add a proxy"
+        "addProxy": "Add a proxy",
+        "inviteProxy": "Invite a proxy",
+        "inviteDescription": "Enter the email address of the person you want to authorize",
+        "emailLabel": "Email address",
+        "relationLabel": "Relationship",
+        "relationPlaceholder": "e.g. Spouse, Child, Caregiver",
+        "sendInvitation": "Send invitation",
+        "activeProxies": "Active proxies",
+        "pendingInvitations": "Pending invitations",
+        "status": {
+          "active": "Active",
+          "pending": "Pending",
+          "expired": "Expired"
+        },
+        "revoke": "Revoke",
+        "revokeConfirm": "Are you sure you want to revoke this proxy's access?"
+      },
+      "consents": {
+        "title": "Consents",
+        "description": "Manage your consent preferences",
+        "noConsents": "No active consents",
+        "grantedOn": "Granted on",
+        "expiresOn": "Expires on",
+        "revoke": "Revoke",
+        "revokeConfirm": "Are you sure you want to revoke this consent?"
       },
       "save": "Save"
     },
@@ -504,7 +549,25 @@
       "chat": {
         "title": "Live Chat",
         "description": "Chat with our assistant",
-        "placeholder": "Type your message..."
+        "placeholder": "Type your message...",
+        "sessions": "Chat Sessions",
+        "newSession": "New Conversation",
+        "noSessions": "No conversations yet",
+        "noSessionsDescription": "Start a conversation with our team",
+        "startChat": "Start Chat",
+        "backToSessions": "Back to sessions",
+        "escalate": "Speak to agent",
+        "escalating": "Connecting...",
+        "status": {
+          "active": "Active",
+          "resolved": "Resolved",
+          "escalated": "Escalated"
+        },
+        "lastMessage": "Last message",
+        "messages": "messages",
+        "you": "You",
+        "agent": "Agent",
+        "bot": "Assistant"
       },
       "contact": {
         "title": "Contact Us",
@@ -702,6 +765,7 @@
     "dashboard": {
       "title": "Dashboard",
       "subtitle": "Activity overview",
+      "refresh": "Refresh",
       "stats": {
         "openCases": "Open cases",
         "openTickets": "Service tickets",
@@ -715,6 +779,8 @@
       "casesByStatusDescription": "Distribution of active cases",
       "recentCases": "Recent cases",
       "recentCasesDescription": "Latest created cases",
+      "noData": "No data available",
+      "noCases": "No recent cases",
       "serviceTickets": "Service tickets",
       "serviceTicketsDescription": "Ongoing maintenance requests",
       "viewAll": "View all",
@@ -752,8 +818,14 @@
       "title": "Link Validation",
       "description": "Verifying your access to the prescriber portal",
       "button": "Validate my access",
+      "validating": "Validating...",
       "invalid": "Invalid or expired link",
       "invalidDescription": "Please contact CapMobilité to get a new link"
+    },
+    "expired": {
+      "title": "Link Expired",
+      "description": "This link has expired or is no longer valid",
+      "contact": "Please contact the patient or CapMobilité for a new link"
     },
     "patient": "Patient",
     "case": "Case",
@@ -779,7 +851,10 @@
       "dropzone": "Drag and drop your files here",
       "formats": "PDF, JPG, PNG (max 10 MB)",
       "browse": "Browse",
-      "submit": "Submit documents"
+      "submit": "Submit documents",
+      "submitting": "Submitting...",
+      "error": "Error uploading file",
+      "noFiles": "Please select at least one file"
     },
     "success": {
       "title": "Documents successfully submitted",

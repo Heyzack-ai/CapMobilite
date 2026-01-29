@@ -12,112 +12,178 @@ import {
   AlertTriangle,
   Euro,
   ArrowRight,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { getAllCases, caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
+import { 
+  useAdminDashboardStats,
+  useCases,
+} from "@/lib/api/hooks";
+import { caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
 import { mockTickets } from "@/lib/mocks/data/devices";
-import { mockClaims } from "@/lib/mocks/data/products";
+
+// Types for dashboard stats
+interface DashboardStats {
+  openCases: number;
+  openCasesChange: number;
+  openTickets: number;
+  criticalTickets: number;
+  pendingClaims: number;
+  pendingClaimsAmount: number;
+  monthlyRevenue: number;
+  revenueChange: number;
+  casesByStatus: Record<string, number>;
+  totalCases: number;
+}
 
 export default function AdminDashboard() {
   const t = useTranslations("admin.dashboard");
 
-  const cases = getAllCases();
-  const openCases = cases.filter(
-    (c) => !["DELIVERED", "CLOSED", "CANCELLED"].includes(c.status)
-  );
+  // API hooks
+  const { 
+    data: statsData, 
+    isLoading: statsLoading, 
+    refetch: refetchStats 
+  } = useAdminDashboardStats();
+  const { data: casesData, isLoading: casesLoading } = useCases({ limit: 5 });
+
+  // Parse stats with fallbacks
+  const stats: DashboardStats = statsData as DashboardStats || {
+    openCases: 0,
+    openCasesChange: 0,
+    openTickets: 0,
+    criticalTickets: 0,
+    pendingClaims: 0,
+    pendingClaimsAmount: 0,
+    monthlyRevenue: 0,
+    revenueChange: 0,
+    casesByStatus: {},
+    totalCases: 0,
+  };
+  
+  const recentCases = casesData?.data || [];
   const openTickets = mockTickets.filter(
     (t) => !["RESOLVED", "CLOSED"].includes(t.status)
   );
-  const pendingClaims = mockClaims.filter(
-    (c) => !["PAID", "REJECTED"].includes(c.status)
-  );
 
-  // Case status distribution
-  const statusCounts = cases.reduce((acc, c) => {
-    acc[c.status] = (acc[c.status] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const isLoading = statsLoading || casesLoading;
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-neutral-900">{t("title")}</h1>
-        <p className="text-neutral-500 mt-1">{t("subtitle")}</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-neutral-900">{t("title")}</h1>
+          <p className="text-neutral-500 mt-1">{t("subtitle")}</p>
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => refetchStats()}
+          disabled={statsLoading}
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${statsLoading ? 'animate-spin' : ''}`} />
+          {t("refresh")}
+        </Button>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-neutral-500">{t("stats.openCases")}</p>
-                <p className="text-3xl font-bold mt-1">{openCases.length}</p>
-                <p className="text-sm text-success mt-1">
-                  +2 {t("stats.fromYesterday")}
-                </p>
+            {statsLoading ? (
+              <div className="flex items-center justify-center h-20">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
               </div>
-              <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-                <FolderOpen className="w-6 h-6 text-primary-600" />
+            ) : (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-neutral-500">{t("stats.openCases")}</p>
+                  <p className="text-3xl font-bold mt-1">{stats.openCases}</p>
+                  <p className={`text-sm mt-1 ${stats.openCasesChange >= 0 ? 'text-success' : 'text-error'}`}>
+                    {stats.openCasesChange >= 0 ? '+' : ''}{stats.openCasesChange} {t("stats.fromYesterday")}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  <FolderOpen className="w-6 h-6 text-primary-600" />
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-neutral-500">{t("stats.openTickets")}</p>
-                <p className="text-3xl font-bold mt-1">{openTickets.length}</p>
-                <p className="text-sm text-warning mt-1">
-                  1 {t("stats.critical")}
-                </p>
+            {statsLoading ? (
+              <div className="flex items-center justify-center h-20">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
               </div>
-              <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center">
-                <Wrench className="w-6 h-6 text-warning" />
+            ) : (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-neutral-500">{t("stats.openTickets")}</p>
+                  <p className="text-3xl font-bold mt-1">{stats.openTickets}</p>
+                  <p className="text-sm text-warning mt-1">
+                    {stats.criticalTickets} {t("stats.critical")}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center">
+                  <Wrench className="w-6 h-6 text-warning" />
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-neutral-500">{t("stats.pendingClaims")}</p>
-                <p className="text-3xl font-bold mt-1">{pendingClaims.length}</p>
-                <p className="text-sm text-neutral-500 mt-1">
-                  {pendingClaims.reduce((sum, c) => sum + c.amountClaimed, 0).toLocaleString("fr-FR")} &euro;
-                </p>
+            {statsLoading ? (
+              <div className="flex items-center justify-center h-20">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
               </div>
-              <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
-                <Receipt className="w-6 h-6 text-secondary-600" />
+            ) : (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-neutral-500">{t("stats.pendingClaims")}</p>
+                  <p className="text-3xl font-bold mt-1">{stats.pendingClaims}</p>
+                  <p className="text-sm text-neutral-500 mt-1">
+                    {stats.pendingClaimsAmount.toLocaleString("fr-FR")} &euro;
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
+                  <Receipt className="w-6 h-6 text-secondary-600" />
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-neutral-500">{t("stats.revenue")}</p>
-                <p className="text-3xl font-bold mt-1">8 750 &euro;</p>
-                <p className="text-sm text-success mt-1 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  +12% {t("stats.vsLastMonth")}
-                </p>
+            {statsLoading ? (
+              <div className="flex items-center justify-center h-20">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
               </div>
-              <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center">
-                <Euro className="w-6 h-6 text-success" />
+            ) : (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-neutral-500">{t("stats.revenue")}</p>
+                  <p className="text-3xl font-bold mt-1">{stats.monthlyRevenue.toLocaleString("fr-FR")} &euro;</p>
+                  <p className={`text-sm mt-1 flex items-center gap-1 ${stats.revenueChange >= 0 ? 'text-success' : 'text-error'}`}>
+                    <TrendingUp className="w-3 h-3" />
+                    {stats.revenueChange >= 0 ? '+' : ''}{stats.revenueChange}% {t("stats.vsLastMonth")}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center">
+                  <Euro className="w-6 h-6 text-success" />
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -129,22 +195,31 @@ export default function AdminDashboard() {
           <CardDescription>{t("casesByStatusDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {Object.entries(statusCounts).map(([status, count]) => (
-              <div key={status} className="flex items-center gap-4">
-                <Badge
-                  variant={caseStatusColors[status as keyof typeof caseStatusColors] as "default" | "success" | "warning" | "error" | "info" | "secondary"}
-                  className="w-40 justify-center"
-                >
-                  {caseStatusLabels[status as keyof typeof caseStatusLabels]}
-                </Badge>
-                <div className="flex-1">
-                  <Progress value={(count / cases.length) * 100} />
+          {statsLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {Object.entries(stats.casesByStatus).map(([status, count]) => (
+                <div key={status} className="flex items-center gap-4">
+                  <Badge
+                    variant={caseStatusColors[status as keyof typeof caseStatusColors] as "default" | "success" | "warning" | "error" | "info" | "secondary"}
+                    className="w-40 justify-center"
+                  >
+                    {caseStatusLabels[status as keyof typeof caseStatusLabels] || status}
+                  </Badge>
+                  <div className="flex-1">
+                    <Progress value={stats.totalCases > 0 ? (count / stats.totalCases) * 100 : 0} />
+                  </div>
+                  <span className="text-sm font-medium w-8 text-right">{count}</span>
                 </div>
-                <span className="text-sm font-medium w-8 text-right">{count}</span>
-              </div>
-            ))}
-          </div>
+              ))}
+              {Object.keys(stats.casesByStatus).length === 0 && (
+                <p className="text-center text-neutral-500">{t("noData")}</p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -164,32 +239,40 @@ export default function AdminDashboard() {
             </Button>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {cases.slice(0, 5).map((caseItem) => (
-                <Link
-                  key={caseItem.id}
-                  href={`/admin/dossiers/${caseItem.id}`}
-                  className="flex items-center justify-between p-3 rounded-lg border hover:bg-neutral-50 transition-colors"
-                >
-                  <div>
-                    <p className="font-medium">{caseItem.caseNumber}</p>
-                    <p className="text-sm text-neutral-500">
-                      {new Date(caseItem.createdAt).toLocaleDateString("fr-FR")}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {caseItem.priority === "URGENT" && (
-                      <AlertTriangle className="w-4 h-4 text-error" />
-                    )}
-                    <Badge
-                      variant={caseStatusColors[caseItem.status] as "default" | "success" | "warning" | "error" | "info" | "secondary"}
-                    >
-                      {caseStatusLabels[caseItem.status]}
-                    </Badge>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {casesLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : recentCases.length === 0 ? (
+              <p className="text-center text-neutral-500 py-8">{t("noCases")}</p>
+            ) : (
+              <div className="space-y-3">
+                {recentCases.map((caseItem: { id: string; caseNumber: string; createdAt: string; status: string; priority?: string }) => (
+                  <Link
+                    key={caseItem.id}
+                    href={`/admin/dossiers/${caseItem.id}`}
+                    className="flex items-center justify-between p-3 rounded-lg border hover:bg-neutral-50 transition-colors"
+                  >
+                    <div>
+                      <p className="font-medium">{caseItem.caseNumber}</p>
+                      <p className="text-sm text-neutral-500">
+                        {new Date(caseItem.createdAt).toLocaleDateString("fr-FR")}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {caseItem.priority === "URGENT" && (
+                        <AlertTriangle className="w-4 h-4 text-error" />
+                      )}
+                      <Badge
+                        variant={caseStatusColors[caseItem.status as keyof typeof caseStatusColors] as "default" | "success" | "warning" | "error" | "info" | "secondary"}
+                      >
+                        {caseStatusLabels[caseItem.status as keyof typeof caseStatusLabels] || caseItem.status}
+                      </Badge>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 

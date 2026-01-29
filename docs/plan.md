@@ -403,12 +403,6 @@ Les données de santé (ordonnances, informations médicales) doivent être héb
 **Prochaine révision** : À chaque modification réglementaire
 
 
-TODO:
-- Access to doctor - doctor will get rewward to the doctor for recommendation of our service - not us - we are just admin support
-
-
-- An incentive system for commercial people and doctors - both get points that can be redeemed for gift cards, travel etc to promote our solution - the commercial people can also win moneysee claude code session history
-
 Here are the available routes to test:
 
 Public Routes
@@ -439,6 +433,613 @@ Document Upload: http://localhost:3000/prescripteur/test-token-123
 Mock Login Credentials
 Patient: jean.dupont@email.com / password123
 Admin: admin@capmobilite.fr / admin123
+
+---
+
+## 🔐 FRANCECONNECT INTEGRATION PLAN
+
+### Overview
+
+FranceConnect is the French government's official identity federation service that allows citizens to use their existing government accounts (Impots.gouv.fr, Ameli.fr, etc.) to authenticate on third-party services. This integration will:
+
+1. **Simplify patient onboarding** - No need to create new credentials
+2. **Verify patient identity** - Get certified identity data (nom, prénoms, date de naissance, etc.)
+3. **Comply with regulations** - Meet HDS and RGPD requirements for health data
+4. **Improve security** - Leverage government-grade authentication
+
+### Technical Foundation
+
+**Protocol**: OpenID Connect (OAuth 2.0 extension)
+**Production Endpoints**:
+- Authorization: `https://app.franceconnect.gouv.fr/api/v1/authorize`
+- Token: `https://app.franceconnect.gouv.fr/api/v1/token`
+- UserInfo: `https://app.franceconnect.gouv.fr/api/v1/userinfo`
+- Logout: `https://app.franceconnect.gouv.fr/api/v1/logout`
+
+**Integration Endpoints** (for testing):
+- Authorization: `https://fcp.integ01.dev-franceconnect.fr/api/v1/authorize`
+- Token: `https://fcp.integ01.dev-franceconnect.fr/api/v1/token`
+- UserInfo: `https://fcp.integ01.dev-franceconnect.fr/api/v1/userinfo`
+- Logout: `https://fcp.integ01.dev-franceconnect.fr/api/v1/logout`
+
+### Identity Pivot Data Available
+
+| Scope | Data | Format | Example |
+|-------|------|--------|---------|
+| `openid` (required) | Technical user ID (sub) | string (max 255 chars) | `YWxhY3JpdMOp` |
+| `given_name` | First names (all) | string | `Jean Pierre` |
+| `family_name` | Birth name | string | `DUPONT` |
+| `preferred_username` | Married name (if available) | string | `MARTIN` |
+| `birthdate` | Date of birth | YYYY-MM-DD | `1975-06-15` |
+| `gender` | Gender | `male` or `female` | `male` |
+| `birthplace` | INSEE code of birth city | 5 digits | `75115` |
+| `birthcountry` | INSEE code of birth country | 5 digits | `99100` (France) |
+| `email` | Email address | RFC 5322 | `jean.dupont@email.com` |
+
+**Scope aliases**:
+- `profile` = `given_name` + `family_name` + `birthdate` + `gender` + `preferred_username` (if available)
+- `birth` = `birthplace` + `birthcountry`
+- `identite_pivot` = `profile` + `birth` (complete identity pivot)
+
+### Authentication Flow
+
+```
+┌─────────────┐                ┌──────────────┐               ┌─────────────┐
+│   Patient   │                │CapMobilité FS│               │FranceConnect│
+└──────┬──────┘                └──────┬───────┘               └──────┬──────┘
+       │                              │                              │
+       │ 1. Click "Connect with FC"   │                              │
+       ├─────────────────────────────>│                              │
+       │                              │                              │
+       │        2. Redirect 302       │                              │
+       │<─────────────────────────────┤                              │
+       │   /api/v1/authorize          │                              │
+       │   + client_id                │                              │
+       │   + redirect_uri             │                              │
+       │   + scope                    │                              │
+       │   + state                    │                              │
+       │   + nonce                    │                              │
+       │                              │                              │
+       │                              │ 3. Show FC login page        │
+       ├──────────────────────────────┼─────────────────────────────>│
+       │                              │                              │
+       │ 4. User authenticates        │                              │
+       │    (chooses IdP: Impots,     │                              │
+       │     Ameli, La Poste, etc.)   │                              │
+       │<─────────────────────────────┼──────────────────────────────┤
+       │                              │                              │
+       │ 5. Redirect 302 to callback  │                              │
+       │    with authorization code   │                              │
+       ├─────────────────────────────>│                              │
+       │                              │                              │
+       │                              │ 6. Exchange code for tokens  │
+       │                              ├─────────────────────────────>│
+       │                              │ POST /api/v1/token           │
+       │                              │ + code                       │
+       │                              │ + client_id                  │
+       │                              │ + client_secret              │
+       │                              │                              │
+       │                              │ 7. Return access_token       │
+       │                              │    + id_token                │
+       │                              │<─────────────────────────────┤
+       │                              │                              │
+       │                              │ 8. Get user info             │
+       │                              ├─────────────────────────────>│
+       │                              │ GET /api/v1/userinfo         │
+       │                              │ Authorization: Bearer <token>│
+       │                              │                              │
+       │                              │ 9. Return identity pivot     │
+       │                              │<─────────────────────────────┤
+       │                              │                              │
+       │ 10. Redirect to dashboard    │                              │
+       │     (user authenticated)     │                              │
+       │<─────────────────────────────┤                              │
+       │                              │                              │
+```
+
+### Backend Implementation Plan
+
+#### 1. Database Schema Changes
+
+**New Table: `france_connect_accounts`**
+```prisma
+model FranceConnectAccount {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // FranceConnect unique identifier (stable per user per service)
+  sub           String   @unique
+  
+  // Identity Pivot Data
+  givenName     String   // Prénoms
+  familyName    String   // Nom de naissance
+  preferredUsername String? // Nom d'usage
+  birthdate     DateTime
+  gender        Gender
+  birthplace    String?  // Code INSEE lieu de naissance
+  birthcountry  String   // Code INSEE pays de naissance
+  email         String?
+  
+  // Metadata
+  idpIdentity   String   // Which IdP was used (DGFIP, CNAM, etc.)
+  lastLoginAt   DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  
+  @@map("france_connect_accounts")
+}
+```
+
+**Update `User` model**:
+```prisma
+model User {
+  // ... existing fields
+  franceConnectAccount FranceConnectAccount?
+  isVerifiedByFC       Boolean @default(false)
+}
+```
+
+#### 2. Environment Variables
+
+Add to `.env`:
+```bash
+# FranceConnect Configuration
+FRANCECONNECT_ENABLED=true
+FRANCECONNECT_CLIENT_ID=your_client_id_here
+FRANCECONNECT_CLIENT_SECRET=your_client_secret_here
+FRANCECONNECT_CALLBACK_URL=http://localhost:3001/api/auth/franceconnect/callback
+FRANCECONNECT_LOGOUT_CALLBACK_URL=http://localhost:3001/api/auth/franceconnect/logout-callback
+
+# Use integration environment for testing
+FRANCECONNECT_ENVIRONMENT=integration # or "production"
+
+# Integration URLs
+FRANCECONNECT_INTEG_AUTHORIZE_URL=https://fcp.integ01.dev-franceconnect.fr/api/v1/authorize
+FRANCECONNECT_INTEG_TOKEN_URL=https://fcp.integ01.dev-franceconnect.fr/api/v1/token
+FRANCECONNECT_INTEG_USERINFO_URL=https://fcp.integ01.dev-franceconnect.fr/api/v1/userinfo
+FRANCECONNECT_INTEG_LOGOUT_URL=https://fcp.integ01.dev-franceconnect.fr/api/v1/logout
+
+# Production URLs
+FRANCECONNECT_PROD_AUTHORIZE_URL=https://app.franceconnect.gouv.fr/api/v1/authorize
+FRANCECONNECT_PROD_TOKEN_URL=https://app.franceconnect.gouv.fr/api/v1/token
+FRANCECONNECT_PROD_USERINFO_URL=https://app.franceconnect.gouv.fr/api/v1/userinfo
+FRANCECONNECT_PROD_LOGOUT_URL=https://app.franceconnect.gouv.fr/api/v1/logout
+```
+
+#### 3. Backend Module Structure
+
+**New Module: `backend/src/modules/france-connect/`**
+
+```
+france-connect/
+├── france-connect.module.ts
+├── france-connect.controller.ts
+├── france-connect.service.ts
+├── france-connect.strategy.ts (Passport strategy)
+├── dto/
+│   ├── franceconnect-callback.dto.ts
+│   ├── franceconnect-user-info.dto.ts
+│   └── index.ts
+├── interfaces/
+│   ├── franceconnect-config.interface.ts
+│   ├── franceconnect-tokens.interface.ts
+│   └── index.ts
+└── index.ts
+```
+
+**Key Files**:
+
+`france-connect.service.ts`:
+```typescript
+@Injectable()
+export class FranceConnectService {
+  private readonly baseUrl: string;
+  
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
+    private readonly userService: UserService,
+    private readonly prisma: PrismaService,
+  ) {
+    const env = this.configService.get('FRANCECONNECT_ENVIRONMENT');
+    this.baseUrl = env === 'production' 
+      ? this.configService.get('FRANCECONNECT_PROD_AUTHORIZE_URL')
+      : this.configService.get('FRANCECONNECT_INTEG_AUTHORIZE_URL');
+  }
+
+  // Generate authorization URL with state and nonce
+  getAuthorizationUrl(state: string, nonce: string): string;
+  
+  // Exchange authorization code for tokens
+  async exchangeCodeForTokens(code: string): Promise<FranceConnectTokens>;
+  
+  // Get user info from FranceConnect
+  async getUserInfo(accessToken: string): Promise<FranceConnectUserInfo>;
+  
+  // Verify ID token signature
+  async verifyIdToken(idToken: string): Promise<boolean>;
+  
+  // Find or create user from FranceConnect data
+  async findOrCreateUser(fcUserInfo: FranceConnectUserInfo): Promise<User>;
+  
+  // Link existing user to FranceConnect account
+  async linkExistingUser(userId: string, fcUserInfo: FranceConnectUserInfo): Promise<void>;
+  
+  // Generate logout URL
+  getLogoutUrl(idTokenHint: string, state: string): string;
+}
+```
+
+`france-connect.controller.ts`:
+```typescript
+@Controller('auth/franceconnect')
+export class FranceConnectController {
+  @Get('login')
+  @Public()
+  async login(@Res() res: Response): Promise<void> {
+    // Generate state and nonce, store in session/Redis
+    // Redirect to FranceConnect authorization endpoint
+  }
+
+  @Get('callback')
+  @Public()
+  async callback(
+    @Query() query: FranceConnectCallbackDto,
+    @Res() res: Response,
+  ): Promise<void> {
+    // 1. Verify state parameter
+    // 2. Exchange code for tokens
+    // 3. Verify ID token
+    // 4. Get user info
+    // 5. Find or create user
+    // 6. Generate JWT token for CapMobilité session
+    // 7. Redirect to frontend dashboard
+  }
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  async logout(
+    @CurrentUser() user: User,
+    @Res() res: Response,
+  ): Promise<void> {
+    // 1. Get stored id_token_hint from user session
+    // 2. Generate logout URL
+    // 3. Redirect to FranceConnect logout
+  }
+
+  @Get('logout-callback')
+  @Public()
+  async logoutCallback(@Res() res: Response): Promise<void> {
+    // Redirect to frontend home page
+  }
+}
+```
+
+#### 4. Security Considerations
+
+**State Parameter**:
+- Generate cryptographically secure random string
+- Store in Redis with short TTL (5 minutes)
+- Verify on callback to prevent CSRF
+
+**Nonce Parameter**:
+- Generate cryptographically secure random string
+- Store in session/Redis
+- Verify in ID token to prevent replay attacks
+
+**ID Token Verification**:
+- Verify signature using FranceConnect's public keys (JWKS)
+- Verify `aud` claim matches client_id
+- Verify `iss` claim matches FranceConnect issuer
+- Verify `exp` claim (not expired)
+- Verify `nonce` matches stored value
+
+**Data Storage**:
+- Store identity pivot data in HDS-certified database
+- Hash/encrypt sensitive fields if needed
+- Comply with RGPD (user consent, right to deletion)
+
+### Frontend Implementation Plan
+
+#### 1. New Components
+
+**`frontend/src/components/auth/FranceConnectButton.tsx`**
+```typescript
+import { Button } from '@/components/ui/button';
+
+export function FranceConnectButton() {
+  const handleLogin = () => {
+    // Redirect to backend FranceConnect login endpoint
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/franceconnect/login`;
+  };
+
+  return (
+    <Button
+      onClick={handleLogin}
+      className="w-full bg-[#0053b3] hover:bg-[#003d82]"
+    >
+      <img 
+        src="/images/franceconnect-logo.svg" 
+        alt="FranceConnect"
+        className="h-8 w-auto"
+      />
+    </Button>
+  );
+}
+```
+
+#### 2. Updated Login Page
+
+**`frontend/src/app/[locale]/connexion/page.tsx`**
+
+Add FranceConnect button above or below existing email/password form:
+
+```typescript
+<div className="space-y-4">
+  {/* FranceConnect Button */}
+  <FranceConnectButton />
+  
+  <div className="relative">
+    <div className="absolute inset-0 flex items-center">
+      <span className="w-full border-t" />
+    </div>
+    <div className="relative flex justify-center text-xs uppercase">
+      <span className="bg-white px-2 text-muted-foreground">
+        {t('auth.login.orContinueWith')}
+      </span>
+    </div>
+  </div>
+  
+  {/* Existing email/password form */}
+  <LoginForm />
+</div>
+```
+
+#### 3. Callback Handling
+
+**`frontend/src/app/[locale]/auth/franceconnect/callback/page.tsx`**
+
+```typescript
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
+
+export default function FranceConnectCallbackPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get('token');
+    const error = searchParams.get('error');
+
+    if (error) {
+      router.push(`/connexion?error=${error}`);
+      return;
+    }
+
+    if (token) {
+      // Store JWT token
+      localStorage.setItem('token', token);
+      // Redirect to dashboard
+      router.push('/dashboard');
+    }
+  }, [searchParams, router]);
+
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+        <p className="text-muted-foreground">
+          Connexion avec FranceConnect en cours...
+        </p>
+      </div>
+    </div>
+  );
+}
+```
+
+#### 4. Assets
+
+Download official FranceConnect button pack:
+- URL: `https://partenaires.franceconnect.gouv.fr/files/fc_boutons.zip`
+- Extract SVG buttons to `frontend/public/images/`
+- Use official button designs (required by FranceConnect branding guidelines)
+
+#### 5. Translation Updates
+
+**`frontend/src/messages/fr.json`**
+```json
+{
+  "auth": {
+    "login": {
+      "franceConnect": "Se connecter avec FranceConnect",
+      "orContinueWith": "Ou continuer avec",
+      "franceConnectDescription": "Utilisez votre compte Impots.gouv.fr, Ameli.fr ou La Poste pour vous connecter en toute sécurité."
+    }
+  }
+}
+```
+
+**`frontend/src/messages/en.json`**
+```json
+{
+  "auth": {
+    "login": {
+      "franceConnect": "Sign in with FranceConnect",
+      "orContinueWith": "Or continue with",
+      "franceConnectDescription": "Use your Impots.gouv.fr, Ameli.fr or La Poste account to sign in securely."
+    }
+  }
+}
+```
+
+### Testing Plan
+
+#### 1. Integration Environment
+
+**Demo Credentials** (provided by FranceConnect):
+- CLIENT_ID: `211286433e39cce01db448d80181bdfd005554b19cd51b3fe7943f6b3b86ab6e`
+- CLIENT_SECRET: `2791a731e6a59f56b6b4dd0d08c9b1f593b5f3658b9fd731cb24248e2669af4b`
+- Callback URLs: `http://localhost:3000/callback`, `http://localhost:3001/api/auth/franceconnect/callback`
+
+**Test Identity Provider**:
+- Use "Démonstration" provider in integration environment
+- Test identities: https://github.com/france-connect/identity-provider-example/blob/master/database.csv
+
+#### 2. Test Scenarios
+
+**Scenario 1: New User Registration via FranceConnect**
+- User clicks "Connect with FranceConnect" on registration page
+- User selects IdP (e.g., "Démonstration")
+- User authenticates with test credentials
+- System creates new User + FranceConnectAccount
+- User is redirected to onboarding flow
+
+**Scenario 2: Existing User Login via FranceConnect**
+- User with existing FC account clicks "Connect with FranceConnect"
+- User authenticates
+- System matches by `sub` and logs user in
+- User is redirected to dashboard
+
+**Scenario 3: Link Existing Account**
+- User with email/password account wants to add FranceConnect
+- User goes to profile settings
+- User clicks "Link FranceConnect"
+- After authentication, system links FC account to existing user
+
+**Scenario 4: Logout Flow**
+- User clicks logout button
+- System redirects to FranceConnect logout
+- User confirms logout from FC
+- User is redirected back to home page
+
+**Scenario 5: Error Handling**
+- Test invalid state parameter (CSRF protection)
+- Test expired authorization code
+- Test network errors
+- Test user canceling authentication
+
+#### 3. E2E Tests
+
+```typescript
+// backend/test/e2e/france-connect.e2e-spec.ts
+describe('FranceConnect Integration (e2e)', () => {
+  it('should redirect to FranceConnect authorization', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/auth/franceconnect/login')
+      .expect(302);
+    
+    expect(response.header.location).toContain('dev-franceconnect.fr');
+  });
+
+  it('should exchange code for tokens', async () => {
+    // Mock FranceConnect token endpoint
+    // Test callback with valid code
+  });
+
+  it('should create user from FranceConnect data', async () => {
+    // Mock complete flow
+    // Verify user creation with identity pivot data
+  });
+});
+```
+
+### Deployment Checklist
+
+#### Pre-Production
+
+- [ ] Request FranceConnect habilitation at https://franceconnect.gouv.fr/partenaires
+- [ ] Complete DataPass form: https://datapass.api.gouv.fr/demandes/france-connect/nouveau
+- [ ] Provide production callback URLs
+- [ ] Receive production CLIENT_ID and CLIENT_SECRET
+- [ ] Update environment variables for production
+- [ ] Test on integration environment
+- [ ] Complete functional testing scenarios
+- [ ] Submit qualification request: https://www.demarches-simplifiees.fr/commencer/demande-qualification-fs
+
+#### Production Launch
+
+- [ ] Switch FRANCECONNECT_ENVIRONMENT to "production"
+- [ ] Verify HDS hosting compliance
+- [ ] Update RGPD documentation (mention FranceConnect data processing)
+- [ ] Add FranceConnect mention in privacy policy
+- [ ] Monitor error logs for FC-specific errors (E000000-E050002)
+- [ ] Set up alerts for FC service downtime
+
+### Regulatory Compliance
+
+#### RGPD Compliance
+
+**Data Processing**:
+- Identity pivot data = personal data + health context = special category
+- Requires explicit consent
+- Must be stored in HDS-certified infrastructure
+- Right to access, rectification, deletion must be implemented
+
+**Privacy Policy Updates**:
+```markdown
+### Utilisation de FranceConnect
+
+CapMobilité utilise FranceConnect pour simplifier votre connexion et vérifier votre identité.
+
+**Données collectées via FranceConnect** :
+- Nom de naissance
+- Prénoms
+- Date de naissance
+- Sexe
+- Lieu de naissance
+- Email (si disponible)
+
+**Base légale** : Consentement explicite + Exécution du contrat
+
+**Conservation** : Durée de votre compte + 3 ans (obligations légales)
+
+**Droits** : Accès, rectification, suppression, portabilité
+Contact : dpo@capmobilite.fr
+```
+
+#### HDS Compliance
+
+FranceConnect identity data combined with medical prescriptions = health data storage requirements:
+
+- Database must be on HDS-certified infrastructure
+- Encryption at rest and in transit
+- Access logging and audit trails
+- Regular security audits
+
+### Success Metrics
+
+**Implementation Timeline**:
+- Week 1: Backend module + database schema
+- Week 2: Frontend integration + testing
+- Week 3: Integration environment testing
+- Week 4: Habilitation request + qualification
+- Week 5-8: Production deployment (after approval)
+
+**KPIs**:
+- % of new users registering via FranceConnect
+- Reduction in identity verification time
+- User satisfaction with authentication process
+- Error rate for FC flows
+
+### Support and Resources
+
+**Official Documentation**:
+- Main docs: https://partenaires.franceconnect.gouv.fr/documentation
+- API reference: https://partenaires.franceconnect.gouv.fr/fcp/fournisseur-service
+- Error codes: Search "Système de codes d'erreurs" in docs
+
+**Support Contact**:
+- Email: support.partenaires@franceconnect.gouv.fr
+- Forum: https://forum.societenumerique.gouv.fr/c/franceconnect/
+
+**Code Examples**:
+- Service Provider Example: https://github.com/france-connect/service-provider-example
+- Demo FS: https://fournisseur-de-service.dev-franceconnect.fr
+
+---
 
 Go to http://localhost:3000/connexion first, login with the patient credentials, then you'll be redirected to the dashboard.
 

@@ -315,12 +315,9 @@
         "delivery": "Livraison"
       },
       "checklist": "Liste de contrôle",
-      "completedOn": "Complété le",
       "required": "Requis",
       "slaWarning": "Délai à respecter",
-      "deadline": "Échéance",
       "uploadedDocuments": "Documents téléchargés",
-      "noDocuments": "Aucun document téléchargé",
       "verified": "Vérifié",
       "pending": "En attente",
       "quoteDetails": "Détails du devis",
@@ -395,25 +392,6 @@
       "cancel": "Annuler",
       "submit": "Envoyer le ticket"
     },
-    "documents": {
-      "title": "Documents",
-      "subtitle": "Gérez vos documents et pièces justificatives",
-      "upload": "Télécharger",
-      "dropzone": "Glissez-déposez vos fichiers ici",
-      "dropzoneDescription": "ou cliquez pour sélectionner",
-      "browse": "Parcourir",
-      "myDocuments": "Mes documents",
-      "myDocumentsDescription": "Documents téléchargés sur votre compte",
-      "noDocuments": "Aucun document",
-      "noDocumentsDescription": "Commencez par télécharger vos documents",
-      "verified": "Vérifié",
-      "pending": "En attente",
-      "error": "Erreur",
-      "infoTitle": "Informations importantes",
-      "infoItem1": "Formats acceptés : PDF, JPG, PNG (max 10 Mo)",
-      "infoItem2": "Vos documents sont analysés automatiquement pour vérification",
-      "infoItem3": "Les documents sont conservés de manière sécurisée"
-    },
     "profile": {
       "title": "Mon profil",
       "subtitle": "Gérez vos informations personnelles et préférences",
@@ -422,7 +400,8 @@
         "contact": "Coordonnées",
         "security": "Sécurité",
         "notifications": "Notifications",
-        "proxy": "Mandataire"
+        "proxy": "Mandataire",
+        "consents": "Consentements"
       },
       "personal": {
         "title": "Informations personnelles",
@@ -431,7 +410,9 @@
         "lastName": "Nom",
         "email": "Email",
         "phone": "Téléphone",
-        "dateOfBirth": "Date de naissance"
+        "dateOfBirth": "Date de naissance",
+        "nir": "Numéro de sécurité sociale",
+        "nirHelp": "Pour modifier ce numéro, contactez le support"
       },
       "contact": {
         "title": "Coordonnées",
@@ -474,9 +455,83 @@
         "title": "Mandataire",
         "description": "Autorisez un proche à agir en votre nom",
         "noProxy": "Aucun mandataire configuré",
-        "addProxy": "Ajouter un mandataire"
+        "noProxyDescription": "Ajoutez un aidant ou proche pour gérer votre dossier",
+        "addProxy": "Ajouter un mandataire",
+        "inviteTitle": "Inviter un mandataire",
+        "inviteDescription": "Cette personne pourra accéder à votre dossier et agir en votre nom",
+        "inviteEmail": "Email du mandataire",
+        "relationship": "Lien avec vous",
+        "relationshipPlaceholder": "Ex: Conjoint, Parent, Aidant...",
+        "sendInvite": "Envoyer l'invitation",
+        "inviteSent": "Invitation envoyée avec succès",
+        "inviteError": "Erreur lors de l'envoi de l'invitation",
+        "confirmRevoke": "Voulez-vous vraiment retirer ce mandataire ?",
+        "revoked": "Mandataire retiré",
+        "revokeError": "Erreur lors de la suppression",
+        "status": {
+          "active": "Actif",
+          "pending": "En attente",
+          "revoked": "Révoqué"
+        }
       },
-      "save": "Enregistrer"
+      "consent": {
+        "title": "Consentements",
+        "description": "Gérez vos autorisations de traitement de données",
+        "noConsents": "Aucun consentement enregistré",
+        "grantedOn": "Accordé le {date}",
+        "expiresOn": "Expire le {date}",
+        "revoke": "Révoquer",
+        "confirmRevoke": "Voulez-vous vraiment révoquer ce consentement ?",
+        "revoked": "Consentement révoqué",
+        "revokeError": "Erreur lors de la révocation"
+      },
+      "save": "Enregistrer",
+      "saved": "Modifications enregistrées",
+      "saveError": "Erreur lors de la sauvegarde",
+      "cancel": "Annuler",
+      "edit": "Modifier"
+    },
+    "documents": {
+      "title": "Documents",
+      "description": "Gérez vos documents et pièces justificatives",
+      "subtitle": "Gérez vos documents et pièces justificatives",
+      "upload": "Télécharger",
+      "dropzone": "Glissez-déposez vos fichiers ici",
+      "dropzoneDescription": "ou cliquez pour sélectionner",
+      "browse": "Parcourir",
+      "myDocuments": "Mes documents",
+      "myDocumentsDescription": "Documents téléchargés sur votre compte",
+      "noDocuments": "Aucun document",
+      "noDocumentsDescription": "Commencez par télécharger vos documents",
+      "uploadHint": "Téléchargez vos documents pour compléter votre dossier",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "error": "Erreur",
+      "processing": "Traitement...",
+      "uploadError": "Erreur lors du téléchargement",
+      "confirmRemove": "Voulez-vous vraiment supprimer ce document ?",
+      "removed": "Document supprimé",
+      "removeError": "Erreur lors de la suppression",
+      "previewUnavailable": "Aperçu non disponible",
+      "downloadToView": "Télécharger pour visualiser",
+      "infoTitle": "Informations importantes",
+      "infoItem1": "Formats acceptés : PDF, JPG, PNG (max 10 Mo)",
+      "infoItem2": "Vos documents sont analysés automatiquement pour vérification",
+      "infoItem3": "Les documents sont conservés de manière sécurisée",
+      "types": {
+        "prescription": "Ordonnance",
+        "identity": "Pièce d'identité",
+        "insurance": "Carte vitale",
+        "mutual_card": "Carte mutuelle",
+        "quote": "Devis",
+        "delivery_note": "Bon de livraison",
+        "other": "Autre"
+      },
+      "status": {
+        "clean": "Vérifié",
+        "infected": "Fichier suspect",
+        "pending": "En cours de vérification"
+      }
     },
     "support": {
       "title": "Support",
@@ -484,7 +539,27 @@
       "chat": {
         "title": "Chat en direct",
         "description": "Discutez avec notre assistant",
-        "placeholder": "Tapez votre message..."
+        "placeholder": "Tapez votre message...",
+        "new": "Nouveau",
+        "backToList": "Retour",
+        "noSessions": "Aucune conversation",
+        "startNew": "Démarrer une conversation",
+        "sessionCreated": "Conversation créée",
+        "createError": "Erreur lors de la création",
+        "sendError": "Erreur lors de l'envoi",
+        "escalate": "Parler à un conseiller",
+        "escalated": "Demande transmise à un conseiller",
+        "escalateError": "Erreur lors de la transmission",
+        "untitled": "Sans titre",
+        "startConversation": "Envoyez un message pour commencer",
+        "newConversation": "Nouvelle conversation",
+        "agent": "Conseiller",
+        "status": {
+          "active": "En cours",
+          "escalated": "Transmis",
+          "resolved": "Résolu",
+          "closed": "Fermé"
+        }
       },
       "contact": {
         "title": "Nous contacter",
@@ -561,70 +636,19 @@
       "allEntities": "Toutes les entités",
       "noLogsFound": "Aucun log trouvé"
     },
-    "sav": {
-      "title": "Service Après-Vente",
-      "subtitle": "Gestion des tickets de maintenance",
-      "totalTickets": "Total tickets",
-      "openTickets": "Ouverts",
-      "criticalIssues": "Critiques",
-      "scheduledVisits": "Visites planifiées",
-      "searchPlaceholder": "Rechercher un ticket...",
-      "filters": "Filtres",
-      "allTickets": "Tous",
-      "open": "Ouverts",
-      "critical": "Critiques",
-      "scheduled": "Planifiés",
-      "noTicketsFound": "Aucun ticket trouvé"
-    },
-    "users": {
-      "title": "Gestion des utilisateurs",
-      "subtitle": "Administrez les comptes utilisateurs",
-      "addUser": "Ajouter un utilisateur",
-      "totalUsers": "Total utilisateurs",
-      "activeUsers": "Actifs",
-      "patients": "Patients",
-      "staff": "Personnel",
-      "searchPlaceholder": "Rechercher par nom ou email...",
-      "allRoles": "Tous les rôles",
-      "user": "Utilisateur",
-      "contact": "Contact",
-      "role": "Rôle",
-      "status": "Statut",
-      "actions": "Actions",
-      "active": "Actif",
-      "inactive": "Inactif",
-      "noUsersFound": "Aucun utilisateur trouvé"
-    },
-    "billing": {
-      "title": "Facturation & Remboursements",
-      "subtitle": "Suivi des demandes CPAM et mutuelles",
-      "totalClaimed": "Total demandé",
-      "totalPaid": "Total payé",
-      "pendingAmount": "En attente",
-      "recoveryRate": "Taux de recouvrement",
-      "searchPlaceholder": "Rechercher une facture...",
-      "filters": "Filtres",
-      "submitClaims": "Soumettre",
-      "claimsList": "Liste des demandes",
-      "claimNumber": "N° Demande",
-      "patient": "Patient",
-      "type": "Type",
-      "amountClaimed": "Demandé",
-      "amountPaid": "Payé",
-      "status": "Statut",
-      "actions": "Actions",
-      "noClaimsFound": "Aucune demande trouvée"
-    },
     "dashboard": {
       "title": "Tableau de bord",
       "subtitle": "Vue d'ensemble de l'activité",
+      "refresh": "Actualiser",
+      "noData": "Aucune donnée disponible",
+      "noCases": "Aucun dossier récent",
       "stats": {
         "openCases": "Dossiers ouverts",
         "openTickets": "Tickets SAV",
         "pendingClaims": "Demandes CPAM",
         "revenue": "Chiffre d'affaires",
         "fromYesterday": "depuis hier",
-        "critical": "critique",
+        "critical": "critique(s)",
         "vsLastMonth": "vs mois dernier"
       },
       "casesByStatus": "Dossiers par statut",
@@ -747,8 +771,14 @@
       "title": "Validation du lien",
       "description": "Vérification de votre accès au portail prescripteur",
       "button": "Valider mon accès",
+      "validating": "Vérification en cours...",
       "invalid": "Lien invalide ou expiré",
       "invalidDescription": "Veuillez contacter CapMobilité pour obtenir un nouveau lien"
+    },
+    "expired": {
+      "title": "Lien expiré",
+      "description": "Ce lien de prescription a expiré",
+      "contact": "Veuillez contacter CapMobilité pour obtenir un nouveau lien"
     },
     "patient": "Patient",
     "case": "Dossier",
@@ -774,7 +804,12 @@
       "dropzone": "Glissez-déposez vos fichiers ici",
       "formats": "PDF, JPG, PNG (max 10 Mo)",
       "browse": "Parcourir",
-      "submit": "Envoyer les documents"
+      "submit": "Envoyer les documents",
+      "error": "Erreur lors du téléchargement",
+      "noFiles": "Veuillez télécharger au moins un document"
+    },
+    "submit": {
+      "error": "Erreur lors de la soumission"
     },
     "success": {
       "title": "Documents transmis avec succès",

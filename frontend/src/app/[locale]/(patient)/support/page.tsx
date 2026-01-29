@@ -1,57 +1,128 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { MessageCircle, Phone, Mail, Send, Bot, User } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { 
+  MessageCircle, Phone, Mail, Send, Bot, User, 
+  Loader2, AlertCircle, Plus, ChevronRight 
+} from "lucide-react";
+import { toast } from "@/lib/toast";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import {
+  useChatSessions,
+  useCreateChatSession,
+  useChatMessages,
+  useSendChatMessage,
+  useEscalateChat,
+} from "@/lib/api/hooks";
 
-interface Message {
+interface ChatMessage {
   id: string;
-  sender: "user" | "bot";
+  senderId: string;
+  senderType: 'PATIENT' | 'BOT' | 'AGENT';
   content: string;
-  timestamp: Date;
+  createdAt: string;
+}
+
+interface ChatSession {
+  id: string;
+  status: 'ACTIVE' | 'ESCALATED' | 'RESOLVED' | 'CLOSED';
+  subject?: string;
+  createdAt: string;
+  lastMessageAt?: string;
 }
 
 export default function SupportPage() {
   const t = useTranslations("patient.support");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      sender: "bot",
-      content: "Bonjour ! Je suis l'assistant virtuel de CapMobilité. Comment puis-je vous aider aujourd'hui ?",
-      timestamp: new Date(),
-    },
-  ]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // State
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [input, setInput] = useState("");
+  const [showSessions, setShowSessions] = useState(true);
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
+  // API hooks
+  const { data: sessionsData, isLoading: sessionsLoading } = useChatSessions();
+  const { mutate: createSession, isPending: creatingSession } = useCreateChatSession();
+  const { 
+    data: messagesData, 
+    isLoading: messagesLoading,
+    refetch: refetchMessages 
+  } = useChatMessages(activeSessionId || '');
+  const { mutate: sendMessage, isPending: sendingMessage } = useSendChatMessage();
+  const { mutate: escalateChat, isPending: escalating } = useEscalateChat();
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      sender: "user",
+  const sessions = (sessionsData?.data || []) as ChatSession[];
+  const messages = (messagesData?.data || []) as ChatMessage[];
+  const activeSession = sessions.find(s => s.id === activeSessionId);
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Poll for new messages in active session
+  useEffect(() => {
+    if (!activeSessionId) return;
+    const interval = setInterval(() => {
+      refetchMessages();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [activeSessionId, refetchMessages]);
+
+  const handleCreateSession = () => {
+    createSession({ subject: t("chat.newConversation") }, {
+      onSuccess: (session) => {
+        setActiveSessionId((session as { id: string }).id);
+        setShowSessions(false);
+        toast.success(t("chat.sessionCreated"));
+      },
+      onError: () => {
+        toast.error(t("chat.createError"));
+      },
+    });
+  };
+
+  const handleSendMessage = () => {
+    if (!input.trim() || !activeSessionId) return;
+    
+    sendMessage({
+      sessionId: activeSessionId,
       content: input,
-      timestamp: new Date(),
-    };
+    }, {
+      onSuccess: () => {
+        setInput("");
+      },
+      onError: () => {
+        toast.error(t("chat.sendError"));
+      },
+    });
+  };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+  const handleEscalate = () => {
+    if (!activeSessionId) return;
+    escalateChat(activeSessionId, {
+      onSuccess: () => {
+        toast.success(t("chat.escalated"));
+      },
+      onError: () => {
+        toast.error(t("chat.escalateError"));
+      },
+    });
+  };
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: "bot",
-        content:
-          "Merci pour votre message. Un conseiller va prendre en charge votre demande dans les plus brefs délais. En attendant, vous pouvez consulter notre FAQ ou nous appeler au 01 23 45 67 89.",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'ACTIVE': return 'bg-green-100 text-green-800';
+      case 'ESCALATED': return 'bg-orange-100 text-orange-800';
+      case 'RESOLVED': return 'bg-blue-100 text-blue-800';
+      case 'CLOSED': return 'bg-neutral-100 text-neutral-800';
+      default: return 'bg-neutral-100 text-neutral-800';
+    }
   };
 
   return (
@@ -66,77 +137,197 @@ export default function SupportPage() {
         {/* Chat */}
         <div className="lg:col-span-2">
           <Card className="h-[600px] flex flex-col">
-            <CardHeader className="flex-shrink-0">
-              <CardTitle className="flex items-center gap-2">
-                <MessageCircle className="w-5 h-5" />
-                {t("chat.title")}
-              </CardTitle>
-              <CardDescription>{t("chat.description")}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col min-h-0">
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto space-y-4 pb-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`flex gap-2 max-w-[80%] ${
-                        message.sender === "user" ? "flex-row-reverse" : ""
-                      }`}
-                    >
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          message.sender === "user"
-                            ? "bg-primary-100 text-primary-600"
-                            : "bg-neutral-100 text-neutral-600"
-                        }`}
-                      >
-                        {message.sender === "user" ? (
-                          <User className="w-4 h-4" />
-                        ) : (
-                          <Bot className="w-4 h-4" />
-                        )}
-                      </div>
-                      <div
-                        className={`p-3 rounded-lg ${
-                          message.sender === "user"
-                            ? "bg-primary-600 text-white"
-                            : "bg-neutral-100 text-neutral-900"
-                        }`}
-                      >
-                        <p className="text-sm">{message.content}</p>
-                        <p
-                          className={`text-xs mt-1 ${
-                            message.sender === "user"
-                              ? "text-primary-200"
-                              : "text-neutral-500"
-                          }`}
+            <CardHeader className="flex-shrink-0 border-b">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5" />
+                    {activeSession ? activeSession.subject || t("chat.title") : t("chat.title")}
+                  </CardTitle>
+                  {activeSession && (
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge className={getStatusColor(activeSession.status)}>
+                        {t(`chat.status.${activeSession.status.toLowerCase()}`)}
+                      </Badge>
+                      {activeSession.status === 'ACTIVE' && (
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={handleEscalate}
+                          disabled={escalating}
                         >
-                          {message.timestamp.toLocaleTimeString("fr-FR", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </p>
-                      </div>
+                          <AlertCircle className="w-4 h-4 mr-1" />
+                          {t("chat.escalate")}
+                        </Button>
+                      )}
                     </div>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  {activeSessionId && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
+                        setActiveSessionId(null);
+                        setShowSessions(true);
+                      }}
+                    >
+                      {t("chat.backToList")}
+                    </Button>
+                  )}
+                  <Button size="sm" onClick={handleCreateSession} disabled={creatingSession}>
+                    {creatingSession ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Plus className="w-4 h-4" />
+                    )}
+                    <span className="ml-1 hidden sm:inline">{t("chat.new")}</span>
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col min-h-0 p-0">
+              {!activeSessionId && showSessions ? (
+                /* Sessions List */
+                <div className="flex-1 overflow-y-auto">
+                  {sessionsLoading ? (
+                    <div className="flex items-center justify-center h-full">
+                      <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                    </div>
+                  ) : sessions.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full text-neutral-500">
+                      <MessageCircle className="w-12 h-12 mb-3 opacity-50" />
+                      <p>{t("chat.noSessions")}</p>
+                      <Button className="mt-4" onClick={handleCreateSession}>
+                        <Plus className="w-4 h-4 mr-2" />
+                        {t("chat.startNew")}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="divide-y">
+                      {sessions.map((session: ChatSession) => (
+                        <button
+                          key={session.id}
+                          className="w-full p-4 text-left hover:bg-neutral-50 transition-colors flex items-center justify-between"
+                          onClick={() => {
+                            setActiveSessionId(session.id);
+                            setShowSessions(false);
+                          }}
+                        >
+                          <div>
+                            <p className="font-medium">{session.subject || t("chat.untitled")}</p>
+                            <p className="text-sm text-neutral-500">
+                              {new Date(session.createdAt).toLocaleDateString("fr-FR")}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge className={getStatusColor(session.status)}>
+                              {t(`chat.status.${session.status.toLowerCase()}`)}
+                            </Badge>
+                            <ChevronRight className="w-4 h-4 text-neutral-400" />
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* Messages */
+                <>
+                  <div className="flex-1 overflow-y-auto space-y-4 p-4">
+                    {messagesLoading ? (
+                      <div className="flex items-center justify-center h-full">
+                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                      </div>
+                    ) : messages.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center h-full text-neutral-500">
+                        <Bot className="w-12 h-12 mb-3 opacity-50" />
+                        <p>{t("chat.startConversation")}</p>
+                      </div>
+                    ) : (
+                      messages.map((message: ChatMessage) => (
+                        <div
+                          key={message.id}
+                          className={`flex ${message.senderType === "PATIENT" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`flex gap-2 max-w-[80%] ${
+                              message.senderType === "PATIENT" ? "flex-row-reverse" : ""
+                            }`}
+                          >
+                            <div
+                              className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                message.senderType === "PATIENT"
+                                  ? "bg-primary-100 text-primary-600"
+                                  : message.senderType === "BOT"
+                                  ? "bg-neutral-100 text-neutral-600"
+                                  : "bg-green-100 text-green-600"
+                              }`}
+                            >
+                              {message.senderType === "PATIENT" ? (
+                                <User className="w-4 h-4" />
+                              ) : message.senderType === "BOT" ? (
+                                <Bot className="w-4 h-4" />
+                              ) : (
+                                <MessageCircle className="w-4 h-4" />
+                              )}
+                            </div>
+                            <div
+                              className={`p-3 rounded-lg ${
+                                message.senderType === "PATIENT"
+                                  ? "bg-primary-600 text-white"
+                                  : "bg-neutral-100 text-neutral-900"
+                              }`}
+                            >
+                              {message.senderType === "AGENT" && (
+                                <p className="text-xs font-medium text-green-600 mb-1">
+                                  {t("chat.agent")}
+                                </p>
+                              )}
+                              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                              <p
+                                className={`text-xs mt-1 ${
+                                  message.senderType === "PATIENT"
+                                    ? "text-primary-200"
+                                    : "text-neutral-500"
+                                }`}
+                              >
+                                {new Date(message.createdAt).toLocaleTimeString("fr-FR", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    <div ref={messagesEndRef} />
                   </div>
-                ))}
-              </div>
 
-              {/* Input */}
-              <div className="flex gap-2 pt-4 border-t">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={t("chat.placeholder")}
-                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                />
-                <Button onClick={sendMessage}>
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
+                  {/* Input */}
+                  <div className="flex gap-2 p-4 border-t">
+                    <Input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder={t("chat.placeholder")}
+                      onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
+                      disabled={!activeSessionId || activeSession?.status === 'CLOSED'}
+                    />
+                    <Button 
+                      onClick={handleSendMessage} 
+                      disabled={!input.trim() || sendingMessage || !activeSessionId || activeSession?.status === 'CLOSED'}
+                    >
+                      {sendingMessage ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Send className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>

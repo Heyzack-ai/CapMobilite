@@ -12,7 +12,10 @@
       "Bash(curl:*)",
       "Bash(kill:*)",
       "Bash(npm run start:dev:*)",
-      "Bash(npx tsc --noEmit)"
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc:*)",
+      "Bash(lsof:*)",
+      "Bash(python3:*)"
     ]
   }
 }

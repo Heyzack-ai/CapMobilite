@@ -12,6 +12,7 @@ import {
   Download,
   Euro,
   Truck,
+  Loader2,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,17 +20,26 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { getCaseById, caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
-import { getQuoteByCaseId, getDocumentsByCaseId } from "@/lib/mocks/data/products";
+import { CaseDocuments } from "@/components/patient/case-documents";
+import { useCase, useCaseQuote } from "@/lib/api/hooks";
+import { caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
 
 export default function CaseDetailPage() {
   const t = useTranslations("patient.caseDetail");
   const params = useParams();
   const caseId = params.caseId as string;
 
-  const caseData = getCaseById(caseId);
-  const quote = caseData ? getQuoteByCaseId(caseData.id) : undefined;
-  const documents = caseData ? getDocumentsByCaseId(caseData.id) : [];
+  // API hooks
+  const { data: caseData, isLoading: caseLoading } = useCase(caseId);
+  const { data: quote, isLoading: quoteLoading } = useCaseQuote(caseId);
+
+  if (caseLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (!caseData) {
     return (
@@ -42,8 +52,9 @@ export default function CaseDetailPage() {
     );
   }
 
-  const completedItems = caseData.checklist.filter((item) => item.completedAt).length;
-  const progress = Math.round((completedItems / caseData.checklist.length) * 100);
+  const checklist = caseData.checklist || [];
+  const completedItems = checklist.filter((item: { completedAt?: string }) => item.completedAt).length;
+  const progress = checklist.length > 0 ? Math.round((completedItems / checklist.length) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -80,7 +91,7 @@ export default function CaseDetailPage() {
           </div>
           <Progress value={progress} className="h-3" />
           <p className="text-sm text-neutral-500 mt-2">
-            {completedItems} {t("of")} {caseData.checklist.length} {t("stepsCompleted")}
+            {completedItems} {t("of")} {checklist.length} {t("stepsCompleted")}
           </p>
         </CardContent>
       </Card>
@@ -102,7 +113,7 @@ export default function CaseDetailPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {caseData.checklist.map((item, index) => (
+                {checklist.map((item: { key: string; label: string; completedAt?: string; required?: boolean }, index: number) => (
                   <div
                     key={item.key}
                     className={`flex items-center gap-4 p-4 rounded-lg border ${
@@ -159,48 +170,7 @@ export default function CaseDetailPage() {
 
         {/* Documents Tab */}
         <TabsContent value="documents" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("uploadedDocuments")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {documents.length === 0 ? (
-                <div className="text-center py-8 text-neutral-500">
-                  <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>{t("noDocuments")}</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {documents.map((doc) => (
-                    <div
-                      key={doc.id}
-                      className="flex items-center justify-between p-4 rounded-lg border border-neutral-200"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-primary-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{doc.filename}</p>
-                          <p className="text-sm text-neutral-500">
-                            {(doc.size / 1024).toFixed(0)} KB - {new Date(doc.createdAt).toLocaleDateString("fr-FR")}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant={doc.scanStatus === "CLEAN" ? "success" : "warning"}>
-                          {doc.scanStatus === "CLEAN" ? t("verified") : t("pending")}
-                        </Badge>
-                        <Button variant="ghost" size="sm">
-                          <Download className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <CaseDocuments caseId={caseId} />
         </TabsContent>
 
         {/* Quote Tab */}

@@ -32,7 +32,13 @@ export default function LoginPage() {
     setError(null);
     try {
       await login(data);
-      router.push("/dashboard");
+      // Redirect based on user role
+      const { user } = useAuthStore.getState();
+      if (user && ['ADMIN', 'OPS_AGENT', 'BILLING_AGENT', 'TECHNICIAN'].includes(user.role)) {
+        router.push("/admin/tableau-de-bord");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError(t("error"));
     }
