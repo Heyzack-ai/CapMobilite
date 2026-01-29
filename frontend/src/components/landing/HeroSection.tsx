@@ -79,7 +79,7 @@ export function HeroSection() {
                 </div>
               </div>
               <div>
-                <div className="font-bold text-2xl text-navy-900">15</div>
+                <div className="font-bold text-2xl text-navy-900">60</div>
                 <div className="text-sm text-neutral-500 font-medium">
                   {t("stats.days")}
                 </div>

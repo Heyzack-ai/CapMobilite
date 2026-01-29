@@ -72,7 +72,7 @@
       "feature1": "Prise en charge Assurance Maladie",
       "feature2": "Léger et maniable",
       "feature3": "Entretien inclus",
-      "value": "Valeur : 260€",
+      "value": "",
       "cost": "0€ reste à charge*"
     },
     "electric": {
@@ -82,7 +82,7 @@
       "feature1": "Prise en charge selon prescription",
       "feature2": "Jusqu'à 25 km d'autonomie",
       "feature3": "Formation à l'utilisation",
-      "value": "Valeur : 750€",
+      "value": "",
       "cost": "0€ reste à charge*"
     },
     "terrain": {
@@ -91,7 +91,7 @@
       "feature1": "Roues adaptées",
       "feature2": "Cadre renforcé",
       "feature3": "Pour usage mixte",
-      "value": "Valeur : 750€",
+      "value": "",
       "cost": "0€ reste à charge*"
     },
     "note": "Le type de fauteuil est déterminé par votre médecin selon votre situation médicale et les critères de la LPPR."
@@ -100,7 +100,7 @@
     "title": "Pourquoi CapMobilité ?",
     "fast": {
       "title": "Rapide",
-      "description": "15 jours en moyenne"
+      "description": "60 jours en moyenne"
     },
     "human": {
       "title": "Humain",

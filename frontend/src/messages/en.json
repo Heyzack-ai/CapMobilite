@@ -72,7 +72,7 @@
       "feature1": "Health Insurance coverage",
       "feature2": "Light and maneuverable",
       "feature3": "Maintenance included",
-      "value": "Value: €260",
+      "value": "",
       "cost": "€0 remaining charge*"
     },
     "electric": {
@@ -82,7 +82,7 @@
       "feature1": "Coverage per prescription",
       "feature2": "Up to 25 km range",
       "feature3": "Usage training",
-      "value": "Value: €750",
+      "value": "",
       "cost": "€0 remaining charge*"
     },
     "terrain": {
@@ -91,7 +91,7 @@
       "feature1": "Adapted wheels",
       "feature2": "Reinforced frame",
       "feature3": "For mixed use",
-      "value": "Value: €750",
+      "value": "",
       "cost": "€0 remaining charge*"
     },
     "note": "ℹ️ The wheelchair type is determined by your doctor based on your medical situation and LPPR criteria."
@@ -100,7 +100,7 @@
     "title": "Why CapMobilité?",
     "fast": {
       "title": "Fast",
-      "description": "15 days average"
+      "description": "60 days average"
     },
     "human": {
       "title": "Human",
