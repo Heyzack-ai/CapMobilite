@@ -68,7 +68,11 @@ export default function PrescriberPage() {
   const [isExpired, setIsExpired] = useState(false);
 
   // API hooks
-  const { mutate: validateLink, isPending: isValidating } = useValidatePrescriberLink();
+  const { 
+    data: validationData, 
+    isLoading: isValidating, 
+    isError: validationError 
+  } = useValidatePrescriberLink(token);
   const { mutate: submitPrescription, isPending: isSubmitting } = useSubmitPrescription();
   const { mutateAsync: getUploadUrl } = useGetUploadUrl();
   const { mutateAsync: confirmUpload } = useConfirmUpload();
@@ -83,44 +87,27 @@ export default function PrescriberPage() {
 
   // Validate token on mount
   useEffect(() => {
-    if (token && step === "validate") {
-      validateToken();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
-
-  const validateToken = () => {
-    validateLink(token, {
-      onSuccess: (data) => {
-        const linkData = data as { 
-          patientName: string; 
-          caseNumber: string; 
-          caseId: string;
-          expiresAt: string;
-          isValid: boolean;
-        };
-        if (linkData.isValid) {
-          // Check expiration
-          if (new Date(linkData.expiresAt) < new Date()) {
-            setIsExpired(true);
-          } else {
-            setTokenData({
-              patientName: linkData.patientName,
-              caseNumber: linkData.caseNumber,
-              caseId: linkData.caseId,
-              expiresAt: linkData.expiresAt,
-            });
-            setStep("form");
-          }
-        } else {
+    if (validationData && step === "validate") {
+      if (validationData.valid) {
+        // Check expiration
+        if (validationData.expiresAt && new Date(validationData.expiresAt) < new Date()) {
+          setIsExpired(true);
+        } else if (validationData.alreadyUsed) {
           setTokenData(null);
+        } else {
+          setTokenData({
+            patientName: `${validationData.patientFirstName || ''} ${validationData.patientLastInitial || ''}`.trim(),
+            caseNumber: token.slice(0, 8).toUpperCase(),
+            caseId: token,
+            expiresAt: validationData.expiresAt || '',
+          });
+          setStep("form");
         }
-      },
-      onError: () => {
+      } else {
         setTokenData(null);
-      },
-    });
-  };
+      }
+    }
+  }, [validationData, step, token]);
 
   const onSubmitForm = async (data: PrescriberFormData) => {
     setPrescriberData(data);
@@ -209,18 +196,12 @@ export default function PrescriberPage() {
     
     submitPrescription({
       token,
-      prescriber: {
-        rppsNumber: prescriberData.rppsNumber,
-        firstName: prescriberData.firstName,
-        lastName: prescriberData.lastName,
-        specialty: prescriberData.specialty,
-      },
-      clinicalNotes: prescriberData.clinicalNotes,
-      documentIds,
+      prescriptionDocumentId: documentIds[0], // Use first uploaded document
+      productCategory: prescriberData.specialty || 'WHEELCHAIR',
+      notes: prescriberData.clinicalNotes,
     }, {
       onSuccess: (data) => {
-        const result = data as { referenceNumber: string };
-        setReferenceNumber(result.referenceNumber);
+        setReferenceNumber(data.referenceNumber);
         setStep("success");
       },
       onError: () => {
@@ -281,20 +262,17 @@ export default function PrescriberPage() {
                 <Loader2 className="w-8 h-8 animate-spin text-primary mb-3" />
                 <p className="text-neutral-500">{t("validate.validating")}</p>
               </div>
-            ) : tokenData === null ? (
+            ) : validationError || tokenData === null ? (
               <div className="text-center py-4">
                 <AlertTriangle className="w-12 h-12 text-error mx-auto mb-3" />
                 <p className="text-error font-medium">{t("validate.invalid")}</p>
                 <p className="text-sm text-neutral-500 mt-2">{t("validate.invalidDescription")}</p>
               </div>
             ) : (
-              <Button
-                className="w-full"
-                onClick={validateToken}
-                loading={isValidating}
-              >
-                {t("validate.button")}
-              </Button>
+              <div className="flex flex-col items-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-primary mb-3" />
+                <p className="text-neutral-500">{t("validate.validating")}</p>
+              </div>
             )}
           </CardContent>
         </Card>

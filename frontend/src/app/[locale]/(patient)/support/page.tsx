@@ -75,7 +75,7 @@ export default function SupportPage() {
   }, [activeSessionId, refetchMessages]);
 
   const handleCreateSession = () => {
-    createSession({ subject: t("chat.newConversation") }, {
+    createSession({ initialMessage: t("chat.newConversation") }, {
       onSuccess: (session) => {
         setActiveSessionId((session as { id: string }).id);
         setShowSessions(false);
@@ -105,7 +105,7 @@ export default function SupportPage() {
 
   const handleEscalate = () => {
     if (!activeSessionId) return;
-    escalateChat(activeSessionId, {
+    escalateChat({ sessionId: activeSessionId, reason: t("chat.escalateReason") }, {
       onSuccess: () => {
         toast.success(t("chat.escalated"));
       },

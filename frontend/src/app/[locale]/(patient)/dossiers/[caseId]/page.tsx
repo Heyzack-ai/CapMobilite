@@ -23,6 +23,7 @@ import { Progress } from "@/components/ui/progress";
 import { CaseDocuments } from "@/components/patient/case-documents";
 import { useCase, useCaseQuote } from "@/lib/api/hooks";
 import { caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
+import type { CaseStatus } from "@/types";
 
 export default function CaseDetailPage() {
   const t = useTranslations("patient.caseDetail");
@@ -52,8 +53,22 @@ export default function CaseDetailPage() {
     );
   }
 
-  const checklist = caseData.checklist || [];
-  const completedItems = checklist.filter((item: { completedAt?: string }) => item.completedAt).length;
+  // Transform checklistState to checklist items for display
+  const checklistSteps = [
+    { key: 'prescription', label: t('steps.prescription'), required: true },
+    { key: 'identity', label: t('steps.identity'), required: true },
+    { key: 'insurance', label: t('steps.insurance'), required: true },
+    { key: 'quote', label: t('steps.quote'), required: false },
+    { key: 'approval', label: t('steps.approval'), required: false },
+    { key: 'delivery', label: t('steps.delivery'), required: false },
+  ];
+  
+  const checklistState = caseData.checklistState || {};
+  const checklist = checklistSteps.map(step => ({
+    ...step,
+    completed: checklistState[step.key] === true,
+  }));
+  const completedItems = checklist.filter(item => item.completed).length;
   const progress = checklist.length > 0 ? Math.round((completedItems / checklist.length) * 100) : 0;
 
   return (
@@ -75,10 +90,10 @@ export default function CaseDetailPage() {
           </div>
         </div>
         <Badge
-          variant={caseStatusColors[caseData.status] as "default" | "success" | "warning" | "error" | "info" | "secondary"}
+          variant={(caseStatusColors[caseData.status as CaseStatus] || "default") as "default" | "success" | "warning" | "error" | "info" | "secondary"}
           className="text-sm px-3 py-1"
         >
-          {caseStatusLabels[caseData.status]}
+          {caseStatusLabels[caseData.status as CaseStatus] || caseData.status}
         </Badge>
       </div>
 
@@ -113,23 +128,23 @@ export default function CaseDetailPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {checklist.map((item: { key: string; label: string; completedAt?: string; required?: boolean }, index: number) => (
+                {checklist.map((item, index: number) => (
                   <div
                     key={item.key}
                     className={`flex items-center gap-4 p-4 rounded-lg border ${
-                      item.completedAt
+                      item.completed
                         ? "border-success/30 bg-success/5"
                         : "border-neutral-200 bg-neutral-50"
                     }`}
                   >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        item.completedAt
+                        item.completed
                           ? "bg-success text-white"
                           : "bg-neutral-200 text-neutral-500"
                       }`}
                     >
-                      {item.completedAt ? (
+                      {item.completed ? (
                         <CheckCircle className="w-5 h-5" />
                       ) : (
                         <span className="text-sm font-medium">{index + 1}</span>
@@ -137,13 +152,11 @@ export default function CaseDetailPage() {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium">{item.label}</p>
-                      {item.completedAt && (
-                        <p className="text-sm text-neutral-500">
-                          {t("completedOn")} {new Date(item.completedAt).toLocaleDateString("fr-FR")}
-                        </p>
+                      {item.completed && (
+                        <p className="text-sm text-success">{t("stepCompleted")}</p>
                       )}
                     </div>
-                    {item.required && !item.completedAt && (
+                    {item.required && !item.completed && (
                       <Badge variant="warning">{t("required")}</Badge>
                     )}
                   </div>
@@ -152,15 +165,15 @@ export default function CaseDetailPage() {
             </CardContent>
           </Card>
 
-          {/* SLA Warning */}
-          {caseData.slaDeadline && !["DELIVERED", "CLOSED", "CANCELLED"].includes(caseData.status) && (
-            <Card className="mt-6 border-warning/50">
+          {/* SLA Info - shown when case is in progress */}
+          {!["DELIVERED", "CLOSED", "CANCELLED"].includes(caseData.status) && (
+            <Card className="mt-6 border-primary/50">
               <CardContent className="p-4 flex items-center gap-3">
-                <Clock className="w-5 h-5 text-warning" />
+                <Clock className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="font-medium text-warning">{t("slaWarning")}</p>
+                  <p className="font-medium">{t("inProgress")}</p>
                   <p className="text-sm text-neutral-500">
-                    {t("deadline")}: {new Date(caseData.slaDeadline).toLocaleDateString("fr-FR")}
+                    {t("lastUpdate")}: {new Date(caseData.updatedAt).toLocaleDateString("fr-FR")}
                   </p>
                 </div>
               </CardContent>
@@ -205,8 +218,10 @@ export default function CaseDetailPage() {
                       <div key={item.id} className="p-4">
                         <div className="flex justify-between">
                           <div>
-                            <p className="font-medium">{item.description}</p>
-                            <p className="text-sm text-neutral-500">Code LPPR: {item.lpprCode}</p>
+                            <p className="font-medium">{item.description || item.product?.name || 'Item'}</p>
+                            {item.product?.lppCode && (
+                              <p className="text-sm text-neutral-500">Code LPP: {item.product.lppCode}</p>
+                            )}
                           </div>
                           <div className="text-right">
                             <p className="font-medium">{item.unitPrice.toLocaleString("fr-FR")} &euro;</p>
@@ -222,13 +237,13 @@ export default function CaseDetailPage() {
                     <div className="flex justify-between">
                       <span className="text-neutral-500">{t("cpamCoverage")}</span>
                       <span className="font-medium text-success">
-                        {quote.totalLPPR.toLocaleString("fr-FR")} &euro;
+                        {quote.cpamCoverage.toLocaleString("fr-FR")} &euro;
                       </span>
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <span className="font-semibold">{t("yourCost")}</span>
                       <span className="font-bold text-lg">
-                        {quote.totalPatient.toLocaleString("fr-FR")} &euro;
+                        {quote.patientRemainder.toLocaleString("fr-FR")} &euro;
                       </span>
                     </div>
                   </div>

@@ -39,12 +39,40 @@ interface User {
   status: string;
   emailVerified: boolean;
   mfaEnabled: boolean;
+  dateOfBirth?: string;
+  nir?: string;
+  address?: {
+    street?: string;
+    postalCode?: string;
+    city?: string;
+    deliveryNotes?: string;
+  };
+  emergencyContact?: {
+    name?: string;
+    phone?: string;
+    relationship?: string;
+  };
+}
+
+interface UpdateProfileData {
+  phone?: string;
+  address?: {
+    street?: string;
+    postalCode?: string;
+    city?: string;
+    deliveryNotes?: string;
+  };
+  emergencyContact?: {
+    name?: string;
+    phone?: string;
+    relationship?: string;
+  };
 }
 
 // Auth hooks
 export function useLogin() {
   const queryClient = useQueryClient();
-  const { setUser, setToken } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   return useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
@@ -52,8 +80,25 @@ export function useLogin() {
       return response;
     },
     onSuccess: (data) => {
-      setToken(data.accessToken);
-      setUser(data.user);
+      // Store token in sessionStorage for API client
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('accessToken', data.accessToken);
+      }
+      // Convert API user to store user format
+      const storeUser = {
+        id: data.user.id,
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        phone: '',
+        role: data.user.role as 'PATIENT' | 'PRESCRIBER' | 'OPS_AGENT' | 'BILLING_AGENT' | 'TECHNICIAN' | 'ADMIN',
+        emailVerified: true,
+        phoneVerified: false,
+        mfaEnabled: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setUser(storeUser);
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });

@@ -72,7 +72,6 @@ export default function ProfilePage() {
         street: formData.street,
         postalCode: formData.postalCode,
         city: formData.city,
-        deliveryNotes: formData.deliveryNotes,
       },
       emergencyContact: {
         name: formData.emergencyName,
@@ -124,16 +123,12 @@ export default function ProfilePage() {
     });
   };
 
-  const handleNotifChange = (key: string, channel: 'email' | 'sms', value: boolean) => {
+  const handleNotifChange = (key: string, value: boolean) => {
     if (!notifPrefs) return;
-    const current = notifPrefs as Record<string, { email: boolean; sms: boolean }>;
     updateNotifPrefs({
-      ...current,
-      [key]: {
-        ...current[key],
-        [channel]: value,
-      },
-    });
+      ...notifPrefs,
+      [key]: value,
+    } as Parameters<typeof updateNotifPrefs>[0]);
   };
 
   return (
@@ -397,42 +392,52 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="space-y-4">
+                  {/* Global Email/SMS toggles */}
+                  <div className="flex items-center justify-between p-4 border rounded-lg bg-neutral-50">
+                    <div>
+                      <span className="font-medium">{t("notifications.emailEnabled")}</span>
+                      <p className="text-sm text-neutral-500">{t("notifications.emailEnabledDesc")}</p>
+                    </div>
+                    <Switch
+                      checked={notifPrefs?.emailEnabled ?? true}
+                      onCheckedChange={(v) => handleNotifChange('emailEnabled', v)}
+                      disabled={updatingNotifs}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between p-4 border rounded-lg bg-neutral-50">
+                    <div>
+                      <span className="font-medium">{t("notifications.smsEnabled")}</span>
+                      <p className="text-sm text-neutral-500">{t("notifications.smsEnabledDesc")}</p>
+                    </div>
+                    <Switch
+                      checked={notifPrefs?.smsEnabled ?? true}
+                      onCheckedChange={(v) => handleNotifChange('smsEnabled', v)}
+                      disabled={updatingNotifs}
+                    />
+                  </div>
+                  
+                  <div className="border-t my-4"></div>
+                  
+                  {/* Individual notification types */}
                   {[
-                    { key: "caseUpdates", label: t("notifications.caseUpdates") },
-                    { key: "quoteReady", label: t("notifications.quoteReady") },
-                    { key: "deliveryUpdates", label: t("notifications.deliveryUpdates") },
-                    { key: "maintenanceUpdates", label: t("notifications.maintenanceUpdates") },
-                    { key: "marketing", label: t("notifications.marketing") },
-                  ].map((item) => {
-                    const prefs = notifPrefs as Record<string, { email: boolean; sms: boolean }> | undefined;
-                    const pref = prefs?.[item.key] || { email: true, sms: true };
-                    return (
-                      <div
-                        key={item.key}
-                        className="flex items-center justify-between p-4 border rounded-lg"
-                      >
-                        <span className="font-medium">{item.label}</span>
-                        <div className="flex gap-6">
-                          <label className="flex items-center gap-2 text-sm">
-                            <Switch
-                              checked={pref.email}
-                              onCheckedChange={(v) => handleNotifChange(item.key, 'email', v)}
-                              disabled={updatingNotifs}
-                            />
-                            <Mail className="w-4 h-4" /> Email
-                          </label>
-                          <label className="flex items-center gap-2 text-sm">
-                            <Switch
-                              checked={pref.sms}
-                              onCheckedChange={(v) => handleNotifChange(item.key, 'sms', v)}
-                              disabled={updatingNotifs}
-                            />
-                            <Phone className="w-4 h-4" /> SMS
-                          </label>
-                        </div>
-                      </div>
-                    );
-                  })}
+                    { key: 'caseUpdates' as const, label: t("notifications.caseUpdates") },
+                    { key: 'quoteNotifications' as const, label: t("notifications.quoteReady") },
+                    { key: 'deliveryAlerts' as const, label: t("notifications.deliveryUpdates") },
+                    { key: 'maintenanceReminders' as const, label: t("notifications.maintenanceUpdates") },
+                    { key: 'marketingEmails' as const, label: t("notifications.marketing") },
+                  ].map((item) => (
+                    <div
+                      key={item.key}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <span className="font-medium">{item.label}</span>
+                      <Switch
+                        checked={notifPrefs?.[item.key] ?? true}
+                        onCheckedChange={(v) => handleNotifChange(item.key, v)}
+                        disabled={updatingNotifs}
+                      />
+                    </div>
+                  ))}
                 </div>
               )}
             </CardContent>
@@ -465,9 +470,9 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {proxies.map((proxy: { id: string; email: string; name: string; relationship: string; status: string; createdAt: string }) => (
+                  {proxies.map((proxyRel) => (
                     <div
-                      key={proxy.id}
+                      key={proxyRel.id}
                       className="flex items-center justify-between p-4 border rounded-lg"
                     >
                       <div className="flex items-center gap-4">
@@ -475,32 +480,38 @@ export default function ProfilePage() {
                           <User className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-medium">{proxy.name || proxy.email}</p>
-                          <p className="text-sm text-neutral-500">{proxy.relationship}</p>
+                          <p className="font-medium">
+                            {proxyRel.proxy?.firstName && proxyRel.proxy?.lastName 
+                              ? `${proxyRel.proxy.firstName} ${proxyRel.proxy.lastName}` 
+                              : proxyRel.proxy?.email || t("proxy.unknown")}
+                          </p>
+                          <p className="text-sm text-neutral-500">{proxyRel.relationship}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <Badge 
-                          variant={proxy.status === 'ACTIVE' ? 'default' : 'secondary'}
+                          variant={proxyRel.status === 'ACTIVE' ? 'default' : 'secondary'}
                           className="gap-1"
                         >
-                          {proxy.status === 'ACTIVE' ? (
+                          {proxyRel.status === 'ACTIVE' ? (
                             <CheckCircle className="w-3 h-3" />
-                          ) : proxy.status === 'PENDING' ? (
-                            <Clock className="w-3 h-3" />
-                          ) : (
+                          ) : proxyRel.status === 'REVOKED' ? (
                             <XCircle className="w-3 h-3" />
+                          ) : (
+                            <Clock className="w-3 h-3" />
                           )}
-                          {t(`proxy.status.${proxy.status.toLowerCase()}`)}
+                          {t(`proxy.status.${proxyRel.status.toLowerCase()}`)}
                         </Badge>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRevokeProxy(proxy.id)}
-                          disabled={revokingProxy}
-                        >
-                          <Trash2 className="w-4 h-4 text-error" />
-                        </Button>
+                        {proxyRel.status === 'ACTIVE' && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRevokeProxy(proxyRel.id)}
+                            disabled={revokingProxy}
+                          >
+                            <Trash2 className="w-4 h-4 text-error" />
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -529,19 +540,19 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {consents.map((consent: { id: string; type: string; description: string; grantedAt: string; expiresAt?: string }) => (
+                  {consents.map((consent) => (
                     <div
                       key={consent.id}
                       className="flex items-center justify-between p-4 border rounded-lg"
                     >
                       <div>
-                        <p className="font-medium">{consent.type}</p>
-                        <p className="text-sm text-neutral-500">{consent.description}</p>
+                        <p className="font-medium">{t(`consent.types.${consent.consentType}`)}</p>
+                        <p className="text-sm text-neutral-500">
+                          {t(`consent.typeDescriptions.${consent.consentType}`)}
+                        </p>
                         <p className="text-xs text-neutral-400 mt-1">
                           {t("consent.grantedOn", { date: new Date(consent.grantedAt).toLocaleDateString() })}
-                          {consent.expiresAt && (
-                            <> · {t("consent.expiresOn", { date: new Date(consent.expiresAt).toLocaleDateString() })}</>
-                          )}
+                          {" · "}{t("consent.version", { version: consent.version })}
                         </p>
                       </div>
                       <Button
