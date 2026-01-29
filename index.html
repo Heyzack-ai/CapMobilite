@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapMobilité - Votre Fauteuil Roulant 100% Remboursé</title>
-    <meta name="description" content="Depuis décembre 2025, l'Assurance Maladie prend en charge intégralement votre fauteuil roulant. Zéro reste à charge. CapMobilité s'occupe de tout.">
+    <title>CapMobilité - Fauteuils Roulants Pris en Charge | Sur Prescription Médicale</title>
+    <meta name="description" content="Fauteuils roulants pris en charge par l'Assurance Maladie sur prescription médicale. CapMobilité vous accompagne dans vos démarches administratives.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,10 +74,17 @@
 </head>
 <body x-data="{ lang: 'fr' }" class="font-sans text-navy-900 bg-white antialiased selection:bg-primary-100 selection:text-primary-900">
 
-    <!-- Nav -->
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+    <header class="fixed w-full z-50 top-0">
+        <!-- Legal Disclaimer Banner -->
+        <div class="bg-navy-900 text-white text-xs py-2 px-4 text-center">
+            <span x-show="lang === 'fr'">⚠️ La fourniture de fauteuil roulant est soumise à prescription médicale obligatoire. Dispositif médical de classe I.</span>
+            <span x-show="lang === 'en'" x-cloak>⚠️ Wheelchair supply requires mandatory medical prescription. Class I medical device.</span>
+        </div>
+
+        <!-- Nav -->
+        <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-100 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary-500/20">
                         <span class="iconify" data-icon="lucide:activity"></span>
@@ -114,16 +121,17 @@
                         01 XX XX XX XX
                     </a>
                     <a href="#eligibilite" class="inline-flex items-center justify-center px-6 py-2.5 bg-navy-900 text-white rounded-xl font-semibold hover:bg-navy-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm">
-                        <span x-show="lang === 'fr'">Vérifier mon éligibilité</span>
-                        <span x-show="lang === 'en'" x-cloak>Check my eligibility</span>
+                        <span x-show="lang === 'fr'">Déposer ma demande</span>
+                        <span x-show="lang === 'en'" x-cloak>Submit my request</span>
                     </a>
                 </div>
             </div>
         </div>
     </nav>
+</header>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 lg:pt-40 lg:pb-32 relative overflow-hidden hero-pattern">
+    <section class="pt-40 pb-20 lg:pt-48 lg:pb-32 relative overflow-hidden hero-pattern">
         <!-- Background Blobs -->
         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10"></div>
         <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-success-50/50 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 -z-10"></div>
@@ -133,16 +141,16 @@
                 <div class="order-2 lg:order-1 animate-fade-in-up">
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-success-50 text-success-700 font-semibold text-sm mb-8 border border-success-100 shadow-sm">
                         <span class="iconify" data-icon="lucide:check-circle-2"></span>
-                        <span x-show="lang === 'fr'">Réforme 2025 · 100% Pris en charge</span>
-                        <span x-show="lang === 'en'" x-cloak>2025 Reform · 100% Covered</span>
+                        <span x-show="lang === 'fr'">Réforme Décembre 2025 · Sur prescription médicale</span>
+                        <span x-show="lang === 'en'" x-cloak>December 2025 Reform · With medical prescription</span>
                     </div>
                     <h1 class="font-bold text-5xl lg:text-6xl leading-[1.1] mb-6 text-navy-900 tracking-tight">
-                        <span x-show="lang === 'fr'">Votre Fauteuil Roulant <br/><span class="gradient-text">100% Remboursé</span></span>
-                        <span x-show="lang === 'en'" x-cloak>Your Wheelchair <br/><span class="gradient-text">100% Reimbursed</span></span>
+                        <span x-show="lang === 'fr'">Fauteuil Roulant <br/><span class="gradient-text">Pris en Charge</span></span>
+                        <span x-show="lang === 'en'" x-cloak>Wheelchair <br/><span class="gradient-text">Covered by Insurance</span></span>
                     </h1>
                     <p class="text-lg text-gray-600 mb-8 leading-relaxed font-light">
-                        <span x-show="lang === 'fr'">Depuis décembre 2025, l'Assurance Maladie prend en charge intégralement votre fauteuil roulant. <strong class="text-navy-900 font-semibold">Zéro reste à charge.</strong> On s'occupe de tout pour vous.</span>
-                        <span x-show="lang === 'en'" x-cloak>Since December 2025, French Health Insurance fully covers your wheelchair. <strong class="text-navy-900 font-semibold">Zero out-of-pocket cost.</strong> We take care of everything for you.</span>
+                        <span x-show="lang === 'fr'">Depuis décembre 2025, les fauteuils roulants peuvent être pris en charge à 100% par l'Assurance Maladie, <strong class="text-navy-900 font-semibold">uniquement sur prescription médicale</strong>. Nous vous accompagnons dans toutes vos démarches administratives.</span>
+                        <span x-show="lang === 'en'" x-cloak>Since December 2025, wheelchairs can be fully covered by French Health Insurance, <strong class="text-navy-900 font-semibold">only with a medical prescription</strong>. We support you through all administrative procedures.</span>
                     </p>
                     
                     <ul class="space-y-4 mb-10">
@@ -150,8 +158,8 @@
                             <div class="w-6 h-6 rounded-full bg-success-100 flex items-center justify-center text-success-600 flex-shrink-0">
                                 <span class="iconify" data-icon="lucide:check" data-width="14"></span>
                             </div>
-                            <span class="font-medium" x-show="lang === 'fr'">Aucun frais pour vous (Tiers Payant Intégral)</span>
-                            <span class="font-medium" x-show="lang === 'en'" x-cloak>No fees (Full Third-Party Payment)</span>
+                            <span class="font-medium" x-show="lang === 'fr'">Aucune avance de frais si dossier conforme (Tiers Payant)</span>
+                            <span class="font-medium" x-show="lang === 'en'" x-cloak>No upfront payment for compliant files (Third-Party)</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-700">
                             <div class="w-6 h-6 rounded-full bg-success-100 flex items-center justify-center text-success-600 flex-shrink-0">
@@ -171,8 +179,8 @@
 
                     <div class="flex flex-col sm:flex-row gap-4 mb-12">
                         <a href="#eligibilite" class="inline-flex justify-center items-center px-8 py-4 bg-primary-600 text-white rounded-xl font-bold text-lg hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-500/30 hover:-translate-y-1">
-                            <span x-show="lang === 'fr'">Vérifier mon éligibilité</span>
-                            <span x-show="lang === 'en'" x-cloak>Check my eligibility</span>
+                            <span x-show="lang === 'fr'">Déposer ma demande</span>
+                            <span x-show="lang === 'en'" x-cloak>Submit my request</span>
                             <span class="iconify ml-2" data-icon="lucide:arrow-right"></span>
                         </a>
                         <a href="tel:01XXXXXXXX" class="inline-flex justify-center items-center px-8 py-4 bg-white border border-gray-200 text-navy-900 rounded-xl font-semibold hover:bg-gray-50 transition-all shadow-sm hover:shadow-md">
@@ -192,7 +200,7 @@
                         </div>
                         <div class="w-px h-10 bg-gray-200"></div>
                         <div>
-                            <div class="font-bold text-2xl text-navy-900">15j</div>
+                            <div class="font-bold text-2xl text-navy-900">60j</div>
                             <div class="text-sm text-gray-500 font-medium">
                                 <span x-show="lang === 'fr'">délai moyen</span>
                                 <span x-show="lang === 'en'" x-cloak>average delay</span>
@@ -233,8 +241,8 @@
                             </div>
                         </div>
                         <div class="text-xs text-gray-400 font-medium">
-                            <span x-show="lang === 'fr'">Pour tout dossier validé CPAM</span>
-                            <span x-show="lang === 'en'" x-cloak>For all CPAM-validated dossiers</span>
+                            <span x-show="lang === 'fr'">Sous réserve de prescription médicale et accord CPAM</span>
+                            <span x-show="lang === 'en'" x-cloak>Subject to medical prescription and CPAM approval</span>
                         </div>
                     </div>
                 </div>
@@ -334,8 +342,8 @@
                         <span x-show="lang === 'en'" x-cloak>Contact us</span>
                     </h3>
                     <p class="text-gray-600 leading-relaxed text-sm">
-                        <span x-show="lang === 'fr'">Remplissez le formulaire ou appelez-nous. On vérifie votre éligibilité en 24h avec une simple ordonnance.</span>
-                        <span x-show="lang === 'en'" x-cloak>Fill out the form or call us. We check your eligibility in 24h with a simple prescription.</span>
+                        <span x-show="lang === 'fr'">Remplissez le formulaire ou appelez-nous. Transmettez-nous votre ordonnance médicale et nous constituons votre dossier.</span>
+                        <span x-show="lang === 'en'" x-cloak>Fill out the form or call us. Send us your medical prescription and we'll prepare your file.</span>
                     </p>
                 </div>
 
@@ -429,8 +437,8 @@
                         <div class="border-t border-gray-100 pt-6">
                             <div class="flex justify-between items-end">
                                 <div class="text-sm text-gray-400">
-                                    <span x-show="lang === 'fr'">Valeur 260€</span>
-                                    <span x-show="lang === 'en'" x-cloak>Value €260</span>
+                                    <!-- <span x-show="lang === 'fr'">Valeur 260€</span>
+                                    <span x-show="lang === 'en'" x-cloak>Value €260</span> -->
                                 </div>
                                 <div class="text-right">
                                     <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">
@@ -488,8 +496,8 @@
                         <div class="border-t border-gray-100 pt-6">
                             <div class="flex justify-between items-end">
                                 <div class="text-sm text-gray-400">
-                                    <span x-show="lang === 'fr'">Valeur 750€</span>
-                                    <span x-show="lang === 'en'" x-cloak>Value €750</span>
+                                    <!-- <span x-show="lang === 'fr'">Valeur 750€</span>
+                                    <span x-show="lang === 'en'" x-cloak>Value €750</span> -->
                                 </div>
                                 <div class="text-right">
                                     <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">
@@ -543,8 +551,8 @@
                         <div class="border-t border-gray-100 pt-6">
                             <div class="flex justify-between items-end">
                                 <div class="text-sm text-gray-400">
-                                    <span x-show="lang === 'fr'">Valeur 750€</span>
-                                    <span x-show="lang === 'en'" x-cloak>Value €750</span>
+                                    <!-- <span x-show="lang === 'fr'">Valeur 750€</span>
+                                    <span x-show="lang === 'en'" x-cloak>Value €750</span> -->
                                 </div>
                                 <div class="text-right">
                                     <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">
@@ -606,12 +614,12 @@ s en 10 jours.</p>
                         <span class="iconify" data-icon="lucide:shield-check"></span>
                     </div>
                     <h4 class="font-bold text-lg mb-2 text-navy-900">
-                        <span x-show="lang === 'fr'">Sans risque</span>
-                        <span x-show="lang === 'en'" x-cloak>Risk-free</span>
+                        <span x-show="lang === 'fr'">Sans avance</span>
+                        <span x-show="lang === 'en'" x-cloak>No upfront cost</span>
                     </h4>
                     <p class="text-gray-500 text-sm">
-                        <span x-show="lang === 'fr'">Vous ne payez jamais rien. On se fait payer par la CPAM.</span>
-                        <span x-show="lang === 'en'" x-cloak>You never pay anything. We get paid by the CPAM.</span>
+                        <span x-show="lang === 'fr'">Aucune avance de frais pour les dossiers conformes. Facturation directe à l'Assurance Maladie.</span>
+                        <span x-show="lang === 'en'" x-cloak>No upfront payment for compliant files. Direct billing to Health Insurance.</span>
                     </p>
                 </div>
                 <div class="bg-white p-6 rounded-xl border border-gray-100 hover:border-primary-100 hover:shadow-soft transition-all">
@@ -741,8 +749,8 @@ s en 10 jours.</p>
                         </span>
                     </button>
                     <div x-show="active === 1" x-collapse class="p-6 pt-0 text-gray-600">
-                        <span x-show="lang === 'fr'">Oui, c'est 100% légal et officiel. Depuis décembre 2025, l'Assurance Maladie rembourse intégralement les fauteuils roulants prescrits par un médecin. Nous ne vous demandons jamais de payer quoi que ce soit. On se fait régler directement par la CPAM.</span>
-                        <span x-show="lang === 'en'" x-cloak>Yes, it's 100% legal and official. Since December 2025, French Health Insurance fully reimburses wheelchairs prescribed by a doctor. We never ask you to pay anything. We get paid directly by the CPAM.</span>
+                        <span x-show="lang === 'fr'">Oui, c'est légal et officiel. Depuis décembre 2025, l'Assurance Maladie peut prendre en charge intégralement les fauteuils roulants <strong>prescrits par un médecin</strong> et conformes à la réglementation LPPR. Nous pratiquons le tiers payant : vous n'avancez pas de frais lorsque votre dossier est accepté par la CPAM.</span>
+                        <span x-show="lang === 'en'" x-cloak>Yes, it's legal and official. Since December 2025, French Health Insurance can fully cover wheelchairs <strong>prescribed by a doctor</strong> and compliant with LPPR regulations. We use third-party payment: you don't pay upfront when your file is approved by CPAM.</span>
                     </div>
                 </div>
 
@@ -775,8 +783,8 @@ s en 10 jours.</p>
                         </span>
                     </button>
                     <div x-show="active === 3" x-collapse class="p-6 pt-0 text-gray-600">
-                        <span x-show="lang === 'fr'">Prenez rendez-vous avec votre médecin traitant ou un médecin spécialiste. Si le médecin juge qu'un fauteuil roulant est nécessaire, il vous délivrera une ordonnance.</span>
-                        <span x-show="lang === 'en'" x-cloak>Make an appointment with your primary care physician or a specialist. If the doctor deems a wheelchair necessary, they will issue a prescription.</span>
+                        <span x-show="lang === 'fr'">Seul un médecin peut établir une prescription de fauteuil roulant. Prenez rendez-vous avec votre médecin traitant ou un médecin spécialiste (MPR, neurologue...). Si le médecin estime qu'un fauteuil roulant est médicalement nécessaire, il établira l'ordonnance. CapMobilité n'intervient qu'après obtention de cette prescription.</span>
+                        <span x-show="lang === 'en'" x-cloak>Only a doctor can issue a wheelchair prescription. Make an appointment with your GP or a specialist (MPR, neurologist...). If the doctor determines a wheelchair is medically necessary, they will issue the prescription. CapMobilité only intervenes after you obtain this prescription.</span>
                     </div>
                 </div>
 
@@ -812,12 +820,12 @@ s en 10 jours.</p>
         <div class="max-w-4xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12 text-white">
                 <h2 class="font-serif text-3xl md:text-4xl mb-4">
-                    <span x-show="lang === 'fr'">Vérifier votre éligibilité en 2 minutes</span>
-                    <span x-show="lang === 'en'" x-cloak>Check your eligibility in 2 minutes</span>
+                    <span x-show="lang === 'fr'">Déposer votre demande d'accompagnement</span>
+                    <span x-show="lang === 'en'" x-cloak>Submit your support request</span>
                 </h2>
                 <p class="text-primary-100 text-lg">
-                    <span x-show="lang === 'fr'">Remplissez ce formulaire. On vous rappelle sous 24h pour confirmer votre éligibilité.</span>
-                    <span x-show="lang === 'en'" x-cloak>Fill out this form. We'll call you back within 24h to confirm your eligibility.</span>
+                    <span x-show="lang === 'fr'">Remplissez ce formulaire. Nous vous rappelons sous 24h pour vous accompagner dans vos démarches administratives.</span>
+                    <span x-show="lang === 'en'" x-cloak>Fill out this form. We'll call you back within 24h to support you through administrative procedures.</span>
                 </p>
                 <div class="flex justify-center gap-6 mt-8 text-sm text-primary-200">
                     <span class="flex items-center gap-2"><span class="iconify" data-icon="lucide:lock"></span> 
@@ -948,8 +956,8 @@ s en 10 jours.</p>
                 <span x-show="lang === 'en'" x-cloak>Do you or a relative need a wheelchair?</span>
             </h3>
             <p class="text-gray-500 mb-6">
-                <span x-show="lang === 'fr'">Ne payez plus un seul euro. L'état prend tout en charge.</span>
-                <span x-show="lang === 'en'" x-cloak>Don't pay a single euro. The state covers everything.</span>
+                <span x-show="lang === 'fr'">Sur prescription médicale, l'Assurance Maladie peut prendre en charge votre fauteuil roulant.</span>
+                <span x-show="lang === 'en'" x-cloak>With a medical prescription, Health Insurance can cover your wheelchair.</span>
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-medium">
                 <a href="#eligibilite" class="text-primary-700 hover:underline hover:text-primary-800">
@@ -997,8 +1005,8 @@ s en 10 jours.</p>
                             <span x-show="lang === 'en'" x-cloak>How it works</span>
                         </a></li>
                         <li><a href="#eligibilite" class="hover:text-primary-600 transition-colors">
-                            <span x-show="lang === 'fr'">Vérifier mon éligibilité</span>
-                            <span x-show="lang === 'en'" x-cloak>Check eligibility</span>
+                            <span x-show="lang === 'fr'">Déposer ma demande</span>
+                            <span x-show="lang === 'en'" x-cloak>Submit request</span>
                         </a></li>
                         <li><a href="#" class="hover:text-primary-600 transition-colors">
                             <span x-show="lang === 'fr'">Mentions légales</span>
@@ -1018,14 +1026,10 @@ s en 10 jours.</p>
                     </h5>
                     <p class="text-xs text-gray-500 leading-relaxed text-justify">
                         <span x-show="lang === 'fr'">
-                        ⚠️ Les fauteuils roulants sont des dispositifs médicaux de classe I. La prise en charge est soumise à prescription médicale et à l'éligibilité définie par l'Assurance Maladie (LPPR). Lire attentivement les instructions. En cas de doute, consultez votre médecin.<br/><br/>
-                        CapMobilité est un Prestataire de Services et Distributeur de Matériel médical (PSDM) enregistré auprès de l'Assurance Maladie.
-                        N° SIRET : XXX XXX XXX XXXXX | N° FINESS : XXXXXXXXX
+                        ⚠️ <strong>IMPORTANT :</strong> Les fauteuils roulants sont des dispositifs médicaux de classe I (Règlement UE 2017/745). La prise en charge par l'Assurance Maladie est <strong>exclusivement soumise à prescription médicale</strong> établie par un médecin. CapMobilité n'intervient à aucun moment dans l'évaluation médicale ni dans la décision de prescription. L'accord de prise en charge relève de la seule décision de l'Assurance Maladie selon les critères LPPR. Lire attentivement les instructions d'utilisation du dispositif.
                         </span>
                         <span x-show="lang === 'en'" x-cloak>
-                        ⚠️ Wheelchairs are class I medical devices. Coverage is subject to medical prescription and eligibility defined by Health Insurance (LPPR). Read instructions carefully. If in doubt, consult your doctor.<br/><br/>
-                        CapMobilité is a Service Provider and Distributor of Medical Equipment (PSDM) registered with Health Insurance.
-                        SIRET No.: XXX XXX XXX XXXXX | FINESS No.: XXXXXXXXX
+                        ⚠️ <strong>IMPORTANT:</strong> Wheelchairs are class I medical devices (EU Regulation 2017/745). Coverage by Health Insurance is <strong>exclusively subject to medical prescription</strong> issued by a doctor. CapMobilité does not intervene in medical evaluation or prescription decisions. Coverage approval is solely the decision of Health Insurance according to LPPR criteria. Read device instructions carefully.
                         </span>
                     </p>
                 </div>

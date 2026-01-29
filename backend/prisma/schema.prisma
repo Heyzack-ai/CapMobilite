@@ -1,0 +1,981 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum UserRole {
+  PATIENT
+  PRESCRIBER
+  OPS
+  BILLING
+  TECHNICIAN
+  COMPLIANCE_ADMIN
+}
+
+enum UserStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum ContactPreference {
+  EMAIL
+  SMS
+  PHONE
+}
+
+enum Department {
+  OPS
+  BILLING
+  TECH
+  COMPLIANCE
+}
+
+enum ProxyRelationshipType {
+  FAMILY
+  SOCIAL_WORKER
+  NURSING_HOME
+  OTHER
+}
+
+enum ProxyStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum ConsentType {
+  HEALTH_DATA
+  MARKETING
+  TERMS_OF_SERVICE
+}
+
+enum DocumentType {
+  PRESCRIPTION
+  ID_CARD
+  CARTE_VITALE
+  PROOF_OF_ADDRESS
+  QUOTE_PDF
+  DELIVERY_PROOF
+  OTHER
+}
+
+enum ScanStatus {
+  PENDING
+  CLEAN
+  INFECTED
+}
+
+enum OwnerType {
+  PATIENT
+  PRESCRIBER
+  STAFF
+}
+
+enum ProductCategory {
+  MANUAL_WHEELCHAIR
+  ELECTRIC_WHEELCHAIR
+  ACCESSORIES
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum CaseStatus {
+  INTAKE_RECEIVED
+  DOCUMENTS_PENDING
+  DOCUMENTS_COMPLETE
+  UNDER_REVIEW
+  QUOTE_PENDING
+  QUOTE_READY
+  PATIENT_APPROVAL_PENDING
+  READY_TO_SUBMIT
+  SUBMITTED_TO_CPAM
+  CPAM_PENDING
+  CPAM_APPROVED
+  CPAM_REJECTED
+  DELIVERY_SCHEDULED
+  DELIVERED
+  MAINTENANCE_ACTIVE
+  CLOSED
+  CANCELLED
+}
+
+enum CasePriority {
+  NORMAL
+  URGENT
+}
+
+enum TaskType {
+  DOCUMENT_REQUEST
+  VERIFICATION
+  FOLLOW_UP
+  DELIVERY_SCHEDULE
+  OTHER
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ProductSize {
+  XS
+  S
+  M
+  L
+  XL
+}
+
+enum QuoteStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  SUPERSEDED
+}
+
+enum ClaimStatus {
+  DRAFT
+  SUBMITTED
+  PENDING
+  ACCEPTED
+  REJECTED
+  PARTIAL_PAYMENT
+  PAID
+  CANCELLED
+  RESUBMITTED
+}
+
+enum GatewayType {
+  INFIMAX
+  VEGA
+  LGPI
+  MANUAL
+}
+
+enum ClaimDocumentRole {
+  PRESCRIPTION
+  ID
+  CARTE_VITALE
+  QUOTE
+  OTHER
+}
+
+enum ReturnFileType {
+  NOEMIE
+  ARO
+  ARL
+  AUTRE
+}
+
+enum PaymentMethod {
+  CPAM_DIRECT
+  MUTUELLE
+  OTHER
+}
+
+enum DeviceStatus {
+  ACTIVE
+  IN_REPAIR
+  REPLACED
+  DECOMMISSIONED
+}
+
+enum ContractType {
+  MANUAL
+  ELECTRIC
+}
+
+enum ContractStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum TicketCategory {
+  BATTERY
+  WHEELS
+  JOYSTICK
+  BRAKE
+  CUSHION
+  FRAME
+  ELECTRICAL
+  OTHER
+}
+
+enum TicketSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TicketStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  PENDING_PARTS
+  RESOLVED
+  CLOSED
+}
+
+enum VisitOutcome {
+  COMPLETED
+  RESCHEDULED
+  NO_SHOW
+  PARTS_NEEDED
+}
+
+enum ActorType {
+  USER
+  SYSTEM
+  INTEGRATION
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  BOUNCED
+}
+
+// ============================================================================
+// MODELS
+// ============================================================================
+
+/// Core authentication entity for all user types
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  phone         String?    @unique
+  passwordHash  String
+  role          UserRole
+  status        UserStatus @default(PENDING_VERIFICATION)
+  emailVerified Boolean    @default(false)
+  phoneVerified Boolean    @default(false)
+  mfaEnabled    Boolean    @default(false)
+  mfaSecret     String?
+  lastLoginAt   DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // Relations
+  patientProfile     PatientProfile?
+  prescriberProfile  PrescriberProfile?
+  staffProfile       StaffProfile?
+  auditEvents        AuditEvent[]       @relation("AuditActor")
+  notifications      Notification[]
+  assignedCases      Case[]             @relation("CaseAssignee")
+  caseNotes          CaseNote[]
+  assignedTasks      CaseTask[]         @relation("TaskAssignee")
+  quotesCreated      Quote[]            @relation("QuoteCreator")
+  quotesApproved     Quote[]            @relation("QuoteApprover")
+  prescriptionsVerified Prescription[]  @relation("PrescriptionVerifier")
+  proxyRelationships ProxyRelationship[] @relation("ProxyUser")
+  ticketsReported    ServiceTicket[]    @relation("TicketReporter")
+  ticketsAssigned    ServiceTicket[]    @relation("TicketAssignee")
+  technicianVisits   TechnicianVisit[]
+  refreshTokens      RefreshToken[]
+
+  @@index([role])
+  @@index([status])
+  @@index([email])
+}
+
+/// Refresh tokens for JWT authentication
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+/// Extended profile for patients
+model PatientProfile {
+  id                String            @id @default(uuid())
+  userId            String            @unique
+  firstName         String
+  lastName          String
+  dateOfBirth       DateTime          @db.Date
+  nir               String?           // French social security number (encrypted)
+  carteVitaleNumber String?           // Carte Vitale number (encrypted)
+  address           Json?             // Structured address object
+  mutuelle          Json?             // Supplementary insurance info
+  contactPreference ContactPreference @default(EMAIL)
+  emergencyContact  Json?             // Emergency contact details
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  // Relations
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consents          Consent[]
+  documents         Document[]          @relation("PatientDocuments")
+  cases             Case[]
+  prescriptions     Prescription[]
+  deviceInstances   DeviceInstance[]
+  proxyRelationships ProxyRelationship[]
+
+  @@index([lastName])
+  @@index([dateOfBirth])
+}
+
+/// Extended profile for healthcare professionals
+model PrescriberProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  rppsNumber      String?  // National prescriber ID (11 digits)
+  adeliNumber     String?  // ADELI identifier (9 digits)
+  specialty       String?
+  practiceName    String?
+  practiceAddress Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prescriptions Prescription[]
+
+  @@index([rppsNumber])
+  @@index([adeliNumber])
+}
+
+/// Extended profile for AX TECH staff
+model StaffProfile {
+  id          String     @id @default(uuid())
+  userId      String     @unique
+  employeeId  String     @unique
+  department  Department
+  permissions String[]   @default([])
+  managerId   String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  manager StaffProfile? @relation("StaffManager", fields: [managerId], references: [id])
+  reports StaffProfile[] @relation("StaffManager")
+
+  @@index([department])
+}
+
+/// Caregiver/proxy delegation
+model ProxyRelationship {
+  id                String                @id @default(uuid())
+  patientId         String
+  proxyUserId       String
+  relationship      ProxyRelationshipType
+  consentDocumentId String
+  validFrom         DateTime
+  validUntil        DateTime?
+  status            ProxyStatus           @default(ACTIVE)
+  createdAt         DateTime              @default(now())
+
+  // Relations
+  patient         PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  proxyUser       User           @relation("ProxyUser", fields: [proxyUserId], references: [id])
+  consentDocument Document       @relation(fields: [consentDocumentId], references: [id])
+
+  @@index([patientId])
+  @@index([proxyUserId])
+  @@index([status])
+}
+
+/// Versioned consent records
+model Consent {
+  id          String      @id @default(uuid())
+  patientId   String
+  consentType ConsentType
+  version     String      // Semver
+  textHash    String      // SHA-256 hash of consent text
+  ipAddress   String
+  userAgent   String
+  consentedAt DateTime    @default(now())
+  withdrawnAt DateTime?
+
+  // Relations
+  patient PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@index([consentType])
+  @@index([version])
+}
+
+/// Uploaded files (prescriptions, IDs, etc.)
+model Document {
+  id              String       @id @default(uuid())
+  ownerId         String
+  ownerType       OwnerType
+  documentType    DocumentType
+  filename        String
+  mimeType        String
+  sizeBytes       Int
+  storageKey      String
+  sha256Hash      String
+  metadata        Json?        // Extracted/OCR metadata
+  scanStatus      ScanStatus   @default(PENDING)
+  scanCompletedAt DateTime?
+  createdAt       DateTime     @default(now())
+  deletedAt       DateTime?
+
+  // Relations
+  patientOwner      PatientProfile?     @relation("PatientDocuments", fields: [ownerId], references: [id], map: "fk_document_patient")
+  prescriptions     Prescription[]
+  proxyRelationships ProxyRelationship[]
+  quotePdfs         Quote[]             @relation("QuotePdf")
+  claimDocuments    ClaimDocument[]
+  technicianSignatures TechnicianVisit[]
+  caseDocuments     CaseDocument[]
+
+  @@index([ownerId])
+  @@index([ownerType])
+  @@index([documentType])
+  @@index([sha256Hash])
+  @@index([scanStatus])
+}
+
+/// Medical prescription linking to document
+model Prescription {
+  id                 String             @id @default(uuid())
+  patientId          String
+  prescriberId       String?
+  documentId         String
+  prescriptionDate   DateTime           @db.Date
+  expirationDate     DateTime?          @db.Date
+  productCategory    ProductCategory
+  clinicalNotes      String?            // Encrypted
+  verificationStatus VerificationStatus @default(PENDING)
+  verifiedBy         String?
+  verifiedAt         DateTime?
+  createdAt          DateTime           @default(now())
+
+  // Relations
+  patient    PatientProfile     @relation(fields: [patientId], references: [id])
+  prescriber PrescriberProfile? @relation(fields: [prescriberId], references: [id])
+  document   Document           @relation(fields: [documentId], references: [id])
+  verifier   User?              @relation("PrescriptionVerifier", fields: [verifiedBy], references: [id])
+  cases      Case[]
+
+  @@index([patientId])
+  @@index([prescriberId])
+  @@index([verificationStatus])
+  @@index([prescriptionDate])
+}
+
+/// Main dossier entity tracking the reimbursement workflow
+model Case {
+  id              String       @id @default(uuid())
+  caseNumber      String       @unique // Human-readable case ID
+  patientId       String
+  prescriptionId  String
+  status          CaseStatus   @default(INTAKE_RECEIVED)
+  priority        CasePriority @default(NORMAL)
+  assignedTo      String?
+  checklistState  Json         @default("{}")
+  slaDeadline     DateTime?
+  submittedAt     DateTime?
+  approvedAt      DateTime?
+  rejectedAt      DateTime?
+  rejectionReason String?
+  deliveredAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  patient        PatientProfile   @relation(fields: [patientId], references: [id])
+  prescription   Prescription     @relation(fields: [prescriptionId], references: [id])
+  assignee       User?            @relation("CaseAssignee", fields: [assignedTo], references: [id])
+  notes          CaseNote[]
+  tasks          CaseTask[]
+  quotes         Quote[]
+  claims         Claim[]
+  deviceInstances DeviceInstance[]
+  caseDocuments  CaseDocument[]
+
+  @@index([caseNumber])
+  @@index([patientId])
+  @@index([status])
+  @@index([assignedTo])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+/// Junction table for Case-Document many-to-many
+model CaseDocument {
+  id         String   @id @default(uuid())
+  caseId     String
+  documentId String
+  addedAt    DateTime @default(now())
+
+  case     Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@unique([caseId, documentId])
+  @@index([caseId])
+  @@index([documentId])
+}
+
+/// Internal notes on cases
+model CaseNote {
+  id         String   @id @default(uuid())
+  caseId     String
+  authorId   String
+  content    String
+  isInternal Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  // Relations
+  case   Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id])
+
+  @@index([caseId])
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+/// Actionable tasks within a case
+model CaseTask {
+  id          String     @id @default(uuid())
+  caseId      String
+  taskType    TaskType
+  title       String
+  description String?
+  assignedTo  String?
+  dueAt       DateTime?
+  completedAt DateTime?
+  status      TaskStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+
+  // Relations
+  case     Case  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  assignee User? @relation("TaskAssignee", fields: [assignedTo], references: [id])
+
+  @@index([caseId])
+  @@index([assignedTo])
+  @@index([status])
+  @@index([dueAt])
+}
+
+/// Product categories
+model ProductFamily {
+  id          String          @id @default(uuid())
+  name        String          @unique
+  category    ProductCategory
+  description String?
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+
+  // Relations
+  products Product[]
+
+  @@index([category])
+  @@index([isActive])
+}
+
+/// Individual product SKUs
+model Product {
+  id            String       @id @default(uuid())
+  familyId      String
+  sku           String       @unique
+  name          String
+  size          ProductSize?
+  specifications Json        @default("{}")
+  maxUserWeight Int?         // kg
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // Relations
+  family          ProductFamily        @relation(fields: [familyId], references: [id])
+  lpprMappings    ProductLPPRMapping[]
+  quoteLineItems  QuoteLineItem[]
+  deviceInstances DeviceInstance[]
+
+  @@index([familyId])
+  @@index([isActive])
+  @@index([size])
+}
+
+/// French reimbursement nomenclature items
+model LPPRItem {
+  id                 String    @id @default(uuid())
+  code               String    @unique
+  label              String
+  category           String
+  maxPrice           Decimal?  @db.Decimal(10, 2)
+  maintenanceForfait Decimal?  @db.Decimal(10, 2)
+  validFrom          DateTime  @db.Date
+  validUntil         DateTime? @db.Date
+  createdAt          DateTime  @default(now())
+
+  // Relations
+  productMappings ProductLPPRMapping[]
+  quoteLineItems  QuoteLineItem[]
+
+  @@index([category])
+  @@index([validFrom])
+}
+
+/// Many-to-many between products and LPPR codes
+model ProductLPPRMapping {
+  id         String  @id @default(uuid())
+  productId  String
+  lpprItemId String
+  isPrimary  Boolean @default(false)
+
+  // Relations
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  lpprItem LPPRItem @relation(fields: [lpprItemId], references: [id])
+
+  @@unique([productId, lpprItemId])
+  @@index([productId])
+  @@index([lpprItemId])
+}
+
+/// Generated quote/devis for patient approval
+model Quote {
+  id               String      @id @default(uuid())
+  caseId           String
+  quoteNumber      String      @unique
+  version          Int         @default(1)
+  totalAmount      Decimal     @db.Decimal(10, 2)
+  lpprCoverage     Decimal     @db.Decimal(10, 2)
+  patientRemainder Decimal     @db.Decimal(10, 2)
+  pdfDocumentId    String?
+  status           QuoteStatus @default(DRAFT)
+  approvedAt       DateTime?
+  approvedBy       String?
+  createdAt        DateTime    @default(now())
+  createdBy        String
+
+  // Relations
+  case       Case            @relation(fields: [caseId], references: [id])
+  pdfDocument Document?      @relation("QuotePdf", fields: [pdfDocumentId], references: [id])
+  approver   User?           @relation("QuoteApprover", fields: [approvedBy], references: [id])
+  creator    User            @relation("QuoteCreator", fields: [createdBy], references: [id])
+  lineItems  QuoteLineItem[]
+
+  @@index([caseId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+/// Individual items on a quote
+model QuoteLineItem {
+  id         String  @id @default(uuid())
+  quoteId    String
+  productId  String
+  lpprItemId String
+  quantity   Int
+  unitPrice  Decimal @db.Decimal(10, 2)
+  lineTotal  Decimal @db.Decimal(10, 2)
+  sortOrder  Int
+
+  // Relations
+  quote    Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id])
+  lpprItem LPPRItem @relation(fields: [lpprItemId], references: [id])
+
+  @@index([quoteId])
+  @@index([productId])
+}
+
+/// Submission to CPAM via billing gateway
+model Claim {
+  id              String      @id @default(uuid())
+  caseId          String
+  claimNumber     String      @unique
+  gatewayRef      String?
+  gatewayType     GatewayType
+  status          ClaimStatus @default(DRAFT)
+  submittedAt     DateTime?
+  totalAmount     Decimal     @db.Decimal(10, 2)
+  paidAmount      Decimal?    @db.Decimal(10, 2)
+  rejectionCode   String?
+  rejectionReason String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  case           Case            @relation(fields: [caseId], references: [id])
+  claimDocuments ClaimDocument[]
+  claimReturns   ClaimReturn[]
+  payments       Payment[]
+
+  @@index([caseId])
+  @@index([claimNumber])
+  @@index([gatewayRef])
+  @@index([status])
+  @@index([submittedAt])
+}
+
+/// Documents attached to a claim (SCOR bundle)
+model ClaimDocument {
+  id           String            @id @default(uuid())
+  claimId      String
+  documentId   String
+  documentRole ClaimDocumentRole
+  createdAt    DateTime          @default(now())
+
+  // Relations
+  claim    Claim    @relation(fields: [claimId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@index([claimId])
+  @@index([documentId])
+}
+
+/// Return/remittance files from billing gateway
+model ClaimReturn {
+  id                String         @id @default(uuid())
+  claimId           String
+  returnType        ReturnFileType
+  rawFileStorageKey String
+  parsedData        Json?
+  receivedAt        DateTime
+  processedAt       DateTime?
+  createdAt         DateTime       @default(now())
+
+  // Relations
+  claim Claim @relation(fields: [claimId], references: [id], onDelete: Cascade)
+
+  @@index([claimId])
+  @@index([returnType])
+  @@index([receivedAt])
+}
+
+/// Payment records
+model Payment {
+  id            String        @id @default(uuid())
+  claimId       String
+  amount        Decimal       @db.Decimal(10, 2)
+  paymentDate   DateTime      @db.Date
+  paymentMethod PaymentMethod
+  reference     String?
+  createdAt     DateTime      @default(now())
+
+  // Relations
+  claim Claim @relation(fields: [claimId], references: [id], onDelete: Cascade)
+
+  @@index([claimId])
+  @@index([paymentDate])
+  @@index([paymentMethod])
+}
+
+/// Physical device delivered to patient
+model DeviceInstance {
+  id              String       @id @default(uuid())
+  caseId          String
+  patientId       String
+  productId       String
+  serialNumber    String       @unique
+  deliveredAt     DateTime
+  warrantyEndDate DateTime?    @db.Date
+  status          DeviceStatus @default(ACTIVE)
+  currentLocation Json?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  case              Case                @relation(fields: [caseId], references: [id])
+  patient           PatientProfile      @relation(fields: [patientId], references: [id])
+  product           Product             @relation(fields: [productId], references: [id])
+  maintenanceContract MaintenanceContract?
+  serviceTickets    ServiceTicket[]
+
+  @@index([patientId])
+  @@index([productId])
+  @@index([status])
+}
+
+/// Annual maintenance coverage
+model MaintenanceContract {
+  id              String         @id @default(uuid())
+  deviceId        String         @unique
+  contractType    ContractType
+  startDate       DateTime       @db.Date
+  renewalDate     DateTime       @db.Date
+  annualForfait   Decimal        @db.Decimal(10, 2)
+  status          ContractStatus @default(ACTIVE)
+  lastServiceDate DateTime?      @db.Date
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  device DeviceInstance @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([renewalDate])
+}
+
+/// Maintenance and repair requests
+model ServiceTicket {
+  id              String         @id @default(uuid())
+  ticketNumber    String         @unique
+  deviceId        String
+  reportedBy      String
+  category        TicketCategory
+  severity        TicketSeverity
+  isSafetyIssue   Boolean        @default(false)
+  description     String
+  status          TicketStatus   @default(OPEN)
+  assignedTo      String?
+  resolvedAt      DateTime?
+  resolutionNotes String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  device           DeviceInstance    @relation(fields: [deviceId], references: [id])
+  reporter         User              @relation("TicketReporter", fields: [reportedBy], references: [id])
+  assignee         User?             @relation("TicketAssignee", fields: [assignedTo], references: [id])
+  technicianVisits TechnicianVisit[]
+  partUsages       PartUsage[]
+
+  @@index([ticketNumber])
+  @@index([deviceId])
+  @@index([status])
+  @@index([severity])
+  @@index([assignedTo])
+  @@index([createdAt])
+}
+
+/// Scheduled/completed technician visits
+model TechnicianVisit {
+  id               String       @id @default(uuid())
+  ticketId         String
+  technicianId     String
+  scheduledAt      DateTime
+  arrivedAt        DateTime?
+  completedAt      DateTime?
+  outcome          VisitOutcome?
+  notes            String?
+  signatureImageId String?
+  createdAt        DateTime     @default(now())
+
+  // Relations
+  ticket         ServiceTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  technician     User          @relation(fields: [technicianId], references: [id])
+  signatureImage Document?     @relation(fields: [signatureImageId], references: [id])
+  partUsages     PartUsage[]
+
+  @@index([ticketId])
+  @@index([technicianId])
+  @@index([scheduledAt])
+  @@index([outcome])
+}
+
+/// Parts consumed during service
+model PartUsage {
+  id        String   @id @default(uuid())
+  ticketId  String
+  visitId   String?
+  partSku   String
+  partName  String
+  quantity  Int
+  unitCost  Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+
+  // Relations
+  ticket ServiceTicket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  visit  TechnicianVisit? @relation(fields: [visitId], references: [id])
+
+  @@index([ticketId])
+  @@index([visitId])
+  @@index([partSku])
+}
+
+/// Immutable audit log
+model AuditEvent {
+  id         String    @id @default(uuid())
+  actorId    String?
+  actorType  ActorType
+  action     String
+  objectType String
+  objectId   String
+  changes    Json?
+  ipAddress  String?
+  userAgent  String?
+  requestId  String?
+  timestamp  DateTime  @default(now())
+
+  // Relations
+  actor User? @relation("AuditActor", fields: [actorId], references: [id])
+
+  @@index([actorId])
+  @@index([objectType])
+  @@index([objectId])
+  @@index([action])
+  @@index([timestamp])
+}
+
+/// Outbound notifications
+model Notification {
+  id            String             @id @default(uuid())
+  recipientId   String
+  channel       NotificationChannel
+  templateId    String
+  context       Json
+  status        NotificationStatus @default(PENDING)
+  sentAt        DateTime?
+  deliveredAt   DateTime?
+  failureReason String?
+  externalId    String?
+  createdAt     DateTime           @default(now())
+
+  // Relations
+  recipient User @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId])
+  @@index([channel])
+  @@index([status])
+  @@index([createdAt])
+  @@index([templateId])
+}
+
+/// Email verification codes
+model VerificationCode {
+  id        String   @id @default(uuid())
+  userId    String
+  code      String
+  type      String   // EMAIL_VERIFICATION, PHONE_VERIFICATION, PASSWORD_RESET
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([code])
+  @@index([type])
+  @@index([expiresAt])
+}

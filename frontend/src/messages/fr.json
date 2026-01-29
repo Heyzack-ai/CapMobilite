@@ -1,0 +1,796 @@
+{
+  "common": {
+    "phone": "01 XX XX XX XX",
+    "email": "contact@capmobilite.fr",
+    "companyName": "CapMobilité"
+  },
+  "nav": {
+    "howItWorks": "Comment ça marche",
+    "wheelchairs": "Nos Fauteuils",
+    "reviews": "Avis",
+    "faq": "FAQ",
+    "submitRequest": "Déposer ma demande",
+    "login": "Connexion",
+    "dashboard": "Mon espace"
+  },
+  "legalBanner": {
+    "text": "La fourniture de fauteuil roulant est soumise à prescription médicale obligatoire. Dispositif médical de classe I."
+  },
+  "hero": {
+    "badge": "Réforme Décembre 2025 · Sur prescription médicale",
+    "title": "Fauteuil Roulant",
+    "titleHighlight": "Pris en Charge",
+    "description": "Depuis décembre 2025, les fauteuils roulants peuvent être pris en charge à 100% par l'Assurance Maladie, <strong>uniquement sur prescription médicale</strong>. Nous vous accompagnons dans toutes vos démarches administratives.",
+    "benefit1": "Aucune avance de frais si dossier conforme (Tiers Payant)",
+    "benefit2": "Démarches administratives gérées à 100%",
+    "benefit3": "Livraison à domicile & Entretien inclus",
+    "ctaPrimary": "Déposer ma demande",
+    "ctaSecondary": "Nous appeler",
+    "stats": {
+      "patients": "patients aidés",
+      "days": "jours en moyenne",
+      "rating": "Satisfaction"
+    },
+    "zeroBadge": "0€ de reste à charge*",
+    "zeroBadgeNote": "*Sous réserve de prescription et accord CPAM"
+  },
+  "reform": {
+    "title": "Depuis décembre 2025, l'accès au fauteuil roulant simplifié",
+    "before": {
+      "title": "Avant décembre 2025",
+      "item1": "Avance de frais de 3000€+",
+      "item2": "Démarches administratives complexes"
+    },
+    "after": {
+      "title": "Avec la réforme",
+      "item1": "0€ d'avance de frais",
+      "item2": "Toutes les démarches gérées pour vous"
+    }
+  },
+  "howItWorks": {
+    "title": "Comment ça marche",
+    "subtitle": "Un accompagnement personnalisé en 3 étapes",
+    "step1": {
+      "title": "Vous nous contactez avec votre ordonnance",
+      "description": "Vous nous transmettez votre prescription médicale. Sans ordonnance ? Consultez votre médecin."
+    },
+    "step2": {
+      "title": "On s'occupe de tout",
+      "description": "Constitution du dossier, devis, demande de prise en charge auprès de l'Assurance Maladie."
+    },
+    "step3": {
+      "title": "Livraison chez vous, suivi assuré",
+      "description": "Livraison, installation, essai et entretien annuel inclus dans votre forfait."
+    }
+  },
+  "products": {
+    "title": "Des fauteuils adaptés à chaque besoin",
+    "subtitle": "Le choix du fauteuil est déterminé par votre médecin selon votre situation médicale.",
+    "manual": {
+      "title": "Fauteuil Manuel",
+      "subtitle": "Modèle standard léger",
+      "feature1": "Prise en charge Assurance Maladie",
+      "feature2": "Léger et maniable",
+      "feature3": "Entretien inclus",
+      "value": "Valeur : 260€",
+      "cost": "0€ reste à charge*"
+    },
+    "electric": {
+      "title": "Fauteuil Électrique",
+      "subtitle": "Autonomie renforcée",
+      "badge": "Le plus demandé",
+      "feature1": "Prise en charge selon prescription",
+      "feature2": "Jusqu'à 25 km d'autonomie",
+      "feature3": "Formation à l'utilisation",
+      "value": "Valeur : 750€",
+      "cost": "0€ reste à charge*"
+    },
+    "terrain": {
+      "title": "Tout-terrain",
+      "subtitle": "Usage extérieur",
+      "feature1": "Roues adaptées",
+      "feature2": "Cadre renforcé",
+      "feature3": "Pour usage mixte",
+      "value": "Valeur : 750€",
+      "cost": "0€ reste à charge*"
+    },
+    "note": "Le type de fauteuil est déterminé par votre médecin selon votre situation médicale et les critères de la LPPR."
+  },
+  "whyUs": {
+    "title": "Pourquoi CapMobilité ?",
+    "fast": {
+      "title": "Rapide",
+      "description": "15 jours en moyenne"
+    },
+    "human": {
+      "title": "Humain",
+      "description": "Un conseiller dédié"
+    },
+    "noCost": {
+      "title": "Sans avance",
+      "description": "Tiers Payant"
+    },
+    "maintenance": {
+      "title": "Entretien inclus",
+      "description": "Révision annuelle"
+    }
+  },
+  "testimonials": {
+    "title": "Ils nous font confiance",
+    "testimonial1": {
+      "quote": "Un accompagnement remarquable ! Tout a été géré pour ma mère, de l'ordonnance à la livraison. Aucune démarche à faire de notre côté.",
+      "author": "Marie D.",
+      "location": "Aidante, Lyon"
+    },
+    "testimonial2": {
+      "quote": "Je ne pensais pas que ce serait aussi simple. Mon conseiller m'a guidé à chaque étape. Le fauteuil est arrivé en 12 jours !",
+      "author": "Jean-Pierre M.",
+      "location": "Patient, Paris"
+    },
+    "testimonial3": {
+      "quote": "Service professionnel et humain. La formation à l'utilisation du fauteuil électrique était très complète.",
+      "author": "Sophie L.",
+      "location": "Patiente, Bordeaux"
+    }
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "q1": {
+      "question": "C'est vraiment gratuit ?",
+      "answer": "Pour les dossiers conformes aux critères de la LPPR, avec prescription médicale valide et accord de l'Assurance Maladie, il n'y a aucune avance de frais grâce au tiers payant. L'accord de prise en charge reste soumis à l'approbation de la CPAM."
+    },
+    "q2": {
+      "question": "Quelles sont les conditions pour en bénéficier ?",
+      "answer": "Vous devez disposer d'une prescription médicale établie par un médecin, être affilié à l'Assurance Maladie française, et votre situation doit correspondre aux critères définis par la LPPR (Liste des Produits et Prestations Remboursables)."
+    },
+    "q3": {
+      "question": "Je n'ai pas encore d'ordonnance, comment faire ?",
+      "answer": "La prescription médicale est établie exclusivement par un médecin. Nous vous recommandons de consulter votre médecin traitant qui évaluera votre situation et pourra, si nécessaire, vous délivrer une ordonnance adaptée."
+    },
+    "q4": {
+      "question": "Peut-on faire les démarches pour un proche ?",
+      "answer": "Oui, en tant qu'aidant familial ou tuteur légal, vous pouvez effectuer les démarches administratives pour un proche. Nous aurons besoin d'une attestation de lien (familial ou légal) et de l'accord du bénéficiaire si possible."
+    }
+  },
+  "leadForm": {
+    "title": "Déposer votre demande",
+    "subtitle": "Remplissez ce formulaire et nous vous recontactons sous 24h",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "zipCode": "Code postal",
+    "hasPrescription": "Avez-vous une ordonnance ?",
+    "yes": "Oui",
+    "no": "Non",
+    "dontKnow": "Je ne sais pas",
+    "concernsWho": "Cette demande concerne",
+    "myself": "Moi-même",
+    "relative": "Un proche",
+    "consent": "J'accepte que mes données soient traitées pour être recontacté(e) par CapMobilité. Voir notre politique de confidentialité.",
+    "submit": "Envoyer ma demande",
+    "note": "En soumettant ce formulaire, vous acceptez d'être recontacté par nos équipes. Vos données sont traitées conformément au RGPD."
+  },
+  "finalCta": {
+    "title": "Vous ou un proche avez besoin d'un fauteuil roulant ?",
+    "subtitle": "Sur prescription médicale, l'Assurance Maladie peut prendre en charge votre fauteuil roulant.",
+    "onlineRequest": "Faire ma demande en ligne",
+    "orCall": "Ou appelez-nous :"
+  },
+  "footer": {
+    "tagline": "Spécialiste du fauteuil roulant remboursé par l'Assurance Maladie. Votre partenaire autonomie.",
+    "usefulLinks": "Liens utiles",
+    "howItWorks": "Comment ça marche",
+    "submitRequest": "Déposer ma demande",
+    "legalMentions": "Mentions légales",
+    "privacyPolicy": "Politique de confidentialité",
+    "legalTitle": "Mentions Légales Obligatoires",
+    "legalText": "IMPORTANT : Les fauteuils roulants sont des dispositifs médicaux de classe I (Règlement UE 2017/745). La prise en charge par l'Assurance Maladie est exclusivement soumise à prescription médicale établie par un médecin. CapMobilité n'intervient à aucun moment dans l'évaluation médicale ni dans la décision de prescription. L'accord de prise en charge relève de la seule décision de l'Assurance Maladie selon les critères LPPR. Lire attentivement les instructions d'utilisation du dispositif.",
+    "copyright": "Tous droits réservés.",
+    "cgv": "CGV",
+    "cookies": "Cookies",
+    "sitemap": "Plan du site"
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "email": "Email",
+      "password": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "noAccount": "Pas encore de compte ?",
+      "register": "Créer un compte",
+      "error": "Email ou mot de passe incorrect"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "step1": "Compte",
+      "step2": "Identité",
+      "step3": "Consentements",
+      "email": "Email",
+      "password": "Mot de passe",
+      "passwordRequirements": "Minimum 12 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial",
+      "phone": "Téléphone",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "dateOfBirth": "Date de naissance",
+      "acceptTerms": "J'accepte les conditions générales d'utilisation",
+      "acceptHealthData": "J'accepte le traitement de mes données de santé",
+      "acceptMarketing": "J'accepte de recevoir des communications marketing (optionnel)",
+      "submit": "Créer mon compte",
+      "haveAccount": "Déjà un compte ?",
+      "login": "Se connecter"
+    },
+    "verify": {
+      "title": "Vérification",
+      "emailSent": "Un code de vérification a été envoyé à votre email",
+      "phoneSent": "Un code de vérification a été envoyé à votre téléphone",
+      "enterCode": "Entrez le code à 6 chiffres",
+      "resend": "Renvoyer le code",
+      "submit": "Vérifier"
+    },
+    "resetPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "email": "Email",
+      "submit": "Envoyer le lien",
+      "checkEmail": "Vérifiez votre email",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "reset": "Réinitialiser"
+    }
+  },
+  "patient": {
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "cases": "Mes dossiers",
+      "devices": "Mes équipements",
+      "maintenance": "Maintenance",
+      "documents": "Documents",
+      "profile": "Mon profil",
+      "support": "Support",
+      "logout": "Déconnexion"
+    },
+    "dashboard": {
+      "welcome": "Bonjour",
+      "subtitle": "Bienvenue sur votre espace personnel",
+      "activeCases": "Dossiers actifs",
+      "myDevices": "Équipements",
+      "openTickets": "Tickets ouverts",
+      "totalCases": "Total dossiers",
+      "activeCasesTitle": "Dossiers en cours",
+      "activeCasesDescription": "Suivez l'avancement de vos demandes",
+      "noActiveCases": "Aucun dossier en cours",
+      "newCase": "Nouveau dossier",
+      "created": "Créé le",
+      "deadline": "Échéance",
+      "myDevicesTitle": "Mes équipements",
+      "myDevicesDescription": "Vos fauteuils roulants",
+      "noDevices": "Aucun équipement enregistré",
+      "warrantyExpired": "Garantie expirée",
+      "underWarranty": "Sous garantie",
+      "openTicketsTitle": "Tickets de maintenance",
+      "openTicketsDescription": "Demandes en cours",
+      "scheduledVisit": "Visite planifiée",
+      "viewAll": "Voir tout",
+      "newCaseAction": "Nouveau dossier",
+      "newCaseDescription": "Démarrer une nouvelle demande",
+      "reportIssueAction": "Signaler un problème",
+      "reportIssueDescription": "Créer un ticket de maintenance",
+      "contactSupportAction": "Contacter le support",
+      "contactSupportDescription": "Poser une question"
+    },
+    "cases": {
+      "title": "Mes dossiers",
+      "subtitle": "Suivez l'avancement de vos demandes de fauteuil roulant",
+      "newCase": "Nouveau dossier",
+      "noCases": "Aucun dossier",
+      "noCasesDescription": "Vous n'avez pas encore de dossier en cours",
+      "startCase": "Démarrer un dossier",
+      "created": "Créé le",
+      "progress": "Progression",
+      "deadline": "Échéance",
+      "checklistProgress": "Étapes complétées"
+    },
+    "caseDetail": {
+      "notFound": "Dossier non trouvé",
+      "notFoundDescription": "Ce dossier n'existe pas ou vous n'avez pas les droits pour y accéder",
+      "backToList": "Retour à la liste",
+      "back": "Retour",
+      "created": "Créé le",
+      "deadline": "Échéance",
+      "progressTitle": "Progression du dossier",
+      "checklistTitle": "Étapes du dossier",
+      "documentsTitle": "Documents",
+      "timelineTitle": "Historique",
+      "addDocument": "Ajouter",
+      "upload": "Télécharger",
+      "noDocuments": "Aucun document pour le moment",
+      "completedOn": "Complété le",
+      "overallProgress": "Progression globale",
+      "of": "sur",
+      "stepsCompleted": "étapes complétées",
+      "tabs": {
+        "overview": "Aperçu",
+        "documents": "Documents",
+        "quote": "Devis",
+        "delivery": "Livraison"
+      },
+      "checklist": "Liste de contrôle",
+      "completedOn": "Complété le",
+      "required": "Requis",
+      "slaWarning": "Délai à respecter",
+      "deadline": "Échéance",
+      "uploadedDocuments": "Documents téléchargés",
+      "noDocuments": "Aucun document téléchargé",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "quoteDetails": "Détails du devis",
+      "noQuote": "Aucun devis disponible pour le moment",
+      "quoteApproved": "Devis approuvé",
+      "quotePending": "En attente d'approbation",
+      "validUntil": "Valide jusqu'au",
+      "cpamCoverage": "Prise en charge CPAM",
+      "yourCost": "Reste à charge",
+      "approveQuote": "Approuver le devis",
+      "deliveryInfo": "Informations de livraison",
+      "noDelivery": "Livraison non encore planifiée",
+      "deliveryAfterApproval": "La livraison sera planifiée après approbation du dossier par la CPAM",
+      "deliveryComplete": "Livraison effectuée",
+      "deliveredOn": "Livré le"
+    },
+    "devices": {
+      "title": "Mes équipements",
+      "subtitle": "Gérez vos fauteuils roulants et leur maintenance",
+      "noDevices": "Aucun équipement",
+      "noDevicesDescription": "Vous n'avez pas encore d'équipement enregistré",
+      "active": "Actif",
+      "inRepair": "En réparation",
+      "category": "Catégorie",
+      "deliveryDate": "Date de livraison",
+      "warranty": "Garantie",
+      "warrantyExpired": "Garantie expirée",
+      "underWarranty": "Sous garantie",
+      "until": "jusqu'au",
+      "overdue": "Maintenance en retard",
+      "soon": "Maintenance proche",
+      "scheduled": "Maintenance planifiée",
+      "openTickets": "tickets ouverts",
+      "viewDetails": "Voir détails",
+      "requestService": "Maintenance",
+      "reportIssue": "Signaler",
+      "needHelp": "Besoin d'aide ?",
+      "needHelpDescription": "Notre équipe est disponible pour vous aider",
+      "contactSupport": "Contacter le support"
+    },
+    "maintenance": {
+      "title": "Maintenance",
+      "subtitle": "Gérez vos demandes de maintenance et réparation",
+      "newTicket": "Nouveau ticket",
+      "openTickets": "Tickets ouverts",
+      "closedTickets": "Tickets fermés",
+      "safetyIssue": "Problème de sécurité",
+      "scheduledVisit": "Visite planifiée",
+      "resolved": "Résolu le",
+      "noOpenTickets": "Aucun ticket ouvert",
+      "noOpenTicketsDescription": "Tous vos équipements fonctionnent normalement",
+      "reportIssue": "Signaler un problème",
+      "noClosedTickets": "Aucun ticket fermé",
+      "noClosedTicketsDescription": "L'historique de vos interventions apparaîtra ici"
+    },
+    "newTicket": {
+      "title": "Nouveau ticket de maintenance",
+      "subtitle": "Signalez un problème avec votre équipement",
+      "back": "Retour",
+      "formTitle": "Détails du problème",
+      "formDescription": "Décrivez le problème rencontré avec votre équipement",
+      "device": "Équipement concerné",
+      "selectDevice": "Sélectionner un équipement",
+      "category": "Catégorie du problème",
+      "selectCategory": "Sélectionner une catégorie",
+      "severity": "Gravité",
+      "selectSeverity": "Sélectionner la gravité",
+      "description": "Description du problème",
+      "descriptionPlaceholder": "Décrivez le problème en détail (quand il est apparu, ce qui le déclenche, etc.)",
+      "safetyIssue": "Ce problème affecte ma sécurité",
+      "safetyIssueDescription": "Cochez si le problème vous empêche d'utiliser le fauteuil en toute sécurité",
+      "cancel": "Annuler",
+      "submit": "Envoyer le ticket"
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Gérez vos documents et pièces justificatives",
+      "upload": "Télécharger",
+      "dropzone": "Glissez-déposez vos fichiers ici",
+      "dropzoneDescription": "ou cliquez pour sélectionner",
+      "browse": "Parcourir",
+      "myDocuments": "Mes documents",
+      "myDocumentsDescription": "Documents téléchargés sur votre compte",
+      "noDocuments": "Aucun document",
+      "noDocumentsDescription": "Commencez par télécharger vos documents",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "error": "Erreur",
+      "infoTitle": "Informations importantes",
+      "infoItem1": "Formats acceptés : PDF, JPG, PNG (max 10 Mo)",
+      "infoItem2": "Vos documents sont analysés automatiquement pour vérification",
+      "infoItem3": "Les documents sont conservés de manière sécurisée"
+    },
+    "profile": {
+      "title": "Mon profil",
+      "subtitle": "Gérez vos informations personnelles et préférences",
+      "tabs": {
+        "personal": "Personnel",
+        "contact": "Coordonnées",
+        "security": "Sécurité",
+        "notifications": "Notifications",
+        "proxy": "Mandataire"
+      },
+      "personal": {
+        "title": "Informations personnelles",
+        "description": "Vos informations d'identité",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "dateOfBirth": "Date de naissance"
+      },
+      "contact": {
+        "title": "Coordonnées",
+        "description": "Adresse de livraison et contact d'urgence",
+        "street": "Adresse",
+        "postalCode": "Code postal",
+        "city": "Ville",
+        "country": "Pays",
+        "deliveryNotes": "Instructions de livraison",
+        "deliveryNotesPlaceholder": "Digicode, étage, etc.",
+        "emergencyContact": "Contact d'urgence",
+        "emergencyName": "Nom du contact",
+        "emergencyPhone": "Téléphone",
+        "emergencyRelationship": "Lien de parenté"
+      },
+      "security": {
+        "title": "Sécurité",
+        "description": "Gérez vos paramètres de sécurité",
+        "changePassword": "Changer de mot de passe",
+        "changePasswordDescription": "Mettez à jour votre mot de passe régulièrement",
+        "changePasswordButton": "Modifier",
+        "mfa": "Authentification à deux facteurs",
+        "mfaDescription": "Ajoutez une couche de sécurité supplémentaire",
+        "mfaEnable": "Activer",
+        "mfaDisable": "Désactiver",
+        "sessions": "Sessions actives",
+        "sessionsDescription": "Gérez vos connexions actives",
+        "logoutAll": "Déconnecter partout"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Choisissez comment recevoir vos notifications",
+        "caseUpdates": "Mises à jour des dossiers",
+        "quoteReady": "Devis disponible",
+        "deliveryUpdates": "Informations de livraison",
+        "maintenanceUpdates": "Maintenance et SAV",
+        "marketing": "Communications marketing"
+      },
+      "proxy": {
+        "title": "Mandataire",
+        "description": "Autorisez un proche à agir en votre nom",
+        "noProxy": "Aucun mandataire configuré",
+        "addProxy": "Ajouter un mandataire"
+      },
+      "save": "Enregistrer"
+    },
+    "support": {
+      "title": "Support",
+      "subtitle": "Nous sommes là pour vous aider",
+      "chat": {
+        "title": "Chat en direct",
+        "description": "Discutez avec notre assistant",
+        "placeholder": "Tapez votre message..."
+      },
+      "contact": {
+        "title": "Nous contacter",
+        "phone": "Téléphone",
+        "email": "Email"
+      },
+      "hours": {
+        "title": "Horaires d'ouverture",
+        "weekdays": "Lundi - Vendredi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche",
+        "closed": "Fermé"
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "Consultez nos questions fréquentes",
+        "button": "Voir la FAQ"
+      }
+    }
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "cases": "Dossiers",
+      "quotes": "Devis",
+      "billing": "Facturation",
+      "deliveries": "Livraisons",
+      "service": "SAV",
+      "users": "Utilisateurs",
+      "audit": "Audit",
+      "logout": "Déconnexion"
+    },
+    "quotes": {
+      "title": "Gestion des devis",
+      "subtitle": "Créez et gérez les devis patients",
+      "newQuote": "Nouveau devis",
+      "totalQuotes": "Total devis",
+      "totalValue": "Valeur totale",
+      "approved": "Approuvés",
+      "pending": "En attente",
+      "searchPlaceholder": "Rechercher un devis...",
+      "filters": "Filtres",
+      "quoteNumber": "N° Devis",
+      "patient": "Patient",
+      "amount": "Montant",
+      "breakdown": "Répartition",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "deliveries": {
+      "title": "Gestion des livraisons",
+      "subtitle": "Planifiez et suivez les livraisons",
+      "pending": "En attente",
+      "scheduled": "Planifiées",
+      "inTransit": "En cours",
+      "delivered": "Livrées",
+      "searchPlaceholder": "Rechercher par patient ou adresse...",
+      "clearFilter": "Effacer le filtre",
+      "schedule": "Planifier",
+      "startDelivery": "Démarrer",
+      "markDelivered": "Marquer livrée",
+      "noDeliveriesFound": "Aucune livraison trouvée"
+    },
+    "audit": {
+      "title": "Journal d'audit",
+      "subtitle": "Historique des actions sur la plateforme",
+      "exportLogs": "Exporter",
+      "totalLogs": "Total entrées",
+      "creations": "Créations",
+      "modifications": "Modifications",
+      "deletions": "Suppressions",
+      "searchPlaceholder": "Rechercher dans les logs...",
+      "allActions": "Toutes les actions",
+      "allEntities": "Toutes les entités",
+      "noLogsFound": "Aucun log trouvé"
+    },
+    "sav": {
+      "title": "Service Après-Vente",
+      "subtitle": "Gestion des tickets de maintenance",
+      "totalTickets": "Total tickets",
+      "openTickets": "Ouverts",
+      "criticalIssues": "Critiques",
+      "scheduledVisits": "Visites planifiées",
+      "searchPlaceholder": "Rechercher un ticket...",
+      "filters": "Filtres",
+      "allTickets": "Tous",
+      "open": "Ouverts",
+      "critical": "Critiques",
+      "scheduled": "Planifiés",
+      "noTicketsFound": "Aucun ticket trouvé"
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "subtitle": "Administrez les comptes utilisateurs",
+      "addUser": "Ajouter un utilisateur",
+      "totalUsers": "Total utilisateurs",
+      "activeUsers": "Actifs",
+      "patients": "Patients",
+      "staff": "Personnel",
+      "searchPlaceholder": "Rechercher par nom ou email...",
+      "allRoles": "Tous les rôles",
+      "user": "Utilisateur",
+      "contact": "Contact",
+      "role": "Rôle",
+      "status": "Statut",
+      "actions": "Actions",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "noUsersFound": "Aucun utilisateur trouvé"
+    },
+    "billing": {
+      "title": "Facturation & Remboursements",
+      "subtitle": "Suivi des demandes CPAM et mutuelles",
+      "totalClaimed": "Total demandé",
+      "totalPaid": "Total payé",
+      "pendingAmount": "En attente",
+      "recoveryRate": "Taux de recouvrement",
+      "searchPlaceholder": "Rechercher une facture...",
+      "filters": "Filtres",
+      "submitClaims": "Soumettre",
+      "claimsList": "Liste des demandes",
+      "claimNumber": "N° Demande",
+      "patient": "Patient",
+      "type": "Type",
+      "amountClaimed": "Demandé",
+      "amountPaid": "Payé",
+      "status": "Statut",
+      "actions": "Actions",
+      "noClaimsFound": "Aucune demande trouvée"
+    },
+    "dashboard": {
+      "title": "Tableau de bord",
+      "subtitle": "Vue d'ensemble de l'activité",
+      "stats": {
+        "openCases": "Dossiers ouverts",
+        "openTickets": "Tickets SAV",
+        "pendingClaims": "Demandes CPAM",
+        "revenue": "Chiffre d'affaires",
+        "fromYesterday": "depuis hier",
+        "critical": "critique",
+        "vsLastMonth": "vs mois dernier"
+      },
+      "casesByStatus": "Dossiers par statut",
+      "casesByStatusDescription": "Répartition des dossiers actifs",
+      "recentCases": "Dossiers récents",
+      "recentCasesDescription": "Derniers dossiers créés",
+      "serviceTickets": "Tickets SAV",
+      "serviceTicketsDescription": "Demandes de maintenance en cours",
+      "viewAll": "Voir tout",
+      "quickActions": "Actions rapides",
+      "actions": {
+        "manageCases": "Gérer les dossiers",
+        "createQuote": "Créer un devis",
+        "manageTickets": "Gérer les tickets",
+        "manageUsers": "Gérer les utilisateurs"
+      }
+    },
+    "cases": {
+      "title": "Gestion des dossiers",
+      "subtitle": "Tous les dossiers patients",
+      "search": "Rechercher un dossier ou patient...",
+      "filterByStatus": "Filtrer par statut",
+      "allStatuses": "Tous les statuts",
+      "table": {
+        "caseNumber": "N° Dossier",
+        "patient": "Patient",
+        "status": "Statut",
+        "priority": "Priorité",
+        "created": "Créé le",
+        "sla": "SLA",
+        "actions": "Actions",
+        "view": "Voir"
+      },
+      "noCases": "Aucun dossier trouvé"
+    },
+    "sav": {
+      "title": "Service Après-Vente",
+      "subtitle": "Gestion des tickets de maintenance",
+      "stats": {
+        "open": "Ouverts",
+        "inProgress": "En cours",
+        "critical": "Critiques",
+        "resolved": "Résolus"
+      },
+      "search": "Rechercher un ticket...",
+      "filterByStatus": "Filtrer par statut",
+      "allStatuses": "Tous les statuts",
+      "filterBySeverity": "Filtrer par gravité",
+      "allSeverities": "Toutes les gravités",
+      "safetyIssue": "Sécurité",
+      "scheduled": "Visite planifiée",
+      "technician": "Technicien",
+      "view": "Voir",
+      "assign": "Assigner",
+      "noTickets": "Aucun ticket trouvé"
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "subtitle": "Administrez les comptes utilisateurs",
+      "addUser": "Ajouter un utilisateur",
+      "stats": {
+        "total": "Total utilisateurs",
+        "patients": "Patients",
+        "staff": "Personnel",
+        "verified": "Vérifiés"
+      },
+      "search": "Rechercher un utilisateur...",
+      "filterByRole": "Filtrer par rôle",
+      "allRoles": "Tous les rôles",
+      "table": {
+        "user": "Utilisateur",
+        "contact": "Contact",
+        "role": "Rôle",
+        "status": "Statut",
+        "security": "Sécurité",
+        "actions": "Actions"
+      },
+      "noUsers": "Aucun utilisateur trouvé"
+    },
+    "billing": {
+      "title": "Facturation",
+      "subtitle": "Gestion des devis et demandes CPAM",
+      "stats": {
+        "totalClaimed": "Total demandé",
+        "approved": "Approuvé",
+        "pending": "En attente",
+        "claims": "Demandes"
+      },
+      "tabs": {
+        "claims": "Demandes CPAM",
+        "quotes": "Devis"
+      },
+      "claims": {
+        "title": "Demandes CPAM",
+        "description": "Suivi des remboursements",
+        "newClaim": "Nouvelle demande",
+        "case": "Dossier",
+        "submitted": "Soumis le",
+        "response": "Réponse le",
+        "approved": "Approuvé"
+      },
+      "quotes": {
+        "title": "Devis",
+        "description": "Gestion des devis patients",
+        "newQuote": "Nouveau devis",
+        "quote": "Devis",
+        "case": "Dossier",
+        "lppr": "LPPR",
+        "patient": "Patient",
+        "items": "Articles",
+        "validUntil": "Valide jusqu'au",
+        "approvedOn": "Approuvé le"
+      }
+    }
+  },
+  "prescriber": {
+    "title": "Portail Prescripteur",
+    "subtitle": "Transmettez les documents médicaux en toute sécurité",
+    "validate": {
+      "title": "Validation du lien",
+      "description": "Vérification de votre accès au portail prescripteur",
+      "button": "Valider mon accès",
+      "invalid": "Lien invalide ou expiré",
+      "invalidDescription": "Veuillez contacter CapMobilité pour obtenir un nouveau lien"
+    },
+    "patient": "Patient",
+    "case": "Dossier",
+    "steps": {
+      "info": "Informations",
+      "upload": "Documents",
+      "done": "Terminé"
+    },
+    "form": {
+      "title": "Vos informations",
+      "description": "Identifiez-vous en tant que prescripteur",
+      "rpps": "Numéro RPPS / ADELI",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "specialty": "Spécialité",
+      "notes": "Notes cliniques (optionnel)",
+      "notesPlaceholder": "Informations complémentaires sur le patient...",
+      "continue": "Continuer"
+    },
+    "upload": {
+      "title": "Documents médicaux",
+      "description": "Téléchargez l'ordonnance et documents associés",
+      "dropzone": "Glissez-déposez vos fichiers ici",
+      "formats": "PDF, JPG, PNG (max 10 Mo)",
+      "browse": "Parcourir",
+      "submit": "Envoyer les documents"
+    },
+    "success": {
+      "title": "Documents transmis avec succès",
+      "description": "Merci pour votre contribution. Le patient sera notifié de la réception des documents.",
+      "reference": "Numéro de référence",
+      "note": "Vous pouvez fermer cette page en toute sécurité."
+    }
+  },
+  "validation": {
+    "required": "Ce champ est requis",
+    "email": "Email invalide",
+    "phone": "Format: +33612345678",
+    "passwordMin": "Minimum 12 caractères",
+    "passwordUppercase": "Une majuscule requise",
+    "passwordLowercase": "Une minuscule requise",
+    "passwordNumber": "Un chiffre requis",
+    "passwordSpecial": "Un caractère spécial requis"
+  }
+}

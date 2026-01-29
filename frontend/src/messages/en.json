@@ -1,0 +1,801 @@
+{
+  "common": {
+    "phone": "01 XX XX XX XX",
+    "email": "contact@capmobilite.fr",
+    "companyName": "CapMobilité"
+  },
+  "nav": {
+    "howItWorks": "How it works",
+    "wheelchairs": "Our Wheelchairs",
+    "reviews": "Reviews",
+    "faq": "FAQ",
+    "submitRequest": "Submit my request",
+    "login": "Login",
+    "dashboard": "My account"
+  },
+  "legalBanner": {
+    "text": "⚠️ Wheelchair supply requires mandatory medical prescription. Class I medical device."
+  },
+  "hero": {
+    "badge": "December 2025 Reform · With medical prescription",
+    "title": "Wheelchair",
+    "titleHighlight": "Covered by Insurance",
+    "description": "Since December 2025, wheelchairs can be fully covered by French Health Insurance, <strong>only with a medical prescription</strong>. We support you through all administrative procedures.",
+    "benefit1": "No upfront payment for compliant files (Third-Party)",
+    "benefit2": "100% of administrative work handled",
+    "benefit3": "Home delivery & maintenance included",
+    "ctaPrimary": "Submit my request",
+    "ctaSecondary": "Call us",
+    "stats": {
+      "patients": "patients helped",
+      "days": "days average",
+      "rating": "Satisfaction"
+    },
+    "zeroBadge": "€0 remaining charge*",
+    "zeroBadgeNote": "*Subject to prescription and CPAM approval"
+  },
+  "reform": {
+    "title": "Since December 2025, simplified wheelchair access",
+    "before": {
+      "title": "Before December 2025",
+      "item1": "€3000+ upfront costs",
+      "item2": "Complex administrative procedures"
+    },
+    "after": {
+      "title": "With the reform",
+      "item1": "€0 upfront costs",
+      "item2": "All procedures handled for you"
+    }
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Personalized support in 3 steps",
+    "step1": {
+      "title": "Contact us with your prescription",
+      "description": "Send us your medical prescription. No prescription? Consult your doctor."
+    },
+    "step2": {
+      "title": "We handle everything",
+      "description": "File preparation, quote, coverage request to Health Insurance."
+    },
+    "step3": {
+      "title": "Home delivery, ongoing support",
+      "description": "Delivery, installation, trial and annual maintenance included."
+    }
+  },
+  "products": {
+    "title": "Wheelchairs adapted to every need",
+    "subtitle": "The wheelchair choice is determined by your doctor based on your medical situation.",
+    "manual": {
+      "title": "Manual Wheelchair",
+      "subtitle": "Standard lightweight model",
+      "feature1": "Health Insurance coverage",
+      "feature2": "Light and maneuverable",
+      "feature3": "Maintenance included",
+      "value": "Value: €260",
+      "cost": "€0 remaining charge*"
+    },
+    "electric": {
+      "title": "Electric Wheelchair",
+      "subtitle": "Enhanced autonomy",
+      "badge": "Most requested",
+      "feature1": "Coverage per prescription",
+      "feature2": "Up to 25 km range",
+      "feature3": "Usage training",
+      "value": "Value: €750",
+      "cost": "€0 remaining charge*"
+    },
+    "terrain": {
+      "title": "All-Terrain",
+      "subtitle": "Outdoor use",
+      "feature1": "Adapted wheels",
+      "feature2": "Reinforced frame",
+      "feature3": "For mixed use",
+      "value": "Value: €750",
+      "cost": "€0 remaining charge*"
+    },
+    "note": "ℹ️ The wheelchair type is determined by your doctor based on your medical situation and LPPR criteria."
+  },
+  "whyUs": {
+    "title": "Why CapMobilité?",
+    "fast": {
+      "title": "Fast",
+      "description": "15 days average"
+    },
+    "human": {
+      "title": "Human",
+      "description": "Dedicated advisor"
+    },
+    "noCost": {
+      "title": "No advance",
+      "description": "Third-Party payment"
+    },
+    "maintenance": {
+      "title": "Maintenance included",
+      "description": "Annual checkup"
+    }
+  },
+  "testimonials": {
+    "title": "They trust us",
+    "testimonial1": {
+      "quote": "Remarkable support! Everything was handled for my mother, from prescription to delivery. No steps to take on our side.",
+      "author": "Marie D.",
+      "location": "Caregiver, Lyon"
+    },
+    "testimonial2": {
+      "quote": "I didn't think it would be so simple. My advisor guided me every step. The wheelchair arrived in 12 days!",
+      "author": "Jean-Pierre M.",
+      "location": "Patient, Paris"
+    },
+    "testimonial3": {
+      "quote": "Professional and human service. The electric wheelchair usage training was very comprehensive.",
+      "author": "Sophie L.",
+      "location": "Patient, Bordeaux"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": {
+      "question": "Is it really free?",
+      "answer": "For files compliant with LPPR criteria, with valid medical prescription and Health Insurance approval, there is no upfront cost thanks to third-party payment. Coverage approval remains subject to CPAM approval."
+    },
+    "q2": {
+      "question": "What are the conditions to benefit?",
+      "answer": "You must have a medical prescription issued by a doctor, be affiliated with French Health Insurance, and your situation must meet the criteria defined by the LPPR (List of Reimbursable Products and Services)."
+    },
+    "q3": {
+      "question": "I don't have a prescription yet, what should I do?",
+      "answer": "The medical prescription is issued exclusively by a doctor. We recommend consulting your general practitioner who will evaluate your situation and can, if necessary, issue an appropriate prescription."
+    },
+    "q4": {
+      "question": "Can we do the procedures for a relative?",
+      "answer": "Yes, as a family caregiver or legal guardian, you can complete administrative procedures for a relative. We will need proof of relationship (family or legal) and the beneficiary's consent if possible."
+    }
+  },
+  "leadForm": {
+    "title": "Submit your request",
+    "subtitle": "Fill out this form and we'll contact you within 24 hours",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "zipCode": "Zip code",
+    "hasPrescription": "Do you have a prescription?",
+    "yes": "Yes",
+    "no": "No",
+    "dontKnow": "I don't know",
+    "concernsWho": "This request concerns",
+    "myself": "Myself",
+    "relative": "A relative",
+    "consent": "I agree to have my data processed to be contacted by CapMobilité. See our privacy policy.",
+    "submit": "Send my request",
+    "note": "By submitting this form, you agree to be contacted by our teams. Your data is processed in accordance with GDPR."
+  },
+  "finalCta": {
+    "title": "Do you or a relative need a wheelchair?",
+    "subtitle": "With a medical prescription, Health Insurance can cover your wheelchair.",
+    "onlineRequest": "Make my request online",
+    "orCall": "Or call us:"
+  },
+  "footer": {
+    "tagline": "Specialist in wheelchairs reimbursed by Health Insurance. Your autonomy partner.",
+    "usefulLinks": "Useful links",
+    "howItWorks": "How it works",
+    "submitRequest": "Submit my request",
+    "legalMentions": "Legal mentions",
+    "privacyPolicy": "Privacy policy",
+    "legalTitle": "Mandatory Legal Information",
+    "legalText": "⚠️ IMPORTANT: Wheelchairs are class I medical devices (EU Regulation 2017/745). Coverage by Health Insurance is exclusively subject to medical prescription issued by a doctor. CapMobilité does not intervene in medical evaluation or prescription decisions. Coverage approval is solely the decision of Health Insurance according to LPPR criteria. Read device instructions carefully.",
+    "copyright": "All rights reserved.",
+    "cgv": "T&C",
+    "cookies": "Cookies",
+    "sitemap": "Sitemap"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "register": "Create account",
+      "error": "Invalid email or password"
+    },
+    "register": {
+      "title": "Create account",
+      "step1": "Account",
+      "step2": "Identity",
+      "step3": "Consents",
+      "email": "Email",
+      "password": "Password",
+      "passwordRequirements": "Minimum 12 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character",
+      "phone": "Phone",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "dateOfBirth": "Date of birth",
+      "acceptTerms": "I accept the terms of service",
+      "acceptHealthData": "I consent to the processing of my health data",
+      "acceptMarketing": "I agree to receive marketing communications (optional)",
+      "submit": "Create my account",
+      "haveAccount": "Already have an account?",
+      "login": "Sign in"
+    },
+    "verify": {
+      "title": "Verification",
+      "emailSent": "A verification code has been sent to your email",
+      "phoneSent": "A verification code has been sent to your phone",
+      "enterCode": "Enter the 6-digit code",
+      "resend": "Resend code",
+      "submit": "Verify"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "email": "Email",
+      "submit": "Send reset link",
+      "checkEmail": "Check your email",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "reset": "Reset"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "activeCase": "Active case",
+    "noActiveCase": "No active case",
+    "createCase": "Create a case",
+    "myDevices": "My devices",
+    "noDevices": "No devices",
+    "recentNotifications": "Recent notifications",
+    "viewAll": "View all"
+  },
+  "cases": {
+    "title": "My cases",
+    "new": "New case",
+    "status": {
+      "intake": "Received",
+      "pending": "Documents pending",
+      "review": "Under review",
+      "quoteReady": "Quote ready",
+      "submitted": "Submitted to CPAM",
+      "approved": "Approved",
+      "delivered": "Delivered"
+    }
+  },
+  "patient": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "cases": "My Cases",
+      "devices": "My Devices",
+      "maintenance": "Maintenance",
+      "documents": "Documents",
+      "profile": "My Profile",
+      "support": "Support",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "welcome": "Hello",
+      "subtitle": "Welcome to your personal space",
+      "activeCases": "Active Cases",
+      "myDevices": "Devices",
+      "openTickets": "Open Tickets",
+      "totalCases": "Total Cases",
+      "activeCasesTitle": "Active Cases",
+      "activeCasesDescription": "Track the progress of your requests",
+      "noActiveCases": "No active cases",
+      "newCase": "New Case",
+      "created": "Created on",
+      "deadline": "Deadline",
+      "myDevicesTitle": "My Devices",
+      "myDevicesDescription": "Your wheelchairs",
+      "noDevices": "No registered devices",
+      "warrantyExpired": "Warranty expired",
+      "underWarranty": "Under warranty",
+      "openTicketsTitle": "Maintenance Tickets",
+      "openTicketsDescription": "Ongoing requests",
+      "scheduledVisit": "Scheduled visit",
+      "viewAll": "View all",
+      "newCaseAction": "New Case",
+      "newCaseDescription": "Start a new request",
+      "reportIssueAction": "Report an Issue",
+      "reportIssueDescription": "Create a maintenance ticket",
+      "contactSupportAction": "Contact Support",
+      "contactSupportDescription": "Ask a question"
+    },
+    "cases": {
+      "title": "My Cases",
+      "subtitle": "Track the progress of your wheelchair requests",
+      "newCase": "New Case",
+      "noCases": "No cases",
+      "noCasesDescription": "You don't have any active cases yet",
+      "startCase": "Start a case",
+      "created": "Created on",
+      "progress": "Progress",
+      "deadline": "Deadline",
+      "checklistProgress": "Steps completed"
+    },
+    "caseDetail": {
+      "notFound": "Case not found",
+      "notFoundDescription": "This case does not exist or you do not have permission to access it",
+      "backToList": "Back to list",
+      "back": "Back",
+      "created": "Created on",
+      "deadline": "Deadline",
+      "progressTitle": "Case Progress",
+      "checklistTitle": "Case Steps",
+      "documentsTitle": "Documents",
+      "timelineTitle": "History",
+      "addDocument": "Add",
+      "upload": "Upload",
+      "noDocuments": "No documents yet",
+      "completedOn": "Completed on",
+      "overallProgress": "Overall progress",
+      "of": "of",
+      "stepsCompleted": "steps completed",
+      "tabs": {
+        "overview": "Overview",
+        "documents": "Documents",
+        "quote": "Quote",
+        "delivery": "Delivery"
+      },
+      "checklist": "Checklist",
+      "required": "Required",
+      "slaWarning": "Deadline to meet",
+      "uploadedDocuments": "Uploaded documents",
+      "verified": "Verified",
+      "pending": "Pending",
+      "quoteDetails": "Quote Details",
+      "noQuote": "No quote available yet",
+      "quoteApproved": "Quote approved",
+      "quotePending": "Awaiting approval",
+      "validUntil": "Valid until",
+      "cpamCoverage": "CPAM coverage",
+      "yourCost": "Your cost",
+      "approveQuote": "Approve quote",
+      "deliveryInfo": "Delivery Information",
+      "noDelivery": "Delivery not yet scheduled",
+      "deliveryAfterApproval": "Delivery will be scheduled after CPAM approval",
+      "deliveryComplete": "Delivery completed",
+      "deliveredOn": "Delivered on"
+    },
+    "devices": {
+      "title": "My Devices",
+      "subtitle": "Manage your wheelchairs and their maintenance",
+      "noDevices": "No devices",
+      "noDevicesDescription": "You don't have any registered devices yet",
+      "active": "Active",
+      "inRepair": "In repair",
+      "category": "Category",
+      "deliveryDate": "Delivery date",
+      "warranty": "Warranty",
+      "warrantyExpired": "Warranty expired",
+      "underWarranty": "Under warranty",
+      "until": "until",
+      "overdue": "Maintenance overdue",
+      "soon": "Maintenance soon",
+      "scheduled": "Maintenance scheduled",
+      "openTickets": "open tickets",
+      "viewDetails": "View details",
+      "requestService": "Maintenance",
+      "reportIssue": "Report",
+      "needHelp": "Need help?",
+      "needHelpDescription": "Our team is available to help you",
+      "contactSupport": "Contact support"
+    },
+    "maintenance": {
+      "title": "Maintenance",
+      "subtitle": "Manage your maintenance and repair requests",
+      "newTicket": "New ticket",
+      "openTickets": "Open Tickets",
+      "closedTickets": "Closed Tickets",
+      "safetyIssue": "Safety issue",
+      "scheduledVisit": "Scheduled visit",
+      "resolved": "Resolved on",
+      "noOpenTickets": "No open tickets",
+      "noOpenTicketsDescription": "All your devices are working properly",
+      "reportIssue": "Report an issue",
+      "noClosedTickets": "No closed tickets",
+      "noClosedTicketsDescription": "Your intervention history will appear here"
+    },
+    "newTicket": {
+      "title": "New Maintenance Ticket",
+      "subtitle": "Report an issue with your device",
+      "back": "Back",
+      "formTitle": "Problem Details",
+      "formDescription": "Describe the problem you encountered with your device",
+      "device": "Device concerned",
+      "selectDevice": "Select a device",
+      "category": "Problem category",
+      "selectCategory": "Select a category",
+      "severity": "Severity",
+      "selectSeverity": "Select severity",
+      "description": "Problem description",
+      "descriptionPlaceholder": "Describe the problem in detail (when it appeared, what triggers it, etc.)",
+      "safetyIssue": "This problem affects my safety",
+      "safetyIssueDescription": "Check if the problem prevents you from using the wheelchair safely",
+      "cancel": "Cancel",
+      "submit": "Submit ticket"
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Manage your documents and supporting files",
+      "upload": "Upload",
+      "dropzone": "Drag and drop your files here",
+      "dropzoneDescription": "or click to select",
+      "browse": "Browse",
+      "myDocuments": "My Documents",
+      "myDocumentsDescription": "Documents uploaded to your account",
+      "noDocuments": "No documents",
+      "noDocumentsDescription": "Start by uploading your documents",
+      "verified": "Verified",
+      "pending": "Pending",
+      "error": "Error",
+      "infoTitle": "Important Information",
+      "infoItem1": "Accepted formats: PDF, JPG, PNG (max 10 MB)",
+      "infoItem2": "Your documents are automatically analyzed for verification",
+      "infoItem3": "Documents are stored securely"
+    },
+    "profile": {
+      "title": "My Profile",
+      "subtitle": "Manage your personal information and preferences",
+      "tabs": {
+        "personal": "Personal",
+        "contact": "Contact",
+        "security": "Security",
+        "notifications": "Notifications",
+        "proxy": "Proxy"
+      },
+      "personal": {
+        "title": "Personal Information",
+        "description": "Your identity information",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "dateOfBirth": "Date of birth"
+      },
+      "contact": {
+        "title": "Contact Details",
+        "description": "Delivery address and emergency contact",
+        "street": "Address",
+        "postalCode": "Postal code",
+        "city": "City",
+        "country": "Country",
+        "deliveryNotes": "Delivery instructions",
+        "deliveryNotesPlaceholder": "Access code, floor, etc.",
+        "emergencyContact": "Emergency contact",
+        "emergencyName": "Contact name",
+        "emergencyPhone": "Phone",
+        "emergencyRelationship": "Relationship"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Manage your security settings",
+        "changePassword": "Change password",
+        "changePasswordDescription": "Update your password regularly",
+        "changePasswordButton": "Change",
+        "mfa": "Two-factor authentication",
+        "mfaDescription": "Add an extra layer of security",
+        "mfaEnable": "Enable",
+        "mfaDisable": "Disable",
+        "sessions": "Active sessions",
+        "sessionsDescription": "Manage your active connections",
+        "logoutAll": "Logout everywhere"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Choose how to receive your notifications",
+        "caseUpdates": "Case updates",
+        "quoteReady": "Quote available",
+        "deliveryUpdates": "Delivery information",
+        "maintenanceUpdates": "Maintenance and support",
+        "marketing": "Marketing communications"
+      },
+      "proxy": {
+        "title": "Proxy",
+        "description": "Authorize someone to act on your behalf",
+        "noProxy": "No proxy configured",
+        "addProxy": "Add a proxy"
+      },
+      "save": "Save"
+    },
+    "support": {
+      "title": "Support",
+      "subtitle": "We are here to help you",
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with our assistant",
+        "placeholder": "Type your message..."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "hours": {
+        "title": "Opening Hours",
+        "weekdays": "Monday - Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "closed": "Closed"
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "Check our frequently asked questions",
+        "button": "View FAQ"
+      }
+    }
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "cases": "Cases",
+      "quotes": "Quotes",
+      "billing": "Billing",
+      "deliveries": "Deliveries",
+      "service": "Service",
+      "users": "Users",
+      "audit": "Audit",
+      "logout": "Logout"
+    },
+    "quotes": {
+      "title": "Quote Management",
+      "subtitle": "Create and manage patient quotes",
+      "newQuote": "New quote",
+      "totalQuotes": "Total quotes",
+      "totalValue": "Total value",
+      "approved": "Approved",
+      "pending": "Pending",
+      "searchPlaceholder": "Search for a quote...",
+      "filters": "Filters",
+      "quoteNumber": "Quote #",
+      "patient": "Patient",
+      "amount": "Amount",
+      "breakdown": "Breakdown",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "deliveries": {
+      "title": "Delivery Management",
+      "subtitle": "Schedule and track deliveries",
+      "pending": "Pending",
+      "scheduled": "Scheduled",
+      "inTransit": "In Transit",
+      "delivered": "Delivered",
+      "searchPlaceholder": "Search by patient or address...",
+      "clearFilter": "Clear filter",
+      "schedule": "Schedule",
+      "startDelivery": "Start",
+      "markDelivered": "Mark delivered",
+      "noDeliveriesFound": "No deliveries found"
+    },
+    "audit": {
+      "title": "Audit Log",
+      "subtitle": "Platform action history",
+      "exportLogs": "Export",
+      "totalLogs": "Total entries",
+      "creations": "Creations",
+      "modifications": "Modifications",
+      "deletions": "Deletions",
+      "searchPlaceholder": "Search in logs...",
+      "allActions": "All actions",
+      "allEntities": "All entities",
+      "noLogsFound": "No logs found"
+    },
+    "sav": {
+      "title": "After-Sales Service",
+      "subtitle": "Maintenance ticket management",
+      "totalTickets": "Total tickets",
+      "openTickets": "Open",
+      "criticalIssues": "Critical",
+      "scheduledVisits": "Scheduled visits",
+      "searchPlaceholder": "Search for a ticket...",
+      "filters": "Filters",
+      "allTickets": "All",
+      "open": "Open",
+      "critical": "Critical",
+      "scheduled": "Scheduled",
+      "noTicketsFound": "No tickets found",
+      "stats": {
+        "open": "Open",
+        "inProgress": "In Progress",
+        "critical": "Critical",
+        "resolved": "Resolved"
+      },
+      "search": "Search for a ticket...",
+      "filterByStatus": "Filter by status",
+      "allStatuses": "All statuses",
+      "filterBySeverity": "Filter by severity",
+      "allSeverities": "All severities",
+      "safetyIssue": "Safety",
+      "technician": "Technician",
+      "view": "View",
+      "assign": "Assign",
+      "noTickets": "No tickets found"
+    },
+    "users": {
+      "title": "User Management",
+      "subtitle": "Manage user accounts",
+      "addUser": "Add user",
+      "totalUsers": "Total users",
+      "activeUsers": "Active",
+      "patients": "Patients",
+      "staff": "Staff",
+      "searchPlaceholder": "Search by name or email...",
+      "allRoles": "All roles",
+      "user": "User",
+      "contact": "Contact",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions",
+      "active": "Active",
+      "inactive": "Inactive",
+      "noUsersFound": "No users found",
+      "stats": {
+        "total": "Total users",
+        "patients": "Patients",
+        "staff": "Staff",
+        "verified": "Verified"
+      },
+      "search": "Search for a user...",
+      "filterByRole": "Filter by role",
+      "table": {
+        "user": "User",
+        "contact": "Contact",
+        "role": "Role",
+        "status": "Status",
+        "security": "Security",
+        "actions": "Actions"
+      },
+      "noUsers": "No users found"
+    },
+    "billing": {
+      "title": "Billing & Reimbursements",
+      "subtitle": "Track CPAM and mutual fund claims",
+      "totalClaimed": "Total claimed",
+      "totalPaid": "Total paid",
+      "pendingAmount": "Pending",
+      "recoveryRate": "Recovery rate",
+      "searchPlaceholder": "Search for an invoice...",
+      "filters": "Filters",
+      "submitClaims": "Submit",
+      "claimsList": "Claims list",
+      "claimNumber": "Claim #",
+      "patient": "Patient",
+      "type": "Type",
+      "amountClaimed": "Claimed",
+      "amountPaid": "Paid",
+      "status": "Status",
+      "actions": "Actions",
+      "noClaimsFound": "No claims found",
+      "stats": {
+        "totalClaimed": "Total claimed",
+        "approved": "Approved",
+        "pending": "Pending",
+        "claims": "Claims"
+      },
+      "tabs": {
+        "claims": "CPAM Claims",
+        "quotes": "Quotes"
+      },
+      "claims": {
+        "title": "CPAM Claims",
+        "description": "Reimbursement tracking",
+        "newClaim": "New claim",
+        "case": "Case",
+        "submitted": "Submitted on",
+        "response": "Response on",
+        "approved": "Approved"
+      },
+      "quotes": {
+        "title": "Quotes",
+        "description": "Patient quote management",
+        "newQuote": "New quote",
+        "quote": "Quote",
+        "case": "Case",
+        "lppr": "LPPR",
+        "patient": "Patient",
+        "items": "Items",
+        "validUntil": "Valid until",
+        "approvedOn": "Approved on"
+      }
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Activity overview",
+      "stats": {
+        "openCases": "Open cases",
+        "openTickets": "Service tickets",
+        "pendingClaims": "CPAM claims",
+        "revenue": "Revenue",
+        "fromYesterday": "from yesterday",
+        "critical": "critical",
+        "vsLastMonth": "vs last month"
+      },
+      "casesByStatus": "Cases by status",
+      "casesByStatusDescription": "Distribution of active cases",
+      "recentCases": "Recent cases",
+      "recentCasesDescription": "Latest created cases",
+      "serviceTickets": "Service tickets",
+      "serviceTicketsDescription": "Ongoing maintenance requests",
+      "viewAll": "View all",
+      "quickActions": "Quick actions",
+      "actions": {
+        "manageCases": "Manage cases",
+        "createQuote": "Create quote",
+        "manageTickets": "Manage tickets",
+        "manageUsers": "Manage users"
+      }
+    },
+    "cases": {
+      "title": "Case Management",
+      "subtitle": "All patient cases",
+      "search": "Search for a case or patient...",
+      "filterByStatus": "Filter by status",
+      "allStatuses": "All statuses",
+      "table": {
+        "caseNumber": "Case #",
+        "patient": "Patient",
+        "status": "Status",
+        "priority": "Priority",
+        "created": "Created",
+        "sla": "SLA",
+        "actions": "Actions",
+        "view": "View"
+      },
+      "noCases": "No cases found"
+    }
+  },
+  "prescriber": {
+    "title": "Prescriber Portal",
+    "subtitle": "Securely submit medical documents",
+    "validate": {
+      "title": "Link Validation",
+      "description": "Verifying your access to the prescriber portal",
+      "button": "Validate my access",
+      "invalid": "Invalid or expired link",
+      "invalidDescription": "Please contact CapMobilité to get a new link"
+    },
+    "patient": "Patient",
+    "case": "Case",
+    "steps": {
+      "info": "Information",
+      "upload": "Documents",
+      "done": "Done"
+    },
+    "form": {
+      "title": "Your Information",
+      "description": "Identify yourself as a prescriber",
+      "rpps": "RPPS / ADELI Number",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "specialty": "Specialty",
+      "notes": "Clinical notes (optional)",
+      "notesPlaceholder": "Additional patient information...",
+      "continue": "Continue"
+    },
+    "upload": {
+      "title": "Medical Documents",
+      "description": "Upload the prescription and associated documents",
+      "dropzone": "Drag and drop your files here",
+      "formats": "PDF, JPG, PNG (max 10 MB)",
+      "browse": "Browse",
+      "submit": "Submit documents"
+    },
+    "success": {
+      "title": "Documents successfully submitted",
+      "description": "Thank you for your contribution. The patient will be notified of the document reception.",
+      "reference": "Reference number",
+      "note": "You can safely close this page."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email",
+    "phone": "Format: +33612345678",
+    "passwordMin": "Minimum 12 characters",
+    "passwordUppercase": "One uppercase required",
+    "passwordLowercase": "One lowercase required",
+    "passwordNumber": "One number required",
+    "passwordSpecial": "One special character required"
+  }
+}

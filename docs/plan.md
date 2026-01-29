@@ -1,0 +1,451 @@
+# Plan de Conformité - CapMobilité / AX TECH
+
+## 📋 Vue d'Ensemble
+
+Ce document détaille les modifications nécessaires pour rendre le site `index.html` **100% conforme** aux réglementations françaises sur les dispositifs médicaux, la publicité santé, et la protection des données.
+
+**Objectif** : Assurer une communication légale, transparente et sans risque juridique pour l'activité de distribution de fauteuils roulants remboursés par l'Assurance Maladie.
+
+---
+
+## 🚨 RÈGLES FONDAMENTALES
+
+### Ce que nous pouvons faire (AUTORISÉ)
+
+| Action | Justification légale |
+|--------|---------------------|
+| ✅ Accompagnement administratif | Gestion des dossiers CPAM |
+| ✅ Réception de l'ordonnance | Le patient nous la transmet |
+| ✅ Constitution du dossier | Service administratif |
+| ✅ Dépôt auprès de la CPAM | En tant que PSDM agréé |
+| ✅ Livraison à domicile | Prestation logistique |
+| ✅ Formation à l'utilisation | Service après-vente |
+| ✅ Maintenance & réparations | Forfaits CPAM prévus |
+| ✅ Publicité Internet/Réseaux | Dispositifs médicaux classe I = autorisé |
+| ✅ Suivi client & CRM | RGPD + HDS respectés |
+| ✅ Chatbot SAV logistique | Questions non-médicales |
+
+### Ce que nous NE POUVONS PAS faire (INTERDIT)
+
+| Action interdite | Risque |
+|-----------------|--------|
+| ❌ Prescrire un fauteuil | Exercice illégal de la médecine |
+| ❌ Évaluer le besoin médical | Exercice illégal de la médecine |
+| ❌ Analyser l'état de santé | Exercice illégal de la médecine |
+| ❌ Influencer la prescription | Complicité d'exercice illégal |
+| ❌ Garantir le remboursement | Publicité mensongère |
+| ❌ Dire "gratuit" sans conditions | Publicité trompeuse |
+| ❌ Conseil médical via chatbot | Exercice illégal de la médecine |
+
+---
+
+## 📝 MODIFICATIONS REQUISES - index.html
+
+### 1. META DESCRIPTION (Ligne 6)
+
+**❌ ACTUEL (problématique):**
+```html
+<meta name="description" content="Depuis décembre 2025, l'Assurance Maladie prend en charge intégralement votre fauteuil roulant. Zéro reste à charge. CapMobilité s'occupe de tout.">
+```
+
+**✅ CONFORME:**
+```html
+<meta name="description" content="Fauteuils roulants pris en charge par l'Assurance Maladie sur prescription médicale. CapMobilité vous accompagne dans vos démarches administratives.">
+```
+
+**Raison**: Éviter la promesse absolue "100% remboursé" sans mentionner la condition de prescription médicale.
+
+---
+
+### 2. TITLE (Ligne 5)
+
+**❌ ACTUEL:**
+```html
+<title>CapMobilité - Votre Fauteuil Roulant 100% Remboursé</title>
+```
+
+**✅ CONFORME:**
+```html
+<title>CapMobilité - Fauteuils Roulants Pris en Charge | Sur Prescription Médicale</title>
+```
+
+---
+
+### 3. HERO SECTION - BADGE (Lignes ~136-138)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Réforme 2025 · 100% Pris en charge</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Réforme Décembre 2025 · Sur prescription médicale</span>
+```
+
+---
+
+### 4. HERO SECTION - H1 PRINCIPAL (Lignes ~140-142)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Votre Fauteuil Roulant <br/><span class="gradient-text">100% Remboursé</span></span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Fauteuil Roulant <br/><span class="gradient-text">Pris en Charge</span></span>
+```
+
+---
+
+### 5. HERO SECTION - PARAGRAPHE INTRO (Lignes ~144-146)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Depuis décembre 2025, l'Assurance Maladie prend en charge intégralement votre fauteuil roulant. <strong class="text-navy-900 font-semibold">Zéro reste à charge.</strong> On s'occupe de tout pour vous.</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Depuis décembre 2025, les fauteuils roulants peuvent être pris en charge à 100% par l'Assurance Maladie, <strong class="text-navy-900 font-semibold">uniquement sur prescription médicale</strong>. Nous vous accompagnons dans toutes vos démarches administratives.</span>
+```
+
+**Raison**: Ajout de la condition obligatoire "sur prescription médicale".
+
+---
+
+### 6. HERO SECTION - LISTE AVANTAGES (Lignes ~149-170)
+
+**❌ ACTUEL:**
+```html
+<span class="font-medium" x-show="lang === 'fr'">Aucun frais pour vous (Tiers Payant Intégral)</span>
+```
+
+**✅ CONFORME:**
+```html
+<span class="font-medium" x-show="lang === 'fr'">Aucune avance de frais si dossier conforme (Tiers Payant)</span>
+```
+
+---
+
+### 7. BOUTON CTA - "Vérifier mon éligibilité" (Multiple occurrences)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Vérifier mon éligibilité</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Déposer ma demande</span>
+```
+
+**Raison**: Nous ne "vérifions" pas l'éligibilité médicale - c'est le rôle du médecin et de la CPAM. Nous recevons les demandes.
+
+---
+
+### 8. FLOATING BADGE "0€" (Lignes ~223-239)
+
+**❌ ACTUEL:**
+```html
+<div class="text-xs text-gray-400 font-medium">
+    <span x-show="lang === 'fr'">Pour tout dossier validé CPAM</span>
+</div>
+```
+
+**✅ CONFORME (ajouter mention):**
+```html
+<div class="text-xs text-gray-400 font-medium">
+    <span x-show="lang === 'fr'">Sous réserve de prescription médicale et accord CPAM</span>
+</div>
+```
+
+---
+
+### 9. SECTION "Comment ça marche" - ÉTAPE 1 (Lignes ~337-339)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Remplissez le formulaire ou appelez-nous. On vérifie votre éligibilité en 24h avec une simple ordonnance.</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Remplissez le formulaire ou appelez-nous. Transmettez-nous votre ordonnance médicale et nous constituons votre dossier.</span>
+```
+
+**Raison**: Nous ne "vérifions" pas l'éligibilité - c'est le médecin qui prescrit, la CPAM qui valide.
+
+---
+
+### 10. SECTION "Pourquoi nous faire confiance" - "Sans risque" (Lignes ~595-600)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Vous ne payez jamais rien. On se fait payer par la CPAM.</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Aucune avance de frais pour les dossiers conformes. Facturation directe à l'Assurance Maladie.</span>
+```
+
+---
+
+### 11. FAQ - Question 1 "C'est vraiment gratuit ?" (Lignes ~730-735)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Oui, c'est 100% légal et officiel. Depuis décembre 2025, l'Assurance Maladie rembourse intégralement les fauteuils roulants prescrits par un médecin. Nous ne vous demandons jamais de payer quoi que ce soit. On se fait régler directement par la CPAM.</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Oui, c'est légal et officiel. Depuis décembre 2025, l'Assurance Maladie peut prendre en charge intégralement les fauteuils roulants <strong>prescrits par un médecin</strong> et conformes à la réglementation LPPR. Nous pratiquons le tiers payant : vous n'avancez pas de frais lorsque votre dossier est accepté par la CPAM.</span>
+```
+
+---
+
+### 12. FAQ - Question 3 "Je n'ai pas encore d'ordonnance" (Lignes ~763-769)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Prenez rendez-vous avec votre médecin traitant ou un médecin spécialiste. Si le médecin juge qu'un fauteuil roulant est nécessaire, il vous délivrera une ordonnance.</span>
+```
+
+**✅ CONFORME (OK mais à enrichir):**
+```html
+<span x-show="lang === 'fr'">Seul un médecin peut établir une prescription de fauteuil roulant. Prenez rendez-vous avec votre médecin traitant ou un médecin spécialiste (MPR, neurologue...). Si le médecin estime qu'un fauteuil roulant est médicalement nécessaire, il établira l'ordonnance. CapMobilité n'intervient qu'après obtention de cette prescription.</span>
+```
+
+---
+
+### 13. SECTION FORMULAIRE - TITRE (Lignes ~799-803)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Vérifier votre éligibilité en 2 minutes</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Déposer votre demande d'accompagnement</span>
+```
+
+---
+
+### 14. SECTION FORMULAIRE - SOUS-TITRE (Lignes ~805-807)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Remplissez ce formulaire. On vous rappelle sous 24h pour confirmer votre éligibilité.</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Remplissez ce formulaire. Nous vous rappelons sous 24h pour vous accompagner dans vos démarches administratives.</span>
+```
+
+---
+
+### 15. SECTION CTA FINALE (Lignes ~932-940)
+
+**❌ ACTUEL:**
+```html
+<span x-show="lang === 'fr'">Ne payez plus un seul euro. L'état prend tout en charge.</span>
+```
+
+**✅ CONFORME:**
+```html
+<span x-show="lang === 'fr'">Sur prescription médicale, l'Assurance Maladie peut prendre en charge votre fauteuil roulant.</span>
+```
+
+---
+
+### 16. AJOUT OBLIGATOIRE - DISCLAIMER LÉGAL EN HAUT DE PAGE
+
+**À AJOUTER après la balise `<body>` :**
+
+```html
+<!-- Legal Disclaimer Banner -->
+<div class="bg-navy-900 text-white text-xs py-2 px-4 text-center">
+    <span x-show="lang === 'fr'">⚠️ La fourniture de fauteuil roulant est soumise à prescription médicale obligatoire. Dispositif médical de classe I.</span>
+    <span x-show="lang === 'en'" x-cloak>⚠️ Wheelchair supply requires mandatory medical prescription. Class I medical device.</span>
+</div>
+```
+
+---
+
+### 17. MENTIONS LÉGALES FOOTER - RENFORCEMENT
+
+**Le footer actuel est correct mais à compléter avec :**
+
+```html
+<p class="text-xs text-gray-500 leading-relaxed text-justify">
+    <span x-show="lang === 'fr'">
+    ⚠️ <strong>IMPORTANT :</strong> Les fauteuils roulants sont des dispositifs médicaux de classe I (Règlement UE 2017/745). 
+    La prise en charge par l'Assurance Maladie est <strong>exclusivement soumise à prescription médicale</strong> établie par un médecin.
+    CapMobilité n'intervient à aucun moment dans l'évaluation médicale ni dans la décision de prescription.
+    L'accord de prise en charge relève de la seule décision de l'Assurance Maladie selon les critères LPPR.
+    Lire attentivement les instructions d'utilisation du dispositif.
+    </span>
+</p>
+```
+
+---
+
+## 🔒 PHRASES LÉGALES À UTILISER
+
+### Formulations AUTORISÉES (à utiliser partout)
+
+| Français | English |
+|----------|---------|
+| "Sur prescription médicale" | "With medical prescription" |
+| "Selon éligibilité définie par l'Assurance Maladie" | "Subject to eligibility defined by Health Insurance" |
+| "Nous vous accompagnons dans vos démarches administratives" | "We support you in your administrative procedures" |
+| "La prescription est établie exclusivement par un médecin" | "The prescription is issued exclusively by a doctor" |
+| "Sous réserve d'accord de la CPAM" | "Subject to CPAM approval" |
+| "Aucune avance de frais pour les dossiers conformes" | "No upfront payment for compliant files" |
+
+### Formulations INTERDITES (ne jamais utiliser)
+
+| ❌ Interdit | Raison |
+|-------------|--------|
+| "100% gratuit" (sans conditions) | Publicité trompeuse |
+| "Garanti remboursé" | Promesse abusive |
+| "On vérifie votre besoin" | Exercice illégal médecine |
+| "On analyse votre situation" | Exercice illégal médecine |
+| "Vous avez droit à..." | Préjuge de la décision CPAM |
+| "Fauteuil gratuit" | Trompeur |
+
+---
+
+## 📄 PAGES LÉGALES À CRÉER
+
+Les pages suivantes doivent être créées et liées dans le footer :
+
+1. **mentions-legales.html** - Informations société, SIRET, FINESS, directeur publication
+2. **cgu.html** - Conditions Générales d'Utilisation du site
+3. **cgv.html** - Conditions Générales de Vente (dispositifs médicaux)
+4. **confidentialite.html** - Politique RGPD + HDS (données de santé)
+5. **cookies.html** - Politique cookies avec bandeau de consentement
+
+---
+
+## 🛡️ CONFORMITÉ TECHNIQUE
+
+### Hébergement HDS (OBLIGATOIRE)
+
+Les données de santé (ordonnances, informations médicales) doivent être hébergées chez un hébergeur **certifié HDS** :
+
+- OVH Cloud HDS ✅
+- AWS Health (HDS France) ✅
+- Microsoft Azure HDS ✅
+
+**Article L.1111-8 du Code de la santé publique**
+
+### RGPD Renforcé
+
+- Consentement explicite pour données de santé
+- Registre des traitements
+- DPA avec hébergeur
+- Droit d'accès / rectification / suppression
+
+---
+
+## 📊 CHECKLIST DE MISE EN CONFORMITÉ
+
+- [ ] Modifier le `<title>` de la page
+- [ ] Modifier la `<meta description>`
+- [ ] Ajouter le banner disclaimer en haut de page
+- [ ] Modifier le badge hero "Réforme 2025"
+- [ ] Modifier le H1 principal
+- [ ] Modifier le paragraphe d'introduction
+- [ ] Modifier les bullet points avantages
+- [ ] Remplacer "Vérifier mon éligibilité" → "Déposer ma demande" (tous les CTA)
+- [ ] Modifier le floating badge "0€"
+- [ ] Modifier l'étape 1 "Comment ça marche"
+- [ ] Modifier la section "Sans risque"
+- [ ] Modifier toutes les réponses FAQ
+- [ ] Modifier le titre du formulaire
+- [ ] Modifier le sous-titre du formulaire
+- [ ] Modifier la CTA finale
+- [ ] Renforcer les mentions légales footer
+- [ ] Créer les pages légales (CGV, CGU, Confidentialité, Cookies, Mentions légales)
+- [ ] Implémenter le bandeau cookies
+- [ ] Vérifier l'hébergement HDS
+
+---
+
+## 🎯 RÉSUMÉ
+
+### Notre positionnement légal
+
+> **CapMobilité accompagne les patients dans leurs démarches administratives pour l'obtention d'un fauteuil roulant pris en charge par l'Assurance Maladie. La prescription médicale est établie exclusivement par un médecin. La décision de prise en charge relève de la seule compétence de l'Assurance Maladie.**
+
+### Ce que nous sommes
+- ✅ Prestataire de Services et Distributeur de Matériel médical (PSDM)
+- ✅ Accompagnateur administratif
+- ✅ Fournisseur agréé CPAM
+- ✅ Prestataire de maintenance
+
+### Ce que nous ne sommes PAS
+- ❌ Prescripteurs médicaux
+- ❌ Évaluateurs de besoins médicaux
+- ❌ Décisionnaires de la prise en charge
+
+---
+
+**Document créé le** : 29 janvier 2026  
+**Version** : 1.0  
+**Auteur** : AX TECH / CapMobilité  
+**Prochaine révision** : À chaque modification réglementaire
+
+
+TODO:
+- Access to doctor - doctor will get rewward to the doctor for recommendation of our service - not us - we are just admin support
+
+
+- An incentive system for commercial people and doctors - both get points that can be redeemed for gift cards, travel etc to promote our solution - the commercial people can also win moneysee claude code session history
+
+Here are the available routes to test:
+
+Public Routes
+Landing Page: http://localhost:3000
+Login: http://localhost:3000/connexion
+Register: http://localhost:3000/inscription
+Forgot Password: http://localhost:3000/mot-de-passe-oublie
+Patient Portal (requires login)
+Dashboard: http://localhost:3000/dashboard
+My Cases: http://localhost:3000/dossiers
+My Devices: http://localhost:3000/mes-equipements
+Maintenance: http://localhost:3000/maintenance
+New Ticket: http://localhost:3000/maintenance/nouveau
+Documents: http://localhost:3000/documents
+Profile: http://localhost:3000/profil
+Support: http://localhost:3000/support
+Admin Portal (requires admin login)
+Admin Dashboard: http://localhost:3000/admin/tableau-de-bord
+Cases Management: http://localhost:3000/admin/dossiers
+Quotes: http://localhost:3000/admin/devis
+Deliveries: http://localhost:3000/admin/livraisons
+Service (SAV): http://localhost:3000/admin/sav
+Users: http://localhost:3000/admin/utilisateurs
+Billing: http://localhost:3000/admin/facturation
+Audit: http://localhost:3000/admin/audit
+Prescriber Portal
+Document Upload: http://localhost:3000/prescripteur/test-token-123
+Mock Login Credentials
+Patient: jean.dupont@email.com / password123
+Admin: admin@capmobilite.fr / admin123
+
+Go to http://localhost:3000/connexion first, login with the patient credentials, then you'll be redirected to the dashboard.
+
+Invalid email or password
+Email
+admin@capmobilite.fr
+Password
+••••••••
+
+
