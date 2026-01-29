@@ -23,10 +23,10 @@ export class S3Service {
   private readonly buckets: { documents: string; generated: string };
 
   constructor(private configService: ConfigService) {
-    const endpoint = this.configService.get<string>('s3.endpoint');
-    const region = this.configService.get<string>('s3.region');
-    const accessKeyId = this.configService.get<string>('s3.accessKey');
-    const secretAccessKey = this.configService.get<string>('s3.secretKey');
+    const endpoint = this.configService.get<string>('s3.endpoint') || 'http://localhost:4566';
+    const region = this.configService.get<string>('s3.region') || 'eu-west-1';
+    const accessKeyId = this.configService.get<string>('s3.accessKey') || 'localstack';
+    const secretAccessKey = this.configService.get<string>('s3.secretKey') || 'localstack';
 
     this.client = new S3Client({
       endpoint,
@@ -39,8 +39,8 @@ export class S3Service {
     });
 
     this.buckets = {
-      documents: this.configService.get<string>('s3.buckets.documents'),
-      generated: this.configService.get<string>('s3.buckets.generated'),
+      documents: this.configService.get<string>('s3.buckets.documents') || 'axtech-documents-dev',
+      generated: this.configService.get<string>('s3.buckets.generated') || 'axtech-generated-dev',
     };
   }
 

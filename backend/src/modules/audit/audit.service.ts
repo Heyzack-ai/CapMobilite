@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '@/database/prisma.service';
 import { QueueService, QUEUE_NAMES } from '@integrations/queue';
 import { ActorType } from '@common/enums';
@@ -57,7 +58,7 @@ export class AuditService {
         action: event.action,
         objectType: event.objectType,
         objectId: event.objectId,
-        changes: event.changes || null,
+        changes: event.changes ? (event.changes as Prisma.InputJsonValue) : Prisma.JsonNull,
         ipAddress: event.ipAddress || null,
         userAgent: event.userAgent || null,
         requestId: event.requestId || null,
@@ -94,10 +95,12 @@ export class AuditService {
       }
     }
 
+    const limit = query.limit || 20;
+
     const events = await this.prisma.auditEvent.findMany({
       where,
       orderBy: { timestamp: 'desc' },
-      take: query.limit + 1,
+      take: limit + 1,
       ...(query.cursor && {
         cursor: { id: query.cursor },
         skip: 1,
@@ -113,7 +116,7 @@ export class AuditService {
       },
     });
 
-    const hasMore = events.length > query.limit;
+    const hasMore = events.length > limit;
     const data = hasMore ? events.slice(0, -1) : events;
 
     return {
@@ -121,7 +124,7 @@ export class AuditService {
       pagination: {
         cursor: data.length > 0 ? data[data.length - 1].id : undefined,
         hasMore,
-        limit: query.limit,
+        limit,
       },
     };
   }

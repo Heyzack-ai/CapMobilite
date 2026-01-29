@@ -193,10 +193,12 @@ export class DocumentService {
       where.documentType = query.documentType;
     }
 
+    const limit = query.limit || 20;
+
     const documents = await this.prisma.document.findMany({
       where,
       orderBy: { createdAt: 'desc' },
-      take: query.limit + 1,
+      take: limit + 1,
       ...(query.cursor && {
         cursor: { id: query.cursor },
         skip: 1,
@@ -212,7 +214,7 @@ export class DocumentService {
       },
     });
 
-    const hasMore = documents.length > query.limit;
+    const hasMore = documents.length > limit;
     const data = hasMore ? documents.slice(0, -1) : documents;
 
     return {
@@ -220,7 +222,7 @@ export class DocumentService {
       pagination: {
         cursor: data.length > 0 ? data[data.length - 1].id : undefined,
         hasMore,
-        limit: query.limit,
+        limit,
       },
     };
   }
@@ -230,22 +232,32 @@ export class DocumentService {
     status: ScanStatus,
     metadata?: Record<string, any>,
   ) {
-    await this.prisma.document.update({
-      where: { id: documentId },
-      data: {
-        scanStatus: status,
-        scanCompletedAt: new Date(),
-        ...(metadata && {
+    if (metadata) {
+      const existing = await this.prisma.document.findUnique({
+        where: { id: documentId },
+        select: { metadata: true },
+      });
+
+      await this.prisma.document.update({
+        where: { id: documentId },
+        data: {
+          scanStatus: status,
+          scanCompletedAt: new Date(),
           metadata: {
-            ...(await this.prisma.document.findUnique({
-              where: { id: documentId },
-              select: { metadata: true },
-            })).metadata as object,
+            ...((existing?.metadata as object) || {}),
             scanResult: metadata,
           },
-        }),
-      },
-    });
+        },
+      });
+    } else {
+      await this.prisma.document.update({
+        where: { id: documentId },
+        data: {
+          scanStatus: status,
+          scanCompletedAt: new Date(),
+        },
+      });
+    }
 
     this.logger.log(`Document ${documentId} scan status updated to ${status}`);
   }

@@ -31,9 +31,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const requestId = (request.headers['x-request-id'] as string) || uuidv4();
     const timestamp = new Date().toISOString();
 
-    let status: number;
-    let code: string;
-    let message: string;
+    let status: number = HttpStatus.INTERNAL_SERVER_ERROR;
+    let code: string = 'SYS_UNKNOWN_ERROR';
+    let message: string = 'An unexpected error occurred';
     let details: any[] | undefined;
 
     if (exception instanceof HttpException) {
@@ -68,10 +68,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         `Unhandled exception: ${exception.message}`,
         exception.stack,
       );
-    } else {
-      status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = 'An unexpected error occurred';
-      code = 'SYS_UNKNOWN_ERROR';
     }
 
     const errorResponse: ErrorResponse = {

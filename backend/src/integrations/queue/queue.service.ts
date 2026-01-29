@@ -17,7 +17,7 @@ export class QueueService implements OnModuleDestroy {
   private readonly redisConnection: { host: string; port: number };
 
   constructor(private configService: ConfigService) {
-    const redisUrl = this.configService.get<string>('redis.url');
+    const redisUrl = this.configService.get<string>('redis.url') || 'redis://localhost:6379';
     const url = new URL(redisUrl);
     this.redisConnection = {
       host: url.hostname,
@@ -57,7 +57,7 @@ export class QueueService implements OnModuleDestroy {
       this.queues.set(name, queue);
       this.logger.debug(`Created queue: ${name}`);
     }
-    return this.queues.get(name);
+    return this.queues.get(name)!;
   }
 
   async addJob<T extends QueueJobData>(
@@ -96,7 +96,7 @@ export class QueueService implements OnModuleDestroy {
   ): Worker {
     if (this.workers.has(queueName)) {
       this.logger.warn(`Worker for queue ${queueName} already exists`);
-      return this.workers.get(queueName);
+      return this.workers.get(queueName)!;
     }
 
     const worker = new Worker(
@@ -146,7 +146,14 @@ export class QueueService implements OnModuleDestroy {
     delayed: number;
   }> {
     const queue = this.getQueue(queueName);
-    return queue.getJobCounts('waiting', 'active', 'completed', 'failed', 'delayed');
+    const counts = await queue.getJobCounts('waiting', 'active', 'completed', 'failed', 'delayed');
+    return {
+      waiting: counts.waiting || 0,
+      active: counts.active || 0,
+      completed: counts.completed || 0,
+      failed: counts.failed || 0,
+      delayed: counts.delayed || 0,
+    };
   }
 
   async healthCheck(): Promise<boolean> {

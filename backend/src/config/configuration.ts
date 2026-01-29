@@ -1,7 +1,7 @@
 export default () => ({
   // Server
   nodeEnv: process.env.NODE_ENV || 'development',
-  port: parseInt(process.env.PORT, 10) || 3000,
+  port: parseInt(process.env.PORT || '3000', 10),
   corsOrigins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'],
 
   // Database
@@ -36,8 +36,8 @@ export default () => ({
 
   // Rate limiting
   throttle: {
-    ttl: parseInt(process.env.THROTTLE_TTL, 10) || 60000,
-    limit: parseInt(process.env.THROTTLE_LIMIT, 10) || 100,
+    ttl: parseInt(process.env.THROTTLE_TTL || '60000', 10),
+    limit: parseInt(process.env.THROTTLE_LIMIT || '100', 10),
   },
 
   // Email (Brevo)

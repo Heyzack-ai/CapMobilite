@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(ls:*)",
+      "Bash(git -C /Users/mohankumarv/Desktop/Projects/Clients/AXTECH/Weelchair App log --oneline -20)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(curl:*)",
+      "Bash(kill:*)",
+      "Bash(npm run start:dev:*)",
+      "Bash(npx tsc --noEmit)"
+    ]
+  }
+}

@@ -34,18 +34,21 @@ const navItems = [
   { href: "/admin/audit", icon: ClipboardList, labelKey: "audit" },
 ];
 
-export function AdminSidebar() {
-  const pathname = usePathname();
-  const t = useTranslations("admin.nav");
-  const { user, logout } = useAuthStore();
-  const [mobileOpen, setMobileOpen] = useState(false);
+interface SidebarContentProps {
+  user: { firstName?: string; lastName?: string; role?: string } | null;
+  pathname: string;
+  t: (key: string) => string;
+  onLogout: () => void;
+  onNavClick?: () => void;
+}
 
+function SidebarContent({ user, pathname, t, onLogout, onNavClick }: SidebarContentProps) {
   const isActive = (href: string) => {
     const currentPath = pathname.replace(/^\/(fr|en)/, "");
     return currentPath === href || currentPath.startsWith(`${href}/`);
   };
 
-  const SidebarContent = () => (
+  return (
     <>
       {/* Logo */}
       <div className="p-4 border-b border-neutral-700">
@@ -73,7 +76,7 @@ export function AdminSidebar() {
           <Link
             key={item.href}
             href={item.href}
-            onClick={() => setMobileOpen(false)}
+            onClick={onNavClick}
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
               isActive(item.href)
@@ -92,10 +95,7 @@ export function AdminSidebar() {
         <Button
           variant="ghost"
           className="w-full justify-start text-neutral-300 hover:text-red-400 hover:bg-red-900/20"
-          onClick={() => {
-            logout();
-            window.location.href = "/connexion";
-          }}
+          onClick={onLogout}
         >
           <LogOut className="w-5 h-5 mr-3" />
           {t("logout")}
@@ -103,6 +103,22 @@ export function AdminSidebar() {
       </div>
     </>
   );
+}
+
+export function AdminSidebar() {
+  const pathname = usePathname();
+  const t = useTranslations("admin.nav");
+  const { user, logout } = useAuthStore();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/connexion";
+  };
+
+  const handleNavClick = () => {
+    setMobileOpen(false);
+  };
 
   return (
     <>
@@ -132,13 +148,24 @@ export function AdminSidebar() {
         )}
       >
         <div className="flex flex-col h-full">
-          <SidebarContent />
+          <SidebarContent
+            user={user}
+            pathname={pathname}
+            t={t}
+            onLogout={handleLogout}
+            onNavClick={handleNavClick}
+          />
         </div>
       </aside>
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:left-0 bg-navy-900">
-        <SidebarContent />
+        <SidebarContent
+          user={user}
+          pathname={pathname}
+          t={t}
+          onLogout={handleLogout}
+        />
       </aside>
     </>
   );

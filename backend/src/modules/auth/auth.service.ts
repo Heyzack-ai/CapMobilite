@@ -80,7 +80,7 @@ export class AuthService {
       });
 
       // Create patient profile
-      await tx.patientProfile.create({
+      const patientProfile = await tx.patientProfile.create({
         data: {
           userId: newUser.id,
           firstName: dto.firstName,
@@ -103,7 +103,7 @@ export class AuthService {
       await tx.consent.createMany({
         data: [
           {
-            patientId: (await tx.patientProfile.findUnique({ where: { userId: newUser.id } })).id,
+            patientId: patientProfile.id,
             consentType: ConsentType.TERMS_OF_SERVICE,
             version: '1.0.0',
             textHash: 'placeholder-hash', // In production, use actual hash
@@ -111,7 +111,7 @@ export class AuthService {
             userAgent: 'unknown', // Should be passed from controller
           },
           {
-            patientId: (await tx.patientProfile.findUnique({ where: { userId: newUser.id } })).id,
+            patientId: patientProfile.id,
             consentType: ConsentType.HEALTH_DATA,
             version: '1.0.0',
             textHash: 'placeholder-hash',
@@ -242,7 +242,7 @@ export class AuthService {
     // Verify TOTP code
     const isValid = authenticator.verify({
       token: dto.code,
-      secret: user.mfaSecret,
+      secret: user.mfaSecret as string,
     });
 
     if (!isValid) {
@@ -421,7 +421,7 @@ export class AuthService {
     // Verify TOTP code
     const isValid = authenticator.verify({
       token: code,
-      secret: user.mfaSecret,
+      secret: user.mfaSecret as string,
     });
 
     if (!isValid) {
@@ -441,14 +441,14 @@ export class AuthService {
       where: { id: userId },
     });
 
-    if (!user || !user.mfaEnabled) {
+    if (!user || !user.mfaEnabled || !user.mfaSecret) {
       throw new BadRequestException('MFA is not enabled');
     }
 
     // Verify TOTP code
     const isValid = authenticator.verify({
       token: code,
-      secret: user.mfaSecret,
+      secret: user.mfaSecret as string,
     });
 
     if (!isValid) {

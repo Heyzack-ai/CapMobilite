@@ -4,6 +4,7 @@ import {
   BadRequestException,
   ForbiddenException,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '@/database/prisma.service';
 import { comparePassword } from '@common/utils';
 import { UpdatePatientProfileDto, UpdateNirDto } from './dto';
@@ -89,9 +90,9 @@ export class UserService {
       data: {
         ...(dto.firstName && { firstName: dto.firstName }),
         ...(dto.lastName && { lastName: dto.lastName }),
-        ...(dto.address && { address: dto.address }),
+        ...(dto.address && { address: dto.address as Prisma.InputJsonValue }),
         ...(dto.contactPreference && { contactPreference: dto.contactPreference }),
-        ...(dto.emergencyContact && { emergencyContact: dto.emergencyContact }),
+        ...(dto.emergencyContact && { emergencyContact: dto.emergencyContact as Prisma.InputJsonValue }),
       },
     });
 

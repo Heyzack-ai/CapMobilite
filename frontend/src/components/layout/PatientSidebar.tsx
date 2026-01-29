@@ -31,18 +31,21 @@ const navItems = [
   { href: "/support", icon: HelpCircle, labelKey: "support" },
 ];
 
-export function PatientSidebar() {
-  const pathname = usePathname();
-  const t = useTranslations("patient.nav");
-  const { user, logout } = useAuthStore();
-  const [mobileOpen, setMobileOpen] = useState(false);
+interface SidebarContentProps {
+  user: { firstName?: string; lastName?: string; email?: string } | null;
+  pathname: string;
+  t: (key: string) => string;
+  onLogout: () => void;
+  onNavClick?: () => void;
+}
 
+function SidebarContent({ user, pathname, t, onLogout, onNavClick }: SidebarContentProps) {
   const isActive = (href: string) => {
     const currentPath = pathname.replace(/^\/(fr|en)/, "");
     return currentPath === href || currentPath.startsWith(`${href}/`);
   };
 
-  const SidebarContent = () => (
+  return (
     <>
       {/* Logo */}
       <div className="p-4 border-b border-neutral-200">
@@ -69,7 +72,7 @@ export function PatientSidebar() {
           <Link
             key={item.href}
             href={item.href}
-            onClick={() => setMobileOpen(false)}
+            onClick={onNavClick}
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
               isActive(item.href)
@@ -88,10 +91,7 @@ export function PatientSidebar() {
         <Button
           variant="ghost"
           className="w-full justify-start text-neutral-600 hover:text-error hover:bg-error/10"
-          onClick={() => {
-            logout();
-            window.location.href = "/connexion";
-          }}
+          onClick={onLogout}
         >
           <LogOut className="w-5 h-5 mr-3" />
           {t("logout")}
@@ -99,6 +99,22 @@ export function PatientSidebar() {
       </div>
     </>
   );
+}
+
+export function PatientSidebar() {
+  const pathname = usePathname();
+  const t = useTranslations("patient.nav");
+  const { user, logout } = useAuthStore();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/connexion";
+  };
+
+  const handleNavClick = () => {
+    setMobileOpen(false);
+  };
 
   return (
     <>
@@ -128,13 +144,24 @@ export function PatientSidebar() {
         )}
       >
         <div className="flex flex-col h-full">
-          <SidebarContent />
+          <SidebarContent
+            user={user}
+            pathname={pathname}
+            t={t}
+            onLogout={handleLogout}
+            onNavClick={handleNavClick}
+          />
         </div>
       </aside>
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:left-0 bg-white border-r border-neutral-200">
-        <SidebarContent />
+        <SidebarContent
+          user={user}
+          pathname={pathname}
+          t={t}
+          onLogout={handleLogout}
+        />
       </aside>
     </>
   );

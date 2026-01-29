@@ -26,7 +26,8 @@ const RadioGroupItem = React.forwardRef<
     description?: string;
   }
 >(({ className, label, description, id, ...props }, ref) => {
-  const radioId = id || React.useId();
+  const generatedId = React.useId();
+  const radioId = id || generatedId;
 
   return (
     <div className="flex items-start gap-3">

@@ -16,7 +16,7 @@ export class PrismaExceptionFilter implements ExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.switchToHttp().getRequest();
+    const request = ctx.getRequest();
 
     const requestId = (request.headers['x-request-id'] as string) || uuidv4();
     const timestamp = new Date().toISOString();

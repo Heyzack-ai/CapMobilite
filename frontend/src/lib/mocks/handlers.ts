@@ -83,7 +83,7 @@ export const handlers = [
     const url = new URL(request.url);
     const patientId = url.searchParams.get("patientId");
 
-    let cases = patientId ? getCasesByPatientId(patientId) : getAllCases();
+    const cases = patientId ? getCasesByPatientId(patientId) : getAllCases();
 
     return HttpResponse.json({
       data: cases,
