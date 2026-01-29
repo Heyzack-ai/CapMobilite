@@ -81,7 +81,7 @@ export class DeviceService {
           ? new Date(dto.warrantyEndDate)
           : null,
         status: 'ACTIVE', // Using ACTIVE for available devices
-        currentLocation: dto.currentLocation || null,
+        currentLocation: dto.currentLocation || undefined,
       },
       include: {
         product: {

@@ -875,4 +875,152 @@ export class CaseService {
       createdAt: task.createdAt,
     };
   }
+
+  // =========================================================================
+  // Case Documents
+  // =========================================================================
+
+  /**
+   * Attach a document to a case
+   */
+  async attachDocument(
+    caseId: string,
+    documentId: string,
+    userId: string,
+    userRole: UserRole,
+  ) {
+    const caseRecord = await this.prisma.case.findUnique({
+      where: { id: caseId },
+      include: { patient: { select: { user: { select: { id: true } } } } },
+    });
+
+    if (!caseRecord) {
+      throw new NotFoundException('Case not found');
+    }
+
+    if (!this.canAccessCase(caseRecord, userId, userRole)) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    // Verify document exists
+    const document = await this.prisma.document.findUnique({
+      where: { id: documentId },
+    });
+
+    if (!document) {
+      throw new NotFoundException('Document not found');
+    }
+
+    // Check if document is already attached
+    const existingAttachment = await this.prisma.caseDocument.findUnique({
+      where: {
+        caseId_documentId: { caseId, documentId },
+      },
+    });
+
+    if (existingAttachment) {
+      throw new BadRequestException('Document is already attached to this case');
+    }
+
+    const caseDocument = await this.prisma.caseDocument.create({
+      data: {
+        caseId,
+        documentId,
+      },
+      include: {
+        document: true,
+      },
+    });
+
+    this.logger.log(`Document ${documentId} attached to case ${caseId}`);
+
+    return {
+      id: caseDocument.id,
+      documentId: caseDocument.documentId,
+      filename: caseDocument.document.filename,
+      documentType: caseDocument.document.documentType,
+      mimeType: caseDocument.document.mimeType,
+      sizeBytes: caseDocument.document.sizeBytes,
+      scanStatus: caseDocument.document.scanStatus,
+      addedAt: caseDocument.addedAt,
+    };
+  }
+
+  /**
+   * List documents attached to a case
+   */
+  async listCaseDocuments(
+    caseId: string,
+    userId: string,
+    userRole: UserRole,
+  ) {
+    const caseRecord = await this.prisma.case.findUnique({
+      where: { id: caseId },
+      include: { patient: { select: { user: { select: { id: true } } } } },
+    });
+
+    if (!caseRecord) {
+      throw new NotFoundException('Case not found');
+    }
+
+    if (!this.canAccessCase(caseRecord, userId, userRole)) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    const caseDocuments = await this.prisma.caseDocument.findMany({
+      where: { caseId },
+      include: { document: true },
+      orderBy: { addedAt: 'desc' },
+    });
+
+    const data = caseDocuments.map((cd) => ({
+      id: cd.id,
+      documentId: cd.documentId,
+      filename: cd.document.filename,
+      documentType: cd.document.documentType,
+      mimeType: cd.document.mimeType,
+      sizeBytes: cd.document.sizeBytes,
+      scanStatus: cd.document.scanStatus,
+      addedAt: cd.addedAt,
+    }));
+
+    return {
+      data,
+      total: data.length,
+    };
+  }
+
+  /**
+   * Remove a document from a case
+   */
+  async removeDocument(
+    caseId: string,
+    documentId: string,
+    userId: string,
+    userRole: UserRole,
+  ) {
+    // Only staff can remove documents
+    if (![UserRole.OPS, UserRole.BILLING, UserRole.COMPLIANCE_ADMIN].includes(userRole)) {
+      throw new ForbiddenException('Only staff can remove case documents');
+    }
+
+    const caseDocument = await this.prisma.caseDocument.findUnique({
+      where: {
+        caseId_documentId: { caseId, documentId },
+      },
+    });
+
+    if (!caseDocument) {
+      throw new NotFoundException('Document attachment not found');
+    }
+
+    await this.prisma.caseDocument.delete({
+      where: { id: caseDocument.id },
+    });
+
+    this.logger.log(`Document ${documentId} removed from case ${caseId}`);
+
+    return { message: 'Document removed from case' };
+  }
 }
+

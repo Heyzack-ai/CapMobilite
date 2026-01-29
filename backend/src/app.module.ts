@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD } from '@nestjs/core';
 
 import { configValidationSchema } from '@config/validation.schema';
@@ -16,6 +17,15 @@ import { ProductModule } from '@modules/product/product.module';
 import { QuoteModule } from '@modules/quote/quote.module';
 import { NotificationModule } from '@modules/notification/notification.module';
 import { DeviceModule } from '@modules/device/device.module';
+import { ServiceTicketModule } from '@modules/service-ticket/service-ticket.module';
+import { PrescriptionModule } from '@modules/prescription/prescription.module';
+import { CaseModule } from '@modules/case/case.module';
+import { ClaimModule } from '@modules/claim/claim.module';
+import { ConsentModule } from '@modules/consent/consent.module';
+import { ProxyModule } from '@modules/proxy/proxy.module';
+import { PrescriberPortalModule } from '@modules/prescriber-portal/prescriber-portal.module';
+import { ChatModule } from '@modules/chat/chat.module';
+import { AdminModule } from '@modules/admin/admin.module';
 import { S3Module } from '@integrations/s3/s3.module';
 import { RedisModule } from '@integrations/redis/redis.module';
 import { QueueModule } from '@integrations/queue/queue.module';
@@ -47,6 +57,9 @@ import { RolesGuard } from '@common/guards/roles.guard';
       ],
     }),
 
+    // Scheduling for cron jobs
+    ScheduleModule.forRoot(),
+
     // Core modules
     DatabaseModule,
     S3Module,
@@ -62,6 +75,16 @@ import { RolesGuard } from '@common/guards/roles.guard';
     ProductModule,
     QuoteModule,
     NotificationModule,
+    DeviceModule,
+    ServiceTicketModule,
+    PrescriptionModule,
+    CaseModule,
+    ClaimModule,
+    ConsentModule,
+    ProxyModule,
+    PrescriberPortalModule,
+    ChatModule,
+    AdminModule,
   ],
   providers: [
     // Global JWT guard

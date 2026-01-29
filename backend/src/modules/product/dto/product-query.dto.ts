@@ -6,7 +6,7 @@ import {
   IsUUID,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ProductCategory, ProductSize } from '@common/enums';
 import { PaginationQueryDto } from '@common/dto/pagination.dto';
 

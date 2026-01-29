@@ -90,10 +90,10 @@ export class PrescriptionController {
     description: 'List of prescriptions with pagination',
   })
   async findAll(
+    @CurrentUser() user: JwtPayload,
     @Query() pagination: PaginationQueryDto,
     @Query('patientId') patientId?: string,
     @Query('status') status?: PrescriptionStatus,
-    @CurrentUser() user?: JwtPayload,
   ) {
     return this.prescriptionService.findAll(
       user.sub,

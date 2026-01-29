@@ -300,6 +300,7 @@ model User {
   ticketsAssigned    ServiceTicket[]    @relation("TicketAssignee")
   technicianVisits   TechnicianVisit[]
   refreshTokens      RefreshToken[]
+  chatSessions       ChatSession[]
 
   @@index([role])
   @@index([status])
@@ -346,6 +347,8 @@ model PatientProfile {
   prescriptions     Prescription[]
   deviceInstances   DeviceInstance[]
   proxyRelationships ProxyRelationship[]
+  proxyInvitations  ProxyInvitation[]
+  prescriberLinks   PrescriberLink[]
 
   @@index([lastName])
   @@index([dateOfBirth])
@@ -978,4 +981,102 @@ model VerificationCode {
   @@index([code])
   @@index([type])
   @@index([expiresAt])
+}
+
+/// Proxy invitation for caregiver delegation
+model ProxyInvitation {
+  id                String                @id @default(uuid())
+  patientId         String
+  email             String
+  relationship      ProxyRelationshipType
+  token             String                @unique
+  consentDocumentId String?
+  validUntil        DateTime?
+  expiresAt         DateTime
+  usedAt            DateTime?
+  createdAt         DateTime              @default(now())
+
+  // Relations
+  patient PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@index([email])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+/// Support chat sessions
+model ChatSession {
+  id          String    @id @default(uuid())
+  userId      String
+  patientId   String?
+  status      String    @default("ACTIVE") // ACTIVE, CLOSED, ESCALATED
+  escalatedAt DateTime?
+  closedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user     User          @relation(fields: [userId], references: [id])
+  messages ChatMessage[]
+
+  @@index([userId])
+  @@index([patientId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+/// Chat messages within a session
+model ChatMessage {
+  id         String   @id @default(uuid())
+  sessionId  String
+  senderId   String?  // null for system messages
+  senderType String   // USER, BOT, SYSTEM, STAFF
+  content    String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  // Relations
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+/// Prescriber secure upload links
+model PrescriberLink {
+  id               String    @id @default(uuid())
+  patientId        String
+  token            String    @unique
+  prescriberId     String?   // Set when prescription is submitted
+  prescriptionId   String?   // Set when prescription is created
+  expiresAt        DateTime
+  usedAt           DateTime?
+  createdAt        DateTime  @default(now())
+  createdBy        String    // Staff user who created the link
+
+  // Relations
+  patient PatientProfile @relation(fields: [patientId], references: [id])
+
+  @@index([patientId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+/// Notification preferences per user
+model NotificationPreference {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  emailEnabled     Boolean  @default(true)
+  smsEnabled       Boolean  @default(true)
+  caseUpdates      Boolean  @default(true)
+  quoteNotifications Boolean @default(true)
+  deliveryAlerts   Boolean  @default(true)
+  maintenanceReminders Boolean @default(true)
+  marketingEmails  Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([userId])
 }

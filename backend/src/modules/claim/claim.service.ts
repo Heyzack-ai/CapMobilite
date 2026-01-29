@@ -5,7 +5,7 @@ import {
   BadRequestException,
   ForbiddenException,
 } from '@nestjs/common';
-import { PrismaService } from '@database/prisma.service';
+import { PrismaService } from '@/database/prisma.service';
 import {
   ClaimStatus,
   GatewayType,
@@ -198,7 +198,7 @@ export class ClaimService {
     const data = hasMore ? claims.slice(0, -1) : claims;
 
     return {
-      data: data.map((claim) => this.formatClaimResponse(claim)),
+      data: data.map((claim: Record<string, unknown>) => this.formatClaimResponse(claim)),
       pagination: {
         cursor: data.length > 0 ? data[data.length - 1].id : undefined,
         hasMore,
@@ -341,7 +341,7 @@ export class ClaimService {
       ClaimDocumentRole.QUOTE,
     ];
 
-    const attachedRoles = claim.claimDocuments.map((d) => d.documentRole);
+    const attachedRoles = claim.claimDocuments.map((d: { documentRole: string }) => d.documentRole);
     const missingRoles = requiredRoles.filter(
       (role) => !attachedRoles.includes(role),
     );
@@ -559,7 +559,7 @@ export class ClaimService {
 
     // Calculate current paid amount
     const currentPaidAmount = claim.payments.reduce(
-      (sum, payment) => sum + parseFloat(payment.amount.toString()),
+      (sum: number, payment: { amount: { toString(): string } }) => sum + parseFloat(payment.amount.toString()),
       0,
     );
 
@@ -656,7 +656,7 @@ export class ClaimService {
   /**
    * Format claim response with calculated fields
    */
-  private formatClaimResponse(claim: any): any {
+  private formatClaimResponse(claim: Record<string, unknown>): Record<string, unknown> {
     const totalAmount = parseFloat(claim.totalAmount?.toString() || '0');
     const paidAmount = parseFloat(claim.paidAmount?.toString() || '0');
     const remainingBalance = totalAmount - paidAmount;

@@ -62,10 +62,10 @@ export class DeviceController {
     description: 'Filter by product ID',
   })
   async listDevices(
+    @CurrentUser() user: JwtPayload,
     @Query() paginationQuery: PaginationQueryDto,
     @Query('status') status?: string,
     @Query('productId') productId?: string,
-    @CurrentUser() user?: JwtPayload,
   ) {
     return this.deviceService.listDevices(
       user.sub,
