@@ -313,6 +313,51 @@
       "deadline": "Deadline",
       "checklistProgress": "Steps completed"
     },
+    "newCase": {
+      "title": "New Case",
+      "subtitle": "Create a wheelchair request",
+      "back": "Back",
+      "steps": {
+        "prescription": "Prescription",
+        "identity": "Identity",
+        "insurance": "Insurance",
+        "review": "Review"
+      },
+      "prescriptionInfo": {
+        "title": "Medical prescription required",
+        "description": "A prescription from your doctor is required for any wheelchair request. It must specify the type of equipment prescribed."
+      },
+      "dropzone": {
+        "title": "Drag and drop your file here",
+        "formats": "PDF, JPG or PNG (max 10 MB)"
+      },
+      "uploading": "Uploading...",
+      "uploaded": "Uploaded",
+      "verified": "Verified",
+      "noPrescription": "Don't have a prescription yet?",
+      "contactUs": "Contact us for guidance",
+      "identityDescription": "Upload a copy of your ID card or passport.",
+      "uploadId": "Upload an ID document",
+      "insuranceDescription": "Upload a copy of your Carte Vitale.",
+      "uploadCarteVitale": "Upload Carte Vitale",
+      "reviewReady": {
+        "title": "Your documents are ready",
+        "description": "Review the information below before submitting your case."
+      },
+      "uploadedDocuments": "Uploaded Documents",
+      "docTypes": {
+        "prescription": "Medical prescription",
+        "identity": "ID document",
+        "carteVitale": "Carte Vitale"
+      },
+      "patientInfo": "Patient Information",
+      "name": "Name",
+      "email": "Email",
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Submit Case",
+      "submitting": "Submitting..."
+    },
     "caseDetail": {
       "notFound": "Case not found",
       "notFoundDescription": "This case does not exist or you do not have permission to access it",

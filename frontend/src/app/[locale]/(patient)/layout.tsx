@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { PatientSidebar } from "@/components/layout/PatientSidebar";
 import { useAuthStore } from "@/stores/auth.store";
+
+const ADMIN_ROLES = ['ADMIN', 'OPS_AGENT', 'BILLING_AGENT', 'TECHNICIAN'];
 
 export default function PatientLayout({
   children,
@@ -13,22 +15,24 @@ export default function PatientLayout({
 }) {
   const router = useRouter();
   const { user, isAuthenticated } = useAuthStore();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     // Redirect to login if not authenticated
     if (!isAuthenticated) {
-      router.push("/connexion");
+      router.replace("/connexion");
       return;
     }
     
     // Redirect admin/staff users to admin dashboard
-    if (user && ['ADMIN', 'OPS_AGENT', 'BILLING_AGENT', 'TECHNICIAN'].includes(user.role)) {
-      router.push("/admin/tableau-de-bord");
+    if (user && ADMIN_ROLES.includes(user.role)) {
+      setIsRedirecting(true);
+      router.replace("/admin/tableau-de-bord");
     }
   }, [isAuthenticated, user, router]);
 
-  // Show nothing while checking auth or redirecting
-  if (!isAuthenticated || !user) {
+  // Show loading while checking auth or redirecting
+  if (!isAuthenticated || !user || isRedirecting) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
@@ -37,7 +41,7 @@ export default function PatientLayout({
   }
   
   // Prevent rendering patient UI for admin users (will redirect)
-  if (['ADMIN', 'OPS_AGENT', 'BILLING_AGENT', 'TECHNICIAN'].includes(user.role)) {
+  if (ADMIN_ROLES.includes(user.role)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>

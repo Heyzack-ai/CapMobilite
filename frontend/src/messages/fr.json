@@ -290,6 +290,51 @@
       "deadline": "Échéance",
       "checklistProgress": "Étapes complétées"
     },
+    "newCase": {
+      "title": "Nouveau dossier",
+      "subtitle": "Créez une demande de fauteuil roulant",
+      "back": "Retour",
+      "steps": {
+        "prescription": "Ordonnance",
+        "identity": "Identité",
+        "insurance": "Assurance",
+        "review": "Validation"
+      },
+      "prescriptionInfo": {
+        "title": "Ordonnance médicale requise",
+        "description": "Une ordonnance de votre médecin est nécessaire pour toute demande de fauteuil roulant. Elle doit mentionner le type d'équipement prescrit."
+      },
+      "dropzone": {
+        "title": "Glissez-déposez votre fichier ici",
+        "formats": "PDF, JPG ou PNG (max 10 Mo)"
+      },
+      "uploading": "Téléchargement...",
+      "uploaded": "Téléchargé",
+      "verified": "Vérifié",
+      "noPrescription": "Vous n'avez pas encore d'ordonnance ?",
+      "contactUs": "Contactez-nous pour être guidé",
+      "identityDescription": "Téléchargez une copie de votre carte d'identité ou passeport.",
+      "uploadId": "Télécharger une pièce d'identité",
+      "insuranceDescription": "Téléchargez une copie de votre carte Vitale.",
+      "uploadCarteVitale": "Télécharger la carte Vitale",
+      "reviewReady": {
+        "title": "Vos documents sont prêts",
+        "description": "Vérifiez les informations ci-dessous avant de soumettre votre dossier."
+      },
+      "uploadedDocuments": "Documents téléchargés",
+      "docTypes": {
+        "prescription": "Ordonnance médicale",
+        "identity": "Pièce d'identité",
+        "carteVitale": "Carte Vitale"
+      },
+      "patientInfo": "Informations patient",
+      "name": "Nom",
+      "email": "Email",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "submit": "Soumettre le dossier",
+      "submitting": "Envoi en cours..."
+    },
     "caseDetail": {
       "notFound": "Dossier non trouvé",
       "notFoundDescription": "Ce dossier n'existe pas ou vous n'avez pas les droits pour y accéder",
