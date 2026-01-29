@@ -27,7 +27,31 @@ import {
 import { caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
 import { mockTickets } from "@/lib/mocks/data/devices";
 
-// Types for dashboard stats
+// Types for dashboard stats (matches API response)
+interface ApiDashboardStats {
+  cases: {
+    total: number;
+    byStatus: Record<string, number>;
+    averageProcessingDays: number;
+  };
+  claims: {
+    total: number;
+    totalAmount: number;
+    pendingAmount: number;
+    acceptedAmount: number;
+  };
+  tickets: {
+    total: number;
+    open: number;
+    critical: number;
+  };
+  devices: {
+    total: number;
+    delivered: number;
+  };
+}
+
+// Transformed stats for UI
 interface DashboardStats {
   openCases: number;
   openCasesChange: number;
@@ -52,18 +76,19 @@ export default function AdminDashboard() {
   } = useAdminDashboardStats();
   const { data: casesData, isLoading: casesLoading } = useCases({ limit: 5 });
 
-  // Parse stats with fallbacks
-  const stats: DashboardStats = statsData as DashboardStats || {
-    openCases: 0,
-    openCasesChange: 0,
-    openTickets: 0,
-    criticalTickets: 0,
-    pendingClaims: 0,
-    pendingClaimsAmount: 0,
-    monthlyRevenue: 0,
-    revenueChange: 0,
-    casesByStatus: {},
-    totalCases: 0,
+  // Transform API stats to UI format with fallbacks
+  const apiStats = statsData as ApiDashboardStats | undefined;
+  const stats: DashboardStats = {
+    openCases: apiStats?.cases?.total ?? 0,
+    openCasesChange: 0, // Not provided by API, could be computed
+    openTickets: apiStats?.tickets?.open ?? 0,
+    criticalTickets: apiStats?.tickets?.critical ?? 0,
+    pendingClaims: apiStats?.claims?.total ?? 0,
+    pendingClaimsAmount: apiStats?.claims?.pendingAmount ?? 0,
+    monthlyRevenue: apiStats?.claims?.acceptedAmount ?? 0,
+    revenueChange: 0, // Not provided by API, could be computed
+    casesByStatus: apiStats?.cases?.byStatus ?? {},
+    totalCases: apiStats?.cases?.total ?? 0,
   };
   
   const recentCases = casesData?.data || [];
