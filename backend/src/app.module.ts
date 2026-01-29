@@ -12,6 +12,10 @@ import { UserModule } from '@modules/user/user.module';
 import { DocumentModule } from '@modules/document/document.module';
 import { AuditModule } from '@modules/audit/audit.module';
 import { HealthModule } from '@modules/health/health.module';
+import { ProductModule } from '@modules/product/product.module';
+import { QuoteModule } from '@modules/quote/quote.module';
+import { NotificationModule } from '@modules/notification/notification.module';
+import { DeviceModule } from '@modules/device/device.module';
 import { S3Module } from '@integrations/s3/s3.module';
 import { RedisModule } from '@integrations/redis/redis.module';
 import { QueueModule } from '@integrations/queue/queue.module';
@@ -55,6 +59,9 @@ import { RolesGuard } from '@common/guards/roles.guard';
     DocumentModule,
     AuditModule,
     HealthModule,
+    ProductModule,
+    QuoteModule,
+    NotificationModule,
   ],
   providers: [
     // Global JWT guard

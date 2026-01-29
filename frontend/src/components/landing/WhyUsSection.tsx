@@ -46,17 +46,17 @@ export function WhyUsSection() {
           {features.map((feature) => (
             <div
               key={feature.key}
-              className="text-center p-6 rounded-2xl hover:bg-neutral-50 transition-colors"
+              className="bg-white p-6 rounded-xl border border-gray-100 hover:border-primary-100 hover:shadow-xl transition-all group"
             >
               <div
-                className={`w-16 h-16 ${feature.bg} rounded-2xl mx-auto mb-4 flex items-center justify-center`}
+                className={`w-12 h-12 ${feature.bg} rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}
               >
-                <feature.icon className={`w-8 h-8 ${feature.color}`} />
+                <feature.icon className={`w-6 h-6 ${feature.color}`} />
               </div>
-              <h3 className="text-lg font-semibold text-navy-900 mb-2">
+              <h3 className="font-bold text-lg mb-2 text-navy-900">
                 {t(`${feature.key}.title`)}
               </h3>
-              <p className="text-neutral-500 text-sm">
+              <p className="text-gray-500 text-sm">
                 {t(`${feature.key}.description`)}
               </p>
             </div>

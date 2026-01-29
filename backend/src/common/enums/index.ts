@@ -84,6 +84,13 @@ export enum VerificationStatus {
   REJECTED = 'REJECTED',
 }
 
+export enum PrescriptionStatus {
+  PENDING_VERIFICATION = 'PENDING_VERIFICATION',
+  VERIFIED = 'VERIFIED',
+  REJECTED = 'REJECTED',
+  EXPIRED = 'EXPIRED',
+}
+
 // Case enums
 export enum CaseStatus {
   INTAKE_RECEIVED = 'INTAKE_RECEIVED',
@@ -190,6 +197,14 @@ export enum DeviceStatus {
   IN_REPAIR = 'IN_REPAIR',
   REPLACED = 'REPLACED',
   DECOMMISSIONED = 'DECOMMISSIONED',
+}
+
+// Device instance status for inventory management
+export enum DeviceInstanceStatus {
+  AVAILABLE = 'AVAILABLE',
+  ASSIGNED = 'ASSIGNED',
+  IN_MAINTENANCE = 'IN_MAINTENANCE',
+  RETIRED = 'RETIRED',
 }
 
 export enum ContractType {

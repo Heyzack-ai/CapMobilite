@@ -38,26 +38,31 @@ export function HowItWorksSection() {
 
         <div className="relative">
           {/* Connection Line */}
-          <div className="hidden md:block absolute top-24 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-secondary-400" />
+          <div className="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-gray-200 via-primary-200 to-gray-200 -z-10 border-t border-dashed border-gray-300" />
 
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, index) => (
-              <div key={index} className="relative text-center">
+              <div
+                key={index}
+                className="relative bg-white p-8 rounded-2xl border border-gray-100 text-center group hover:shadow-xl transition-all duration-300"
+              >
                 {/* Step Number */}
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold z-10">
-                  {index + 1}
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-white rounded-full flex items-center justify-center border-4 border-gray-50 z-10 group-hover:scale-110 transition-transform duration-300">
+                  <span className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white font-bold shadow-lg shadow-primary-500/30">
+                    {index + 1}
+                  </span>
                 </div>
 
                 {/* Icon */}
-                <div className="w-20 h-20 bg-primary-50 rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                  <step.icon className="w-10 h-10 text-primary-600" />
+                <div className="mb-6 mt-4 flex justify-center">
+                  <step.icon className="w-12 h-12 text-primary-500 group-hover:scale-110 transition-transform duration-300" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-semibold text-navy-900 mb-3">
+                <h3 className="text-xl font-bold text-navy-900 mb-3">
                   {step.title}
                 </h3>
-                <p className="text-neutral-600 leading-relaxed">
+                <p className="text-gray-500 leading-relaxed text-sm">
                   {step.description}
                 </p>
               </div>
