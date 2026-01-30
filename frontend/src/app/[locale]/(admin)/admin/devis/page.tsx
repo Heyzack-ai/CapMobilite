@@ -21,6 +21,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { mockCases, getAllCases } from "@/lib/mocks/data/cases";
 import { findPatientById } from "@/lib/mocks/data/users";
 
@@ -218,71 +226,69 @@ export default function QuotesPage() {
       {/* Quotes List */}
       <Card>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-neutral-50 border-b">
-                <tr>
-                  <th className="text-left p-4 font-medium text-neutral-500">{t("quoteNumber")}</th>
-                  <th className="text-left p-4 font-medium text-neutral-500">{t("patient")}</th>
-                  <th className="text-left p-4 font-medium text-neutral-500">{t("amount")}</th>
-                  <th className="text-left p-4 font-medium text-neutral-500">{t("breakdown")}</th>
-                  <th className="text-left p-4 font-medium text-neutral-500">{t("status")}</th>
-                  <th className="text-right p-4 font-medium text-neutral-500">{t("actions")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {filteredQuotes.map((quote) => {
-                  const patient = findPatientById(quote.patientId);
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t("quoteNumber")}</TableHead>
+                <TableHead>{t("patient")}</TableHead>
+                <TableHead>{t("amount")}</TableHead>
+                <TableHead>{t("breakdown")}</TableHead>
+                <TableHead>{t("status")}</TableHead>
+                <TableHead className="text-right">{t("actions")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredQuotes.map((quote) => {
+                const patient = findPatientById(quote.patientId);
 
-                  return (
-                    <tr key={quote.id} className="hover:bg-neutral-50">
-                      <td className="p-4">
-                        <p className="font-medium">{quote.quoteNumber}</p>
-                        <p className="text-sm text-neutral-500">
-                          {new Date(quote.createdAt).toLocaleDateString("fr-FR")}
-                        </p>
-                      </td>
-                      <td className="p-4">
-                        <p className="font-medium">
-                          {patient?.firstName} {patient?.lastName}
-                        </p>
-                      </td>
-                      <td className="p-4">
-                        <p className="font-semibold">{quote.totalAmount.toLocaleString("fr-FR")} €</p>
-                      </td>
-                      <td className="p-4">
-                        <div className="text-xs space-y-1">
-                          <p>CPAM: {quote.cpamAmount.toLocaleString("fr-FR")} €</p>
-                          <p>Mutuelle: {quote.mutuelleAmount.toLocaleString("fr-FR")} €</p>
-                          <p className="font-medium">RAC: {quote.patientAmount.toLocaleString("fr-FR")} €</p>
-                        </div>
-                      </td>
-                      <td className="p-4">
-                        <Badge variant={statusColors[quote.status] as "default" | "success" | "warning" | "error" | "info" | "secondary"}>
-                          {statusLabels[quote.status]}
-                        </Badge>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center justify-end gap-2">
+                return (
+                  <TableRow key={quote.id}>
+                    <TableCell>
+                      <p className="font-medium">{quote.quoteNumber}</p>
+                      <p className="text-sm text-neutral-500">
+                        {new Date(quote.createdAt).toLocaleDateString("fr-FR")}
+                      </p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-medium">
+                        {patient?.firstName} {patient?.lastName}
+                      </p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-semibold">{quote.totalAmount.toLocaleString("fr-FR")} €</p>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-xs space-y-1">
+                        <p>CPAM: {quote.cpamAmount.toLocaleString("fr-FR")} €</p>
+                        <p>Mutuelle: {quote.mutuelleAmount.toLocaleString("fr-FR")} €</p>
+                        <p className="font-medium">RAC: {quote.patientAmount.toLocaleString("fr-FR")} €</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={statusColors[quote.status] as "default" | "success" | "warning" | "error" | "info" | "secondary"}>
+                        {statusLabels[quote.status]}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-end gap-2">
+                        <Button variant="ghost" size="sm">
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Download className="w-4 h-4" />
+                        </Button>
+                        {quote.status === "DRAFT" && (
                           <Button variant="ghost" size="sm">
-                            <Eye className="w-4 h-4" />
+                            <Send className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <Download className="w-4 h-4" />
-                          </Button>
-                          {quote.status === "DRAFT" && (
-                            <Button variant="ghost" size="sm">
-                              <Send className="w-4 h-4" />
-                            </Button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
 
           {filteredQuotes.length === 0 && (
             <div className="py-12 text-center">

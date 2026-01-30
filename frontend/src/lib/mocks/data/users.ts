@@ -3,7 +3,7 @@ import type { User, Patient } from "@/types";
 export const mockUsers: User[] = [
   {
     id: "user-1",
-    email: "jean.dupont@email.fr",
+    email: "jean.dupont@email.com",
     phone: "+33612345678",
     firstName: "Jean",
     lastName: "Dupont",
@@ -45,7 +45,7 @@ export const mockUsers: User[] = [
 export const mockPatients: Patient[] = [
   {
     id: "user-1",
-    email: "jean.dupont@email.fr",
+    email: "jean.dupont@email.com",
     phone: "+33612345678",
     firstName: "Jean",
     lastName: "Dupont",
@@ -94,7 +94,7 @@ export const mockPatients: Patient[] = [
 
 // Mock credentials for testing
 export const mockCredentials = [
-  { email: "jean.dupont@email.fr", password: "password123", role: "PATIENT" },
+  { email: "jean.dupont@email.com", password: "password123", role: "PATIENT" },
   { email: "admin@capmobilite.fr", password: "admin123", role: "ADMIN" },
   { email: "ops@capmobilite.fr", password: "ops123", role: "OPS_AGENT" },
 ];

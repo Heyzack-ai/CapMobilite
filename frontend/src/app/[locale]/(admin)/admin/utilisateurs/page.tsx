@@ -19,6 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { mockUsers, mockPatients } from "@/lib/mocks/data/users";
 
 export default function AdminUsersPage() {
@@ -141,108 +149,94 @@ export default function AdminUsersPage() {
       {/* Users Table */}
       <Card>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-neutral-50">
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.user")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.contact")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.role")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.status")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.security")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.actions")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user) => (
-                  <tr key={user.id} className="border-b hover:bg-neutral-50">
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-primary-600">
-                            {user.firstName[0]}
-                            {user.lastName[0]}
-                          </span>
-                        </div>
-                        <div>
-                          <p className="font-medium">
-                            {user.firstName} {user.lastName}
-                          </p>
-                          <p className="text-sm text-neutral-500">ID: {user.id}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        <p className="flex items-center gap-1 text-sm">
-                          <Mail className="w-3 h-3 text-neutral-400" />
-                          {user.email}
-                        </p>
-                        <p className="flex items-center gap-1 text-sm text-neutral-500">
-                          <Phone className="w-3 h-3 text-neutral-400" />
-                          {user.phone}
-                        </p>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <Badge variant={roleColors[user.role] as "default" | "success" | "warning" | "error" | "info" | "secondary"}>
-                        {roleLabels[user.role]}
-                      </Badge>
-                    </td>
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        <p className="flex items-center gap-1 text-sm">
-                          {user.emailVerified ? (
-                            <CheckCircle className="w-4 h-4 text-success" />
-                          ) : (
-                            <XCircle className="w-4 h-4 text-error" />
-                          )}
-                          Email
-                        </p>
-                        <p className="flex items-center gap-1 text-sm">
-                          {user.phoneVerified ? (
-                            <CheckCircle className="w-4 h-4 text-success" />
-                          ) : (
-                            <XCircle className="w-4 h-4 text-error" />
-                          )}
-                          Téléphone
-                        </p>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1">
-                        <Shield
-                          className={`w-4 h-4 ${
-                            user.mfaEnabled ? "text-success" : "text-neutral-300"
-                          }`}
-                        />
-                        <span className="text-sm">
-                          {user.mfaEnabled ? "MFA actif" : "MFA inactif"}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t("table.user")}</TableHead>
+                <TableHead>{t("table.contact")}</TableHead>
+                <TableHead>{t("table.role")}</TableHead>
+                <TableHead>{t("table.status")}</TableHead>
+                <TableHead>{t("table.security")}</TableHead>
+                <TableHead>{t("table.actions")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-medium text-primary-600">
+                          {user.firstName[0]}
+                          {user.lastName[0]}
                         </span>
                       </div>
-                    </td>
-                    <td className="p-4">
-                      <Button variant="ghost" size="sm">
-                        <MoreVertical className="w-4 h-4" />
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      <div>
+                        <p className="font-medium">
+                          {user.firstName} {user.lastName}
+                        </p>
+                        <p className="text-sm text-neutral-500">ID: {user.id}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <p className="flex items-center gap-1 text-sm">
+                        <Mail className="w-3 h-3 text-neutral-400" />
+                        {user.email}
+                      </p>
+                      <p className="flex items-center gap-1 text-sm text-neutral-500">
+                        <Phone className="w-3 h-3 text-neutral-400" />
+                        {user.phone}
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={roleColors[user.role] as "default" | "success" | "warning" | "error" | "info" | "secondary"}>
+                      {roleLabels[user.role]}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <p className="flex items-center gap-1 text-sm">
+                        {user.emailVerified ? (
+                          <CheckCircle className="w-4 h-4 text-success" />
+                        ) : (
+                          <XCircle className="w-4 h-4 text-error" />
+                        )}
+                        Email
+                      </p>
+                      <p className="flex items-center gap-1 text-sm">
+                        {user.phoneVerified ? (
+                          <CheckCircle className="w-4 h-4 text-success" />
+                        ) : (
+                          <XCircle className="w-4 h-4 text-error" />
+                        )}
+                        Téléphone
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Shield
+                        className={`w-4 h-4 ${
+                          user.mfaEnabled ? "text-success" : "text-neutral-300"
+                        }`}
+                      />
+                      <span className="text-sm">
+                        {user.mfaEnabled ? "MFA actif" : "MFA inactif"}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm">
+                      <MoreVertical className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
           {filteredUsers.length === 0 && (
             <div className="text-center py-12 text-neutral-500">

@@ -7,6 +7,14 @@ import { FileText, Calendar, Clock, AlertTriangle, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import type { Case, CaseStatus } from "@/types";
 
 interface UserCasesListProps {
@@ -135,107 +143,91 @@ export function UserCasesList({ cases }: UserCasesListProps) {
           <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-neutral-50">
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.caseNumber")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.status")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.priority")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.progress")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.created")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.sla")}
-                  </th>
-                  <th className="text-left p-4 font-medium text-neutral-500">
-                    {t("table.actions")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {cases.map((caseItem) => (
-                  <tr key={caseItem.id} className="border-b hover:bg-neutral-50">
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-neutral-400" />
-                        <span className="font-medium">{caseItem.caseNumber}</span>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <Badge variant={caseStatusColors[caseItem.status]}>
-                        {caseStatusLabels[caseItem.status]}
-                      </Badge>
-                    </td>
-                    <td className="p-4">
-                      <Badge variant={priorityColors[caseItem.priority]}>
-                        {priorityLabels[caseItem.priority]}
-                      </Badge>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-24 bg-neutral-200 rounded-full h-2">
-                          <div
-                            className="bg-primary-500 h-2 rounded-full"
-                            style={{
-                              width: `${(completedChecklist(caseItem) / totalChecklist(caseItem)) * 100}%`,
-                            }}
-                          />
-                        </div>
-                        <span className="text-sm text-neutral-500">
-                          {completedChecklist(caseItem)}/{totalChecklist(caseItem)}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1 text-sm text-neutral-500">
-                        <Calendar className="w-4 h-4" />
-                        {new Date(caseItem.createdAt).toLocaleDateString("fr-FR")}
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      {caseItem.slaDeadline ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t("table.caseNumber")}</TableHead>
+                <TableHead>{t("table.status")}</TableHead>
+                <TableHead>{t("table.priority")}</TableHead>
+                <TableHead>{t("table.progress")}</TableHead>
+                <TableHead>{t("table.created")}</TableHead>
+                <TableHead>{t("table.sla")}</TableHead>
+                <TableHead>{t("table.actions")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {cases.map((caseItem) => (
+                <TableRow key={caseItem.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-neutral-400" />
+                      <span className="font-medium">{caseItem.caseNumber}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={caseStatusColors[caseItem.status]}>
+                      {caseStatusLabels[caseItem.status]}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={priorityColors[caseItem.priority]}>
+                      {priorityLabels[caseItem.priority]}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="w-24 bg-neutral-200 rounded-full h-2">
                         <div
-                          className={`flex items-center gap-1 text-sm ${
-                            isSlaOverdue(caseItem)
-                              ? "text-error"
-                              : isSlaExpiring(caseItem)
-                              ? "text-warning"
-                              : "text-neutral-500"
-                          }`}
-                        >
-                          {(isSlaOverdue(caseItem) || isSlaExpiring(caseItem)) && (
-                            <AlertTriangle className="w-4 h-4" />
-                          )}
-                          <Clock className="w-4 h-4" />
-                          {new Date(caseItem.slaDeadline).toLocaleDateString("fr-FR")}
-                        </div>
-                      ) : (
-                        <span className="text-neutral-400">-</span>
-                      )}
-                    </td>
-                    <td className="p-4">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/${locale}/admin/dossiers/${caseItem.id}`}>
-                          <Eye className="w-4 h-4 mr-1" />
-                          {t("table.view")}
-                        </Link>
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                          className="bg-primary-500 h-2 rounded-full"
+                          style={{
+                            width: `${(completedChecklist(caseItem) / totalChecklist(caseItem)) * 100}%`,
+                          }}
+                        />
+                      </div>
+                      <span className="text-sm text-neutral-500">
+                        {completedChecklist(caseItem)}/{totalChecklist(caseItem)}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1 text-sm text-neutral-500">
+                      <Calendar className="w-4 h-4" />
+                      {new Date(caseItem.createdAt).toLocaleDateString("fr-FR")}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {caseItem.slaDeadline ? (
+                      <div
+                        className={`flex items-center gap-1 text-sm ${
+                          isSlaOverdue(caseItem)
+                            ? "text-error"
+                            : isSlaExpiring(caseItem)
+                            ? "text-warning"
+                            : "text-neutral-500"
+                        }`}
+                      >
+                        {(isSlaOverdue(caseItem) || isSlaExpiring(caseItem)) && (
+                          <AlertTriangle className="w-4 h-4" />
+                        )}
+                        <Clock className="w-4 h-4" />
+                        {new Date(caseItem.slaDeadline).toLocaleDateString("fr-FR")}
+                      </div>
+                    ) : (
+                      <span className="text-neutral-400">-</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/${locale}/admin/dossiers/${caseItem.id}`}>
+                        <Eye className="w-4 h-4 mr-1" />
+                        {t("table.view")}
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>
