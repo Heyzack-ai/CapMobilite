@@ -10,6 +10,8 @@ import {
   ArrowRight,
   Clock,
   Loader2,
+  CheckCircle,
+  AlertTriangle,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -18,7 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/stores/auth.store";
 import { useMyCases, useMyDevices, useMyServiceTickets } from "@/lib/api/hooks";
 import { caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
-import { type Case } from "@/types";
+import { type Case, type CaseStatus } from "@/types";
 
 export default function PatientDashboard() {
   const t = useTranslations("patient.dashboard");
@@ -156,8 +158,8 @@ export default function PatientDashboard() {
                         {t("created")}: {new Date(caseItem.createdAt).toLocaleDateString("fr-FR")}
                       </p>
                     </div>
-                    <Badge variant={caseStatusColors[caseItem.status] as "default" | "success" | "warning" | "error" | "info" | "secondary"}>
-                      {caseStatusLabels[caseItem.status]}
+                    <Badge variant={caseStatusColors[caseItem.status as CaseStatus] as "default" | "success" | "warning" | "error" | "info" | "secondary"}>
+                      {caseStatusLabels[caseItem.status as CaseStatus]}
                     </Badge>
                   </div>
                   {caseItem.slaDeadline && (
@@ -198,7 +200,6 @@ export default function PatientDashboard() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {devices.map((device) => {
-                const product = device.productId ? getProductById(device.productId) : undefined;
                 const warrantyExpired = device.warrantyExpiresAt ? new Date(device.warrantyExpiresAt) < new Date() : false;
 
                 return (
@@ -212,7 +213,7 @@ export default function PatientDashboard() {
                         <Accessibility className="w-8 h-8 text-neutral-400" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">{product?.name || "Équipement"}</p>
+                        <p className="font-medium">{device.product?.name || "Équipement"}</p>
                         <p className="text-sm text-neutral-500">S/N: {device.serialNumber}</p>
                         <div className="mt-1 flex items-center gap-1 text-sm">
                           {warrantyExpired ? (
@@ -262,20 +263,15 @@ export default function PatientDashboard() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{ticket.category}</p>
+                      <p className="font-medium">{ticket.subject}</p>
                       <p className="text-sm text-neutral-500 line-clamp-1">
                         {ticket.description}
                       </p>
                     </div>
-                    <Badge variant={ticket.severity === "CRITICAL" ? "error" : ticket.severity === "HIGH" ? "warning" : "default"}>
-                      {ticket.severity}
+                    <Badge variant={ticket.priority === "URGENT" ? "error" : ticket.priority === "HIGH" ? "warning" : "default"}>
+                      {ticket.priority}
                     </Badge>
                   </div>
-                  {ticket.scheduledVisit && (
-                    <div className="mt-2 text-sm text-primary-600">
-                      {t("scheduledVisit")}: {ticket.scheduledVisit.date} ({ticket.scheduledVisit.timeSlot})
-                    </div>
-                  )}
                 </Link>
               ))}
             </div>

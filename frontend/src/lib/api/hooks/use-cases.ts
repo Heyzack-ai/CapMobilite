@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '../client';
+import { Case as CaseType, CaseStatus, CasePriority } from '@/types';
 
-// Types
+// Types - extend from main Case type for API responses
 interface Case {
   id: string;
   caseNumber: string;
-  status: string;
-  priority: string;
+  status: CaseStatus;
+  priority: CasePriority;
   patientId: string;
   assignedToId?: string;
   currentStepDescription?: string;
   checklistState?: Record<string, boolean>;
+  slaDeadline?: string;
   createdAt: string;
   updatedAt: string;
 }
