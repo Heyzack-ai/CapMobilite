@@ -9,26 +9,28 @@ import {
   FileText,
   ArrowRight,
   Clock,
-  CheckCircle,
-  AlertTriangle,
+  Loader2,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/stores/auth.store";
-import { getCasesByPatientId, caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
-import { getDevicesByPatientId, getTicketsByPatientId } from "@/lib/mocks/data/devices";
-import { getProductById } from "@/lib/mocks/data/products";
+import { useMyCases, useMyDevices, useMyServiceTickets } from "@/lib/api/hooks";
+import { caseStatusLabels, caseStatusColors } from "@/lib/mocks/data/cases";
+import { type Case } from "@/types";
 
 export default function PatientDashboard() {
   const t = useTranslations("patient.dashboard");
   const { user } = useAuthStore();
 
-  const patientId = user?.id || "user-1";
-  const cases = getCasesByPatientId(patientId);
-  const devices = getDevicesByPatientId(patientId);
-  const tickets = getTicketsByPatientId(patientId);
+  const { data: casesData, isLoading: casesLoading } = useMyCases();
+  const { data: devicesData, isLoading: devicesLoading } = useMyDevices();
+  const { data: ticketsData, isLoading: ticketsLoading } = useMyServiceTickets();
+
+  const cases = casesData?.data || [];
+  const devices = devicesData?.data || [];
+  const tickets = ticketsData?.data || [];
 
   const activeCases = cases.filter(
     (c) => !["DELIVERED", "CLOSED", "CANCELLED"].includes(c.status)
@@ -36,6 +38,16 @@ export default function PatientDashboard() {
   const openTickets = tickets.filter(
     (t) => !["RESOLVED", "CLOSED"].includes(t.status)
   );
+
+  const isLoading = casesLoading || devicesLoading || ticketsLoading;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -66,8 +78,8 @@ export default function PatientDashboard() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-secondary-100 flex items-center justify-center">
-                <Accessibility className="w-5 h-5 text-secondary-600" />
+              <div className="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
+                <Accessibility className="w-5 h-5 text-indigo-600" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{devices.length}</p>
@@ -80,8 +92,8 @@ export default function PatientDashboard() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
-                <Wrench className="w-5 h-5 text-warning" />
+              <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                <Wrench className="w-5 h-5 text-amber-600" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{openTickets.length}</p>

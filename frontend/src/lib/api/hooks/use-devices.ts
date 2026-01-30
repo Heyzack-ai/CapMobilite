@@ -91,6 +91,16 @@ export function useMyDevices() {
   });
 }
 
+export function useMyServiceTickets() {
+  return useQuery({
+    queryKey: ['service-tickets', 'mine'],
+    queryFn: async () => {
+      const response = await apiClient.get<{ data: ServiceTicket[] }>('/me/service-tickets');
+      return response;
+    },
+  });
+}
+
 export function useUpdateDevice() {
   const queryClient = useQueryClient();
 

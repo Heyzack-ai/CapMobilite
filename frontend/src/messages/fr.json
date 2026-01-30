@@ -377,7 +377,22 @@
       "noDelivery": "Livraison non encore planifiée",
       "deliveryAfterApproval": "La livraison sera planifiée après approbation du dossier par la CPAM",
       "deliveryComplete": "Livraison effectuée",
-      "deliveredOn": "Livré le"
+      "deliveredOn": "Livré le",
+      "scheduledFor": "Livraison prévue le",
+      "timeSlot": "Créneau",
+      "technician": "Technicien",
+      "stepCompleted": "Étape terminée",
+      "inProgress": "Dossier en cours",
+      "lastUpdate": "Dernière mise à jour",
+      "approving": "Approbation en cours...",
+      "steps": {
+        "prescription": "Ordonnance",
+        "identity": "Pièce d'identité",
+        "insurance": "Attestation CPAM",
+        "quote": "Devis",
+        "approval": "Approbation CPAM",
+        "delivery": "Livraison"
+      }
     },
     "devices": {
       "title": "Mes équipements",
