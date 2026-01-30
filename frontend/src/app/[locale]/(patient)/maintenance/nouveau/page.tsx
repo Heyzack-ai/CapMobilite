@@ -102,7 +102,7 @@ export default function NewMaintenancePage() {
                 </SelectTrigger>
                 <SelectContent>
                   {devices.map((device) => {
-                    const product = getProductById(device.productId);
+                    const product = device.productId ? getProductById(device.productId) : undefined;
                     return (
                       <SelectItem key={device.id} value={device.id}>
                         {product?.name || "Équipement"} - {device.serialNumber}

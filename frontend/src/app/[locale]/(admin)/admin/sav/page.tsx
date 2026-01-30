@@ -143,7 +143,7 @@ export default function AdminSAVPage() {
       <div className="space-y-4">
         {filteredTickets.map((ticket) => {
           const device = getDeviceById(ticket.deviceId);
-          const product = device ? getProductById(device.productId) : undefined;
+          const product = device?.productId ? getProductById(device.productId) : undefined;
           const patient = findPatientById(ticket.patientId);
 
           return (

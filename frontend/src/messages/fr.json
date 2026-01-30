@@ -578,6 +578,66 @@
         "pending": "En cours de vérification"
       }
     },
+    "ticketDetail": {
+      "title": "Détails de la demande",
+      "backToList": "Retour à la maintenance",
+      "notFound": "Ticket non trouvé",
+      "notFoundDescription": "Ce ticket n'existe pas ou vous n'avez pas les droits pour y accéder",
+      "ticketNumber": "N° Ticket",
+      "deviceInfo": "Informations équipement",
+      "unknownDevice": "Équipement inconnu",
+      "serialNumber": "N° de série",
+      "deliveredOn": "Livré le",
+      "issueDescription": "Description du problème",
+      "statusTitle": "Statut du ticket",
+      "createdOn": "Créé le",
+      "nextStep": "Prochaine étape",
+      "nextStepOpen": "Votre demande est en cours d'examen par notre équipe. Vous serez contacté sous 24h.",
+      "nextStepAssigned": "Un technicien a été assigné à votre demande. La planification de la visite est en cours.",
+      "nextStepScheduled": "Une visite a été planifiée. Assurez-vous d'être présent à la date et l'heure indiquées.",
+      "nextStepInProgress": "L'intervention est en cours. Le technicien travaille sur la résolution du problème.",
+      "nextStepPartsOrdered": "Des pièces ont été commandées. Vous serez recontacté dès leur réception.",
+      "scheduledVisitTitle": "Visite planifiée",
+      "today": "Aujourd'hui",
+      "pastVisit": "Visite passée",
+      "technician": "Technicien",
+      "visitAddress": "Adresse de la visite",
+      "importantNotice": "Important :",
+      "visitNotice": "Merci de vous assurer qu'un adulte sera présent pour accueillir le technicien. En cas d'empêchement, contactez-nous au plus tôt pour reporter.",
+      "resolutionTitle": "Résolution",
+      "resolvedOn": "Résolu le",
+      "resolutionNotes": "Notes de résolution",
+      "needHelp": "Besoin d'aide ?",
+      "needHelpDescription": "Notre équipe est disponible pour répondre à vos questions concernant ce ticket.",
+      "emailUs": "Nous écrire",
+      "chatWithUs": "Chat en direct",
+      "stepOpen": "Ouvert",
+      "stepAssigned": "Assigné",
+      "stepScheduled": "Planifié",
+      "stepInProgress": "En cours",
+      "stepResolved": "Résolu",
+      "partsOrderedNote": "Pièces en commande",
+      "status": {
+        "title": "Statut de la demande",
+        "nextStep": "Prochaine étape"
+      },
+      "visit": {
+        "title": "Visite planifiée",
+        "date": "Date",
+        "time": "Heure",
+        "technician": "Technicien"
+      },
+      "resolution": {
+        "title": "Résolution",
+        "completedOn": "Terminé le",
+        "notes": "Notes du technicien"
+      },
+      "support": {
+        "title": "Besoin d'aide ?",
+        "description": "Contactez notre support pour toute question",
+        "contact": "Contacter le support"
+      }
+    },
     "support": {
       "title": "Support",
       "subtitle": "Nous sommes là pour vous aider",
@@ -806,6 +866,489 @@
         "items": "Articles",
         "validUntil": "Valide jusqu'au",
         "approvedOn": "Approuvé le"
+      }
+    },
+    "caseDetail": {
+      "title": "Détails du dossier",
+      "backToList": "Retour aux dossiers",
+      "tabs": {
+        "overview": "Aperçu",
+        "documents": "Documents",
+        "quote": "Devis",
+        "delivery": "Livraison",
+        "notes": "Notes",
+        "activity": "Activité"
+      },
+      "checklist": {
+        "title": "Liste de contrôle",
+        "prescription": "Ordonnance",
+        "identity": "Pièce d'identité",
+        "insurance": "Attestation CPAM",
+        "mutuelle": "Attestation mutuelle",
+        "quote": "Devis validé",
+        "delivery": "Livraison effectuée"
+      },
+      "actions": {
+        "changeStatus": "Changer le statut",
+        "assign": "Assigner",
+        "addNote": "Ajouter une note",
+        "createQuote": "Créer un devis",
+        "scheduleDelivery": "Planifier la livraison"
+      },
+      "notes": {
+        "title": "Notes",
+        "addNote": "Ajouter une note",
+        "placeholder": "Saisissez votre note...",
+        "internal": "Note interne",
+        "noNotes": "Aucune note"
+      }
+    },
+    "quoteDetail": {
+      "title": "Détails du devis",
+      "back": "Retour aux devis",
+      "backToList": "Retour aux devis",
+      "notFound": "Devis non trouvé",
+      "createdAt": "Créé le",
+      "patient": "Patient",
+      "case": "Dossier",
+      "tabs": {
+        "lineItems": "Articles",
+        "coverage": "Prise en charge",
+        "history": "Historique"
+      },
+      "lineItems": {
+        "product": "Produit",
+        "lpprCode": "Code LPPR",
+        "quantity": "Quantité",
+        "unitPrice": "Prix unitaire",
+        "total": "Total",
+        "actions": "Actions",
+        "addItem": "Ajouter un article",
+        "removeItem": "Supprimer",
+        "empty": "Aucun article dans ce devis",
+        "totalHT": "Total HT",
+        "itemCount": {
+          "singular": "article",
+          "plural": "articles"
+        }
+      },
+      "coverage": {
+        "cpam": "Prise en charge CPAM",
+        "mutuelle": "Prise en charge Mutuelle",
+        "rac": "Reste à charge patient",
+        "total": "Montant total TTC",
+        "ofTotal": "du total",
+        "breakdown": "Répartition de la prise en charge"
+      },
+      "history": {
+        "empty": "Aucun historique disponible"
+      },
+      "totals": {
+        "title": "Récapitulatif",
+        "cpam": "Prise en charge CPAM",
+        "mutuelle": "Prise en charge Mutuelle",
+        "rac": "Reste à charge patient",
+        "total": "Montant total TTC",
+        "validUntil": "Valide jusqu'au",
+        "expired": "Devis expiré"
+      },
+      "actions": {
+        "title": "Actions",
+        "saveDraft": "Enregistrer le brouillon",
+        "sendToPatient": "Envoyer au patient",
+        "downloadPDF": "Télécharger PDF",
+        "approve": "Approuver le devis"
+      },
+      "addLineItem": {
+        "title": "Ajouter un article",
+        "description": "Sélectionnez un produit et configurez les détails",
+        "searchProduct": "Rechercher un produit",
+        "searchPlaceholder": "Rechercher par nom ou code LPPR...",
+        "product": "Produit",
+        "selectProduct": "Sélectionner un produit",
+        "lpprCode": "Code LPPR",
+        "selectLpprCode": "Sélectionner un code LPPR",
+        "quantity": "Quantité",
+        "priceOverride": "Prix personnalisé",
+        "defaultPrice": "Prix de base",
+        "priceOverrideHint": "Laissez vide pour utiliser le prix de base",
+        "preview": "Aperçu",
+        "unitPrice": "Prix unitaire",
+        "lineTotal": "Total ligne",
+        "cancel": "Annuler",
+        "add": "Ajouter"
+      }
+    },
+    "deliveryDetail": {
+      "title": "Details de la livraison",
+      "backToList": "Retour aux livraisons",
+      "notFound": "Livraison non trouvee",
+      "notFoundDescription": "Cette livraison n'existe pas ou vous n'avez pas les droits pour y acceder",
+      "deliveryId": "ID Livraison",
+      "status": {
+        "PENDING": "En attente",
+        "SCHEDULED": "Planifiee",
+        "IN_TRANSIT": "En cours de livraison",
+        "DELIVERED": "Livree",
+        "FAILED": "Echouee"
+      },
+      "patientInfo": {
+        "title": "Informations patient",
+        "name": "Nom",
+        "phone": "Telephone",
+        "address": "Adresse de livraison",
+        "notes": "Instructions"
+      },
+      "deviceInfo": {
+        "title": "Informations equipement",
+        "product": "Produit",
+        "serialNumber": "Numero de serie",
+        "category": "Categorie"
+      },
+      "tabs": {
+        "schedule": "Planification",
+        "tracking": "Suivi",
+        "confirmation": "Confirmation"
+      },
+      "schedule": {
+        "title": "Planifier la livraison",
+        "date": "Date de livraison",
+        "datePlaceholder": "Selectionnez une date",
+        "timeSlot": "Creneau horaire",
+        "timeSlotPlaceholder": "Selectionnez un creneau",
+        "technician": "Technicien",
+        "technicianPlaceholder": "Selectionnez un technicien",
+        "notes": "Notes de livraison",
+        "notesPlaceholder": "Instructions speciales pour la livraison...",
+        "morning": "Matin (8h-12h)",
+        "afternoon": "Apres-midi (14h-18h)",
+        "evening": "Soir (18h-20h)",
+        "scheduled": "Livraison planifiee",
+        "scheduledFor": "Planifiee pour le"
+      },
+      "tracking": {
+        "title": "Suivi de la livraison",
+        "timeline": {
+          "created": "Livraison creee",
+          "scheduled": "Livraison planifiee",
+          "inTransit": "En cours de livraison",
+          "delivered": "Livree",
+          "failed": "Livraison echouee"
+        },
+        "currentStatus": "Statut actuel",
+        "estimatedDelivery": "Livraison estimee",
+        "technicianAssigned": "Technicien assigne"
+      },
+      "confirmation": {
+        "title": "Confirmation de livraison",
+        "checklist": {
+          "title": "Liste de verification",
+          "deviceDelivered": "Equipement livre",
+          "deviceInspected": "Equipement inspecte",
+          "patientTrained": "Patient forme a l'utilisation",
+          "documentsReviewed": "Documents verifies",
+          "signatureCollected": "Signature collectee"
+        },
+        "signature": {
+          "title": "Signature du patient",
+          "placeholder": "Zone de signature",
+          "clear": "Effacer",
+          "instructions": "Le patient doit signer pour confirmer la reception"
+        },
+        "photo": {
+          "title": "Photo de livraison",
+          "upload": "Telecharger une photo",
+          "take": "Prendre une photo",
+          "description": "Ajoutez une photo comme preuve de livraison"
+        },
+        "notes": "Notes de livraison",
+        "notesPlaceholder": "Commentaires sur la livraison..."
+      },
+      "actions": {
+        "schedule": "Planifier la livraison",
+        "startDelivery": "Demarrer la livraison",
+        "markDelivered": "Marquer comme livree",
+        "reschedule": "Replanifier",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "confirmDelivery": "Confirmer la livraison"
+      },
+      "technicians": {
+        "title": "Techniciens disponibles",
+        "available": "Disponible",
+        "busy": "Occupe",
+        "onLeave": "En conge"
+      }
+    },
+    "ticketDetail": {
+      "title": "Détails du ticket",
+      "backToList": "Retour aux tickets",
+      "ticketNumber": "Numéro de ticket",
+      "ticketNotFound": "Ticket non trouvé",
+      "ticketNotFoundDesc": "Ce ticket n'existe pas ou vous n'avez pas les droits pour y accéder",
+      "safetyIssue": "Problème de sécurité",
+      "safetyIssueDesc": "Ce problème affecte la sécurité du patient",
+      "deviceInfo": "Informations équipement",
+      "product": "Produit",
+      "serialNumber": "Numéro de série",
+      "deliveredAt": "Livré le",
+      "warrantyExpires": "Fin de garantie",
+      "deviceStatus": "Statut équipement",
+      "warranty": "Garantie",
+      "underWarranty": "Sous garantie",
+      "until": "jusqu'au",
+      "warrantyExpired": "Garantie expirée",
+      "noDeviceInfo": "Aucune information équipement",
+      "patientContact": "Contact patient",
+      "patientName": "Nom du patient",
+      "phone": "Téléphone",
+      "email": "Email",
+      "address": "Adresse",
+      "emergencyContact": "Contact d'urgence",
+      "noPatientInfo": "Aucune information patient",
+      "tabs": {
+        "details": "Détails",
+        "schedule": "Planification",
+        "parts": "Pièces",
+        "resolution": "Résolution"
+      },
+      "description": "Description",
+      "category": "Catégorie",
+      "createdAt": "Créé le",
+      "history": "Historique",
+      "scheduleVisit": "Planifier une visite",
+      "currentSchedule": "Visite actuellement planifiée",
+      "visitDate": "Date de la visite",
+      "timeSlot": "Créneau horaire",
+      "selectTimeSlot": "Sélectionner un créneau",
+      "assignTechnician": "Assigner un technicien",
+      "selectTechnician": "Sélectionner un technicien",
+      "updateSchedule": "Mettre à jour",
+      "partsOrdered": "Pièces commandées",
+      "addPart": "Ajouter une pièce",
+      "partNumber": "Référence",
+      "quantity": "Quantité",
+      "orderedOn": "Commandée le",
+      "deliveredOn": "Livrée le",
+      "noPartsOrdered": "Aucune pièce commandée",
+      "resolution": "Résolution",
+      "resolvedOn": "Résolu le",
+      "resolutionOutcome": "Résultat de l'intervention",
+      "selectOutcome": "Sélectionner un résultat",
+      "resolutionNotes": "Notes de résolution",
+      "resolutionNotesPlaceholder": "Décrivez les actions effectuées et le résultat de l'intervention...",
+      "markResolved": "Marquer comme résolu",
+      "actions": {
+        "assign": "Assigner",
+        "scheduleVisit": "Planifier une visite",
+        "orderParts": "Commander des pièces",
+        "resolve": "Résoudre",
+        "close": "Clôturer"
+      }
+    },
+    "userDetail": {
+      "title": "Détails de l'utilisateur",
+      "back": "Retour aux utilisateurs",
+      "backToList": "Retour aux utilisateurs",
+      "notFound": "Utilisateur non trouvé",
+      "notFoundDescription": "Cet utilisateur n'existe pas ou vous n'avez pas les droits pour le consulter",
+      "createdOn": "Créé le",
+      "tabs": {
+        "profile": "Profil",
+        "cases": "Dossiers",
+        "devices": "Équipements",
+        "activity": "Activité"
+      },
+      "roles": {
+        "patient": "Patient",
+        "prescriber": "Prescripteur",
+        "ops": "Opérations",
+        "billing": "Facturation",
+        "technician": "Technicien",
+        "admin": "Administrateur",
+        "complianceAdmin": "Admin Conformité"
+      },
+      "status": {
+        "active": "Actif",
+        "pendingVerification": "En attente de vérification",
+        "suspended": "Suspendu",
+        "deactivated": "Désactivé"
+      },
+      "profile": {
+        "personalInfo": "Informations personnelles",
+        "personalInfoDescription": "Informations d'identité de base",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "dateOfBirth": "Date de naissance",
+        "role": "Rôle",
+        "contactInfo": "Coordonnées",
+        "contactInfoDescription": "Email et téléphone",
+        "email": "Email",
+        "phone": "Téléphone",
+        "address": "Adresse",
+        "addressDescription": "Adresse de livraison",
+        "street": "Rue",
+        "city": "Ville",
+        "postalCode": "Code postal",
+        "country": "Pays",
+        "deliveryNotes": "Instructions de livraison",
+        "security": "Sécurité",
+        "securityDescription": "Paramètres de sécurité du compte",
+        "mfa": "Authentification à deux facteurs",
+        "mfaDescription": "Couche de sécurité supplémentaire",
+        "enabled": "Activé",
+        "disabled": "Désactivé",
+        "emailVerification": "Vérification email",
+        "emailVerificationDescription": "Adresse email vérifiée",
+        "phoneVerification": "Vérification téléphone",
+        "phoneVerificationDescription": "Numéro de téléphone vérifié",
+        "verified": "Vérifié",
+        "pending": "En attente",
+        "emergencyContact": "Contact d'urgence",
+        "emergencyContactDescription": "Contact en cas d'urgence",
+        "emergencyName": "Nom",
+        "emergencyPhone": "Téléphone",
+        "emergencyRelationship": "Lien"
+      },
+      "cases": {
+        "title": "Dossiers de l'utilisateur",
+        "description": "Tous les dossiers associés à cet utilisateur",
+        "noCases": "Aucun dossier",
+        "noCasesDescription": "Cet utilisateur n'a pas encore de dossier",
+        "stats": {
+          "total": "Total",
+          "active": "Actifs",
+          "completed": "Terminés",
+          "urgent": "Urgents"
+        },
+        "status": {
+          "intakeReceived": "Demande reçue",
+          "documentsPending": "Documents en attente",
+          "underReview": "En cours d'examen",
+          "quoteReady": "Devis prêt",
+          "quoteApproved": "Devis approuvé",
+          "submittedToCpam": "Soumis à la CPAM",
+          "cpamApproved": "CPAM approuvé",
+          "cpamRejected": "CPAM rejeté",
+          "deliveryScheduled": "Livraison planifiée",
+          "delivered": "Livré",
+          "closed": "Fermé",
+          "cancelled": "Annulé"
+        },
+        "priority": {
+          "low": "Basse",
+          "normal": "Normale",
+          "high": "Haute",
+          "urgent": "Urgente"
+        },
+        "table": {
+          "caseNumber": "N° Dossier",
+          "status": "Statut",
+          "priority": "Priorité",
+          "progress": "Progression",
+          "created": "Créé le",
+          "sla": "SLA",
+          "actions": "Actions",
+          "view": "Voir"
+        }
+      },
+      "devices": {
+        "title": "Équipements de l'utilisateur",
+        "description": "Tous les équipements attribués à cet utilisateur",
+        "noDevices": "Aucun équipement",
+        "noDevicesDescription": "Cet utilisateur n'a pas encore d'équipement attribué",
+        "stats": {
+          "total": "Total",
+          "active": "Actifs",
+          "inRepair": "En réparation",
+          "underWarranty": "Sous garantie"
+        },
+        "serialNumber": "Numéro de série",
+        "status": {
+          "active": "Actif",
+          "in_repair": "En réparation",
+          "decommissioned": "Mis hors service"
+        },
+        "category": {
+          "manual": "Manuel",
+          "electric": "Électrique",
+          "sport": "Sport",
+          "pediatric": "Pédiatrique"
+        },
+        "underWarranty": "Sous garantie",
+        "warrantyExpired": "Garantie expirée",
+        "deliveryDate": "Date de livraison",
+        "warrantyEnd": "Fin de garantie",
+        "lastMaintenance": "Dernière maintenance",
+        "nextMaintenance": "Prochaine maintenance"
+      },
+      "activity": {
+        "title": "Journal d'activité",
+        "description": "Activité récente de cet utilisateur",
+        "noActivity": "Aucune activité enregistrée",
+        "actions": {
+          "create": "Créé",
+          "update": "Mis à jour",
+          "delete": "Supprimé",
+          "login": "Connecté",
+          "logout": "Déconnecté"
+        },
+        "entities": {
+          "user": "Utilisateur",
+          "case": "Dossier",
+          "document": "Document",
+          "device": "Équipement",
+          "ticket": "Ticket",
+          "session": "Session"
+        },
+        "fieldChanged": "Champ {field} modifié",
+        "device": "Appareil"
+      },
+      "actions": {
+        "title": "Actions utilisateur",
+        "description": "Gérer ce compte utilisateur",
+        "editProfile": "Modifier le profil",
+        "resetPassword": "Réinitialiser le mot de passe",
+        "deactivate": "Désactiver",
+        "activate": "Activer"
+      }
+    },
+    "modals": {
+      "statusChange": {
+        "title": "Changer le statut",
+        "currentStatus": "Statut actuel",
+        "newStatus": "Nouveau statut",
+        "selectStatus": "Sélectionner un statut",
+        "willChangeTo": "Nouveau statut",
+        "notes": "Notes (optionnel)",
+        "notesPlaceholder": "Ajoutez une note expliquant ce changement de statut...",
+        "cancel": "Annuler",
+        "confirm": "Confirmer"
+      },
+      "assignment": {
+        "title": "Assigner le dossier",
+        "currentAssignee": "Assigné actuellement",
+        "selectStaff": "Sélectionner un collaborateur",
+        "selectStaffPlaceholder": "Choisir un collaborateur...",
+        "roleTechnician": "Technicien",
+        "roleOpsAgent": "Agent opérations",
+        "roleBillingAgent": "Agent facturation",
+        "roleAdmin": "Administrateur",
+        "notes": "Notes de transmission",
+        "notesPlaceholder": "Informations à transmettre au nouveau responsable...",
+        "cancel": "Annuler",
+        "assign": "Assigner"
+      },
+      "confirmation": {
+        "title": "Confirmation",
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "deleteTitle": "Supprimer",
+        "deleteMessage": "Êtes-vous sûr de vouloir supprimer {item} ? Cette action est irréversible.",
+        "delete": "Supprimer",
+        "cancelTitle": "Annuler l'action",
+        "cancelMessage": "Êtes-vous sûr de vouloir annuler ? Les modifications non enregistrées seront perdues.",
+        "confirmCancel": "Oui, annuler"
       }
     }
   },

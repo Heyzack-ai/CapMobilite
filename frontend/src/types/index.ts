@@ -16,7 +16,8 @@ export interface User {
 export type UserRole = 'PATIENT' | 'PRESCRIBER' | 'OPS_AGENT' | 'BILLING_AGENT' | 'TECHNICIAN' | 'ADMIN';
 
 export interface Patient extends User {
-  dateOfBirth: string;
+  dateOfBirth?: string;
+  nir?: string;
   nirHash?: string;
   address?: Address;
   emergencyContact?: EmergencyContact;
@@ -48,9 +49,20 @@ export interface Case {
   claimId?: string;
   assignedToId?: string;
   checklist: ChecklistItem[];
+  documents?: Document[];
+  timeline?: TimelineEvent[];
   createdAt: string;
   updatedAt: string;
   slaDeadline?: string;
+}
+
+export interface TimelineEvent {
+  id: string;
+  type: string;
+  title: string;
+  description?: string;
+  timestamp: string;
+  userId?: string;
 }
 
 export type CaseStatus =
@@ -70,7 +82,8 @@ export type CaseStatus =
 export type CasePriority = 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
 
 export interface ChecklistItem {
-  key: string;
+  id?: string;
+  key?: string;
   label: string;
   required: boolean;
   completedAt?: string;
@@ -157,13 +170,22 @@ export interface ProductFamily {
 export interface Device {
   id: string;
   patientId: string;
-  productId: string;
+  productId?: string;
+  caseId?: string;
   serialNumber: string;
-  deliveredAt: string;
-  warrantyExpiresAt: string;
+  model?: string;
+  category?: DeviceCategory;
+  deliveredAt?: string;
+  deliveryDate?: string;
+  warrantyExpiresAt?: string;
+  warrantyEndDate?: string;
+  lastMaintenanceDate?: string;
+  nextMaintenanceDate?: string;
   maintenanceContractId?: string;
   status: DeviceStatus;
 }
+
+export type DeviceCategory = 'MANUAL' | 'ELECTRIC' | 'SPORT' | 'PEDIATRIC';
 
 export type DeviceStatus = 'ACTIVE' | 'IN_REPAIR' | 'REPLACED' | 'DISPOSED';
 
@@ -282,3 +304,19 @@ export interface MFAChallenge {
   challengeId: string;
   type: 'TOTP';
 }
+
+// Audit Log Types
+export interface AuditLog {
+  id: string;
+  userId: string;
+  action: AuditAction;
+  entityType: AuditEntityType;
+  entityId: string;
+  timestamp: string;
+  details?: Record<string, unknown>;
+  ipAddress?: string;
+}
+
+export type AuditAction = 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'LOGOUT';
+
+export type AuditEntityType = 'USER' | 'CASE' | 'DOCUMENT' | 'DEVICE' | 'TICKET' | 'SESSION' | 'QUOTE' | 'CLAIM';

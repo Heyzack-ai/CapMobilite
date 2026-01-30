@@ -186,8 +186,8 @@ export default function PatientDashboard() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {devices.map((device) => {
-                const product = getProductById(device.productId);
-                const warrantyExpired = new Date(device.warrantyExpiresAt) < new Date();
+                const product = device.productId ? getProductById(device.productId) : undefined;
+                const warrantyExpired = device.warrantyExpiresAt ? new Date(device.warrantyExpiresAt) < new Date() : false;
 
                 return (
                   <Link

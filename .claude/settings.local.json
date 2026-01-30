@@ -15,7 +15,13 @@
       "Bash(npx tsc --noEmit)",
       "Bash(npx tsc:*)",
       "Bash(lsof:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(cd:*)",
+      "Bash(head:*)",
+      "Bash(wc:*)",
+      "Bash(node -e:*)"
     ]
   }
 }

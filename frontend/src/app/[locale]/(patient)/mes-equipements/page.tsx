@@ -45,12 +45,12 @@ export default function DevicesPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {devices.map((device) => {
-            const product = getProductById(device.productId);
+            const product = device.productId ? getProductById(device.productId) : undefined;
             const tickets = getTicketsByDeviceId(device.id);
             const openTickets = tickets.filter(
               (t) => !["RESOLVED", "CLOSED"].includes(t.status)
             );
-            const warrantyExpired = new Date(device.warrantyExpiresAt) < new Date();
+            const warrantyExpired = device.warrantyExpiresAt ? new Date(device.warrantyExpiresAt) < new Date() : true;
 
             return (
               <Card key={device.id} className="hover:shadow-md transition-shadow">
@@ -83,7 +83,7 @@ export default function DevicesPage() {
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="w-4 h-4 text-neutral-400" />
                         <span className="text-neutral-500">{t("deliveredOn")}:</span>
-                        <span>{new Date(device.deliveredAt).toLocaleDateString("fr-FR")}</span>
+                        <span>{device.deliveredAt ? new Date(device.deliveredAt).toLocaleDateString("fr-FR") : "-"}</span>
                       </div>
 
                       {/* Warranty Status */}
@@ -97,7 +97,7 @@ export default function DevicesPage() {
                         ) : (
                           <span className="text-success flex items-center gap-1">
                             <CheckCircle className="w-3 h-3" />
-                            {t("underWarranty")} ({t("until")} {new Date(device.warrantyExpiresAt).toLocaleDateString("fr-FR")})
+                            {t("underWarranty")} ({t("until")} {device.warrantyExpiresAt ? new Date(device.warrantyExpiresAt).toLocaleDateString("fr-FR") : "-"})
                           </span>
                         )}
                       </div>

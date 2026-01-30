@@ -71,7 +71,7 @@ export default function MaintenancePage() {
 
   const TicketCard = ({ ticket }: { ticket: (typeof tickets)[0] }) => {
     const device = getDeviceById(ticket.deviceId);
-    const product = device ? getProductById(device.productId) : undefined;
+    const product = device?.productId ? getProductById(device.productId) : undefined;
 
     return (
       <Card className="hover:shadow-md transition-shadow">

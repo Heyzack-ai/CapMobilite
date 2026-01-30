@@ -219,7 +219,7 @@ export default function DeliveriesPage() {
           filteredDeliveries.map((delivery) => {
             const patient = findPatientById(delivery.patientId);
             const device = mockDevices.find((d) => d.id === delivery.deviceId);
-            const product = device ? getProductById(device.productId) : undefined;
+            const product = device?.productId ? getProductById(device.productId) : undefined;
 
             return (
               <Card key={delivery.id} className="hover:shadow-md transition-shadow">
@@ -278,17 +278,30 @@ export default function DeliveriesPage() {
 
                     {/* Actions */}
                     <div className="flex flex-col gap-2">
+                      <Button size="sm" variant="outline" asChild>
+                        <Link href={`/admin/livraisons/${delivery.id}`}>
+                          Voir
+                        </Link>
+                      </Button>
                       {delivery.status === "PENDING" && (
-                        <Button size="sm">{t("schedule")}</Button>
+                        <Button size="sm" asChild>
+                          <Link href={`/admin/livraisons/${delivery.id}`}>
+                            {t("schedule")}
+                          </Link>
+                        </Button>
                       )}
                       {delivery.status === "SCHEDULED" && (
-                        <Button size="sm" variant="outline">
-                          {t("startDelivery")}
+                        <Button size="sm" variant="outline" asChild>
+                          <Link href={`/admin/livraisons/${delivery.id}`}>
+                            {t("startDelivery")}
+                          </Link>
                         </Button>
                       )}
                       {delivery.status === "IN_TRANSIT" && (
-                        <Button size="sm" className="bg-success hover:bg-success/90">
-                          {t("markDelivered")}
+                        <Button size="sm" className="bg-success hover:bg-success/90" asChild>
+                          <Link href={`/admin/livraisons/${delivery.id}`}>
+                            {t("markDelivered")}
+                          </Link>
                         </Button>
                       )}
                     </div>
